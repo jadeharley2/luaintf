@@ -5,7 +5,8 @@ net.clients = {}
 
 function net.start(host,port)
     net.s = socket.tcp()
-    net.s:bind(host,port) --'localhost',9999)
+    local x,err = net.s:bind(host,port) --'localhost',9999)
+    print(x,err)
     net.s:listen(10)
     net.s:settimeout(0)
 end

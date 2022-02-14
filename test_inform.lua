@@ -298,7 +298,7 @@ function main_server()
 
         net.receive(function(c,input)
             client = c
-            player = c.person or player
+            player = c.person or no_one
 
             local args = input:split(' ')
             local aliased = {ComAlias(unpack(args))}

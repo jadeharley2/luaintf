@@ -35,7 +35,7 @@ function print_c_msg(...)
         if char == '$' then --$rk RED $wk
             local c1 = ct[text:sub(k+1,k+1)]
             local c2 = ct[text:sub(k+2,k+2)] 
-           -- winapi.set_console_text_color(c1,c2) 
+            winapi.set_console_text_color(c1,c2) 
             set=true
             k = k + 3
         elseif char == '%' then --%1
@@ -53,6 +53,6 @@ function print_c_msg(...)
     io.write('\r\n')
     sleeptime = 0
     if set then
-      --  winapi.set_console_text_color(winapi.col_white,winapi.col_black) 
+        winapi.set_console_text_color(winapi.col_white,winapi.col_black) 
     end
 end
