@@ -25,14 +25,12 @@ luac.out
 *.def
 *.exp
 
-# Shared objects (inc. Windows DLLs)
-*.dll
+# Shared objects (inc. Windows DLLs) 
 *.so
 *.so.*
 *.dylib
 
-# Executables
-*.exe
+# Executables 
 *.out
 *.app
 *.i*86
