@@ -563,16 +563,14 @@ tvk:interact_add(press_interaction)
 tvk.this.buttons = {
     toggle_power = function(self,user)
         
-        self:say('$rkfuck off$wk')
+        self:say('...')
     end,
 }
 
 
 
 
-
-
-printout('%1WHITE$rkfuck off$wkWHITE')
+ 
 
 
 tvk:response("dock to station",function(s,t)
