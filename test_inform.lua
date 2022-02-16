@@ -195,8 +195,8 @@ function parse(full,com,arg1,arg2,arg3,...)
     ]]
     
     local result = player:act(com,arg1,arg2,arg3,...)
-    if result then 
-        return true
+    if result~=nil then 
+        return result
     else
         local something = LocalIdentify(arg1)
         if something then

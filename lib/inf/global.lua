@@ -20,3 +20,21 @@ function printout(a,...)
     end
     print_c_msg('    '..a,...)
 end
+
+function describe_action(doer,desc_doer,desc_other,everywhere)
+
+    if doer==player then
+        if desc_doer then printout(desc_doer) end
+    end
+    if desc_other then
+        if everywhere then
+            net.broadcast(desc_other,players[doer])
+        else--if player.location==doer.location then
+            for k,v in pairs(players) do
+                if k~=doer and k.location == doer.location then
+                    v.socket:send(desc_other..'\n')
+                end
+            end 
+        end 
+    end
+end

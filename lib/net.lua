@@ -33,9 +33,11 @@ function net.receive(callback)
         end
     end
 end
-function net.broadcast(msg)
+function net.broadcast(msg,ignore)
     for k,v in pairs(net.clients) do
-        v.socket:send(msg..'\n')
+        if v~=ignore then
+            v.socket:send(msg..'\n')
+        end
     end
 end
 

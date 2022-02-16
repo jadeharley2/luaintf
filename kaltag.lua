@@ -328,21 +328,35 @@ end
 bridge = Def('bridge','room') 
 airlock = Def('airlock','room') 
 corridor = Def('corridor','room')
+corridor2 = Def('corridor2',{name='south corridor'},'room')
 quarters = Def('quarters',{name="crew quarters"},'room')
 engine_room = Def('engine_room',{name="engine room"},'room')
+hangar = Def('hangar',{name="hangar"},'room')
 
 bridge.location = katric_capital_ship
 airlock.location = katric_capital_ship
 corridor.location = katric_capital_ship
+corridor2.location = katric_capital_ship
 quarters.location = katric_capital_ship
 engine_room.location = katric_capital_ship
+hangar.location = katric_capital_ship
 
 MakeRelation(corridor,bridge,direction_north)
 MakeRelation(corridor,airlock,direction_west)
 MakeRelation(corridor,quarters,direction_east)
-MakeRelation(corridor,engine_room,direction_south)
+MakeRelation(corridor,corridor2,direction_south)
+MakeRelation(corridor2,engine_room,direction_east)
+MakeRelation(corridor2,hangar,direction_west)
 
 katric_capital_ship.airlock = airlock
+
+quarters.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943235940376260699/47f96e29c73362c3fd51a1960743f63e.jpg'
+airlock.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943234359006224384/1626138798.jpg'
+bridge.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943223639933849660/1626138837.jpg'
+engine_room.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943234360600035358/079ee8528e17c3733f9f77ca00a9006f.jpg'
+hangar.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943234359610191933/1626138900.jpg'
+corridor.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943237475780935751/deaa4115061289.5628c78a3069b.jpg'
+corridor2.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943234360029638749/64a227e1-5e74-4490-b31f-4c19b9659be9.png'
 
 
 window = Def('window','thing')
@@ -350,7 +364,7 @@ window.examine = function(self,user)
     printout(L'you look trough [self] and see [self.outside.location.description]') 
 end
 
-bridge_window = Def('bridge_window','window')
+bridge_window = Def('bridge_window',{name='reinforced window'},'window')
 bridge_window.location = bridge
 bridge_window.outside = katric_capital_ship
 bridge_window.examine = function(self,user) 
@@ -365,9 +379,15 @@ bridge_window.examine = function(self,user)
 end
 
 
+mirror = Def('mirror','thing')
+mirror.location = quarters
+mirror.examine = function(s) 
+    printout('you look into mirror and see..')
+    examine(player)
+end
 
 
-ara = Def('ara',{name='ARA', code = '0-1-1'},'person') ara:adj_set('anthroid','feline','female')
+ara = Def('ara',{name='ARA', code = '0-1-1'},'person') ara:adj_set('anthroid','feline','female') 
 srk = Def('srk',{name='Warning', code ='07-4-31'},'person') srk:adj_set('anthroid','feline','female')
 zta = Def('zta',{name='Zeta', code='37-8-12'},'person') zta:adj_set('anthroid','kleika','female')
 tvk = Def('tvk',{name='Vale'},'person') tvk:adj_set('anthroid','male')
@@ -376,15 +396,32 @@ vst = Def('vst',{name='VST'},'person') vst:adj_set('anthroid','male')
 vikna = Def('vikna',{name='Vikna', surname='Ramenskaya'},'person') vikna:adj_set('anthro','feline','female')
 nytro = Def('nytro',{name='Nytro', surname='Sykran'},'person') nytro:adj_set('anthro','canine','male')
 zofie = Def('zofie',{name='Zofie'},'person') zofie:adj_set('anthro','canine','female')
- 
+ayn = Def('ayn',{name='Ayn'},'person') ayn:adj_set('anthro','jackal','female')
+
 ara.location = bridge
 srk.location = bridge
 zta.location = bridge
 tvk.location = bridge
 vst.location = bridge
 
+ara.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943211101754118245/ara.png'
+--'https://cdn.discordapp.com/attachments/531891665993203722/943137499256074260/furry-f-furry-art-furry--6411268.png'
+--'https://cdn.discordapp.com/attachments/531891665993203722/943211236538089622/ara.png'
+tvk.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943207738991857793/vc.png'
+--'https://cdn.discordapp.com/attachments/531891665993203722/943216181962244118/vale.png'
+srk.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943209342293905478/srk.png'
+zta.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943209772088426506/zta.png'
+vst.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943220091355545600/vst.png'
 
 vikna.location = bridge
+nytro.location = quarters
+zofie.location = quarters
+ayn.location = quarters
+
+vikna.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943210593094078474/vikna.png'
+nytro.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943212074878783548/nytro.png'
+zofie.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943213388979400814/zofie.png'
+ayn.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943214682087518238/ayn.png'
 
 katric_capital_ship.srk = srk
 
@@ -565,12 +602,67 @@ tvk.this.buttons = {
         
         self:say('...')
     end,
+    display = function(self,user)
+        printout("$display:target;https://cdn.discordapp.com/attachments/531891665993203722/942877231997415484/unknown.png")
+    end,
 }
 
 
 
 
+
+read_interaction = Def('read_interaction',{key='read',callback = function(self,user,act,arg1,...)  
+    describe_action(user,'you read a '..tostring(self),tostring(user)..' reads a '..tostring(self)) 
+    self:call('on_read',user)  
+end},'interaction') 
+
+
+transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback = function(self,arg1,...) 
+    local is_player = self == player  
+    if arg1 then
+        local v = LocalIdentify(arg1)
+        if v and v:is(person) then
+
+            if players[v] then 
+                printout('this character is occupied')
+            else
+                describe_action(self,L'you focus on [v]. And then blackout',tostring(self)..' stares at '..tostring(v))  
+
+                if not v:act_get(transfer_soul_action) then
+                    player:act_rem(transfer_soul_action)
+                    v:act_add(transfer_soul_action)
+                end
+
+                players[player] = nil
+                player = v 
+                players[v] = client
+
+                printout('you are now',v)
+                display_location(player.location)
+                send_actions() 
+                return true
+            end 
+            return true
+        else
+            if is_player then printout('there is no '..arg1) end
+        end 
+    else
+        if is_player then printout('specify target') end
+    end
+    
+
+end},'action') 
+
  
+book = Def('book','thing')
+book.location = quarters
+book.description = 'an ordinary book'
+book:interact_add(read_interaction)
+book.on_read = function(self,user)
+    printout('you learn something')
+    user:act_add(transfer_soul_action)
+    send_actions() 
+end
 
 
 tvk:response("dock to station",function(s,t)
@@ -595,12 +687,12 @@ end)
 
 
 person:response("does Kaltag happen to be one of those Dystopian MegaCorps who basically control every aspect of people's lives and is even bigger then the government?",function(s,t) 
-    --if s:is('anthroid') then
+    if s:is('anthroid') then
         s:say([[No, I.H.Kaltag is not beyond Katrician rules and laws]])
         s:say([[The Empire of Katric is very large, and often times the large sovereigns have one or more major military or technology suppliers]])
         s:say([[So in a manner of speaking, Kaltag is a sidekick to the Imperial throne of Katric, one of their longest running partners]])
         s:say([[Kaltag has many subsidiaries but they hold no political sway or power]]) 
-    --end
+    end
 end)
 
 
