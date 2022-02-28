@@ -18,7 +18,9 @@ function printout(a,...)
         t[#t+1] = '\n'
         client.socket:send(table.concat(t,' '))
     end
-    print_c_msg('    '..a,...)
+    if a:sub(1,1)~='$' then
+        print_c_msg('    '..a,...)
+    end
 end
 
 function describe_action(doer,desc_doer,desc_other,everywhere)

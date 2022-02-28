@@ -8,6 +8,12 @@ kind_def = {
 turn_kind_def = {
 
 }
+
+adjective = false
+adjective_def = {
+
+}
+
 function Def(id,data,kind)
     if data==nil then 
         data = {name = id}
@@ -17,7 +23,11 @@ function Def(id,data,kind)
         data = {name = id}
     end
 
-    data.id = id
+    if id then 
+        data.id = id
+    end
+
+
     if kind then 
         local parent = defines[kind]
         --for k,v in pairs(parent) do
@@ -40,10 +50,21 @@ function Def(id,data,kind)
         
         setmetatable(data,parent)
     end
-    defines[id] = data
+    if id then 
+        defines[id] = data
+    end
     data:call('on_init')
+
+    if id and data:is(adjective) then 
+        adjective_def[id] = data
+    end
+
     return data;
 end
+function Inst(kind,data)
+    return Def(nil,data,kind)
+end
+
 function Identify(id)
     if type(id)=='string' then
         return defines[id]
@@ -69,6 +90,18 @@ function InheritableSet(kind,key)
                         r[k] = v
                     end
                 end
+
+                --local tadj = rawget(self,'adjectives')
+                --if tadj then
+                --    for ak,_ in pairs(tadj) do
+                --        local at = adjective_def[ak]
+                --        if at then
+                --            local v = rawget(at,k)
+                --            if v then return v end
+                --        end
+                --    end
+                --end
+
                 self = rawget(self,'base') 
                 if self then
                     t = rawget(self,key) 
@@ -87,6 +120,18 @@ function InheritableSet(kind,key)
         while self and t do
             local v = rawget(t,k)
             if v then return v end
+
+            local tadj = rawget(self,'adjectives')
+            if tadj then
+                for ak,_ in pairs(tadj) do
+                    local at = adjective_def[ak]
+                    if at then
+                        local v = rawget(at,k)
+                        if v then return v end
+                    end
+                end
+            end
+
             self = rawget(self,'base') 
             if self then
                 t = rawget(self,key) 
@@ -115,6 +160,24 @@ thing = Def('thing',{
                     callback(k,v)
                 end
             end
+
+            local tadj = rawget(self,'adjectives')
+            if tadj then
+                for ak,_ in pairs(tadj) do
+                    local at = adjective_def[ak]
+                    if at then
+                        local t = rawget(at,key)
+                        if t then
+                            for k,v in pairs(t) do
+                                callback(k,v)
+                            end
+                        end
+                    end
+                end
+            end
+
+
+
             s = s.base
         end
     end,
@@ -130,6 +193,26 @@ thing = Def('thing',{
                     end
                 end
             end
+
+            local tadj = rawget(self,'adjectives')
+            if tadj then
+                for ak,_ in pairs(tadj) do
+                    local at = adjective_def[ak]
+                    if at then
+                        local t = rawget(at,key)
+                        if t then
+                            for k,v in pairs(t) do
+                                local rez = callback(k,v)
+                                if rez then 
+                                    return rez
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+ 
+
             s = s.base
         end
     end,
@@ -143,10 +226,31 @@ thing = Def('thing',{
                     rez_ray[#rez_ray+1] = callback(k,v) 
                 end
             end
+
+            local tadj = rawget(s,'adjectives')
+            if tadj then
+                for ak,_ in pairs(tadj) do
+                    local at = adjective_def[ak]
+                    if at then
+                        local t = rawget(at,key)
+                        if t then
+                            for k,v in pairs(t) do
+                                rez_ray[#rez_ray+1] = callback(k,v) 
+                            end
+                        end
+                    end
+                end
+            end
+
+
             s = s.base
         end
         return rez_ray
     end,
+    --this kind
+    --this adjective kinds
+    --parent kind 
+    --...
     __index = function(t,k)
         if k=='this' then 
             return rawget(t,'_this')
@@ -166,6 +270,19 @@ thing = Def('thing',{
                 local get_f = rawget( t,prop_id)
                 if get_f then
                     return get_f(topt)
+                end
+            end
+
+            local tadj = rawget(t,'adjectives')
+            if tadj then
+                for ak,_ in pairs(tadj) do
+                    local at = adjective_def[ak]
+                    if at then
+                        local v = rawget(at,k)
+                        if v then  
+                            return v 
+                        end
+                    end
                 end
             end
 
@@ -292,3 +409,6 @@ function LocalIdentify(id,location)
         end)
     end
 end
+
+
+adjective = Def('adjective','thing')

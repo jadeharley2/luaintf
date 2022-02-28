@@ -18,73 +18,14 @@ Include('lib/win.lua')
 ]]
 Include('lib/inf/init.lua')
 
+Include('lib/defines/space.lua')
+Include('lib/defines/misc.lua')
+Include('lib/defines/moving_cabin.lua')
 
-Include('kaltag.lua')
+Include('lib/verses/homestuck.lua')
+Include('lib/verses/kaltag.lua')
+Include('lib/verses/mlp.lua')
 --Include('parser.lua')
-
-jade = Def('jade','person')
-aradia = Def('aradia','person')
-
-
-MakeRelation(jade,aradia,likes)
-
-jade_room = Def('jade_room',{},'room')
-jade_room._get_name = LF[[[IF(player==jade,"My","Jade's")] room]]
-
-aradia_room = Def('aradia_room',{},'room')
-aradia_room._get_name = LF[[[IF(player==aradia,"My","Aradia's")] room]]
---
-    --function(s) return IF(player==jade,"My room","Jade's room") end
---[[ function(s) 
-    if player==jade then
-        return "My room"
-    else
-        return "Jade's room"
-    end
-end]]
-chamber = Def('chamber',{name = "Chamber"},'room')
-chamber.on_enter = function(s,t) print('welcome',t) end
-MakeRelation(jade_room,chamber,direction_down)
-
-upper_hall = Def('upper_hall',{name = "Upper hall"},'room')
-MakeRelation(upper_hall,chamber,direction_east)
-MakeRelation(upper_hall,aradia_room,direction_north)
-
-garden_c = Def('garden_c',{name = "Central garden atrium"},'room')
-garden_w = Def('garden_w',{name = "West garden atrium"},'room')
-garden_s = Def('garden_s',{name = "South garden atrium"},'room')
-garden_n = Def('garden_n',{name = "North garden atrium"},'room')
-garden_e = Def('garden_e',{name = "East garden atrium"},'room')
-MakeRelation(garden_c,upper_hall,direction_up)
-MakeRelation(garden_c,garden_w,direction_west)
-MakeRelation(garden_c,garden_e,direction_east)
-MakeRelation(garden_c,garden_n,direction_north)
-MakeRelation(garden_c,garden_s,direction_south)
-
-
-local ajd = jade_room:adjascent(true)
-
-
-jade:adj_set({"nerdy","female"})  
-
-aradia:adj_set({"gothic","female"})  
-
-jade.location = jade_room
-aradia.location = jade_room
-person.mood = "ok"
-
-local all = jade:adj_getall()
-
-print('jade is female - ',jade:is('female'))
-print('jade is person - ',jade:is('person'))
-print('jade is thing - ',jade:is('thing'))
-print('jade is male - ',jade:is('male'))
-print('jade description - ',jade.description)
-print('jade location - ',jade.location)
-
-
-keytar = Def("keytar","thing")
-keytar.location = jade_room
 
 
 person:response("hi|hello|hey",function(s,t)  
@@ -96,27 +37,24 @@ end)
 
 
 
-jade:response("bodyswap",function(s,t) 
-    s:say("what is it?") 
-    s:response("i want to swap with you",function(s,t) 
-        s:say("i like your idea") 
 
-        s:say("i dont like this") 
-        
-        s:say("how?") 
-    
-    end,true)
-end)
-
-
-no_one = Def('no_one','person')
 no_one:act_add(be_action)
 no_one.examine = function() 
     printout("use be *name* to become that character") 
     printout("available characters:") 
+    local loc_u = {}
     for k,v in pairs(defines) do
         if v:is(person) and v.location ~= nowhere and not players[v] then
-            printout(L"  > [v.name] at [v.location]")
+            local u = v.universe
+            local lu = loc_u[u] or {} 
+            lu[#lu+1] = v
+            loc_u[u] = lu
+        end
+    end
+    for k,v in pairs(loc_u) do
+        printout(L"  [k.name]")
+        for kk,vv in ipairs(v) do
+            printout(L"    >'be [vv.id]' [vv.name] at [vv.location]")
         end
     end
 end
@@ -323,7 +261,7 @@ end
 
 
 
-main_server()
+--main_server()
 --main()
 
 

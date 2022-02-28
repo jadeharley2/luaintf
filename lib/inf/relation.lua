@@ -111,3 +111,31 @@ function GetRelations(self,kind)
         return r
     end
 end 
+function HasRelation(self,kind)
+    local kind = Identify(kind)
+    if kind then
+        local r = {}
+        return self:first('relations',function(k,v)
+            if v.kind:is(kind) then
+                return true
+            end
+        end) 
+    else
+        print('unknown relation kind '..kind)
+    end
+    return false
+end
+function HasRelationWith(self,target,kind)
+    local kind = Identify(kind)
+    if kind then
+        local r = {}
+        return self:first('relations',function(k,v)
+            if v.kind:is(kind) and v.to==target then
+                return true
+            end
+        end) 
+    else
+        print('unknown relation kind '..kind)
+    end
+    return false
+end

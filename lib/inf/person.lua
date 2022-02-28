@@ -154,13 +154,13 @@ examine_action = Def('examine_action',{key='examine',callback = function(self,ta
             examine(player)
             return false -- no enturn
         else 
-            local v = LocalIdentify(target)
+            local v = LocalIdentify(target) or LocalIdentify(target,self)
             if v then
                 if v:is(person) and v~=self then
                     self.talk_target = v  
+                    examine(v)
                     return true
                 end
-                examine(v)
                 return false -- no enturn
             else
                 printout('there is no '..target)
@@ -341,11 +341,19 @@ end)
 EventAdd('before examine','player',function(target)
     if target == player then
         printout(L"that's you, [player]")
-        local things = target:collect('contains',function(k,v)
-            if k~=player then
+        local worn = target:collect('contains',function(k,v)
+            if k~=player and k.is_worn then
                 return tostring(k)
             end
         end)
+        local things = target:collect('contains',function(k,v)
+            if k~=player and not k.is_worn then
+                return tostring(k)
+            end
+        end)
+        if #worn>0 then
+            printout('you are wearing: '..table.concat(worn,', ')) 
+        end
         if #things>0 then
             printout('you have: '..table.concat(things,', ')) 
         end
@@ -382,7 +390,7 @@ thing.taste = 'nothing in particular'
 sniff_action = Def('sniff_action',{key='sniff',callback = function(self,item) 
     local is_player = self == player 
     if item then
-        local something = LocalIdentify(item)
+        local something = LocalIdentify(item) or LocalIdentify(target,self)
         if something then
              
             describe_action(self,L'you sniff [something]... smells like [something.taste]',tostring(self)..' sniffs '..tostring(item))  
@@ -398,7 +406,7 @@ end},'action')
 lick_action = Def('lick_action',{key='lick',callback = function(self,item) 
     local is_player = self == player 
     if item then
-        local something = LocalIdentify(item)
+        local something = LocalIdentify(item) or LocalIdentify(target,self)
         if something then
              
             describe_action(self,L'you lick [something]... tastes like [something.taste]',tostring(self)..' licks '..tostring(something))  
@@ -413,7 +421,7 @@ end},'action')
 eat_action = Def('eat_action',{key='eat',callback = function(self,item) 
     local is_player = self == player 
     if item then
-        local something = LocalIdentify(item)
+        local something = LocalIdentify(item) or LocalIdentify(target,self)
         if something then
              
             describe_action(self,L'you eat [something]... tastes like [something.taste]',tostring(self)..' begins to eat '..tostring(something))  
@@ -435,3 +443,43 @@ person:act_add(sniff_action)
 person:act_add(lick_action) 
 person:act_add(eat_action) 
 
+
+sits_on = Def('sits_on',{},"relation")
+sit_action = Def('sit_action',{key='sit',callback = function(self,target) 
+    local is_player = self == player 
+    if target then
+        local something = LocalIdentify(target)
+        if something then
+            
+            MakeRelation(self,something,sits_on)
+            --if something:adj_isset('')
+            describe_action(self,L'you sit on [something]',tostring(self)..' sits on '..tostring(something))  
+            
+            
+            return true
+        else
+            if is_player then printout('there is no '..target) end
+        end 
+    else
+        if is_player then printout('sit on what?') end
+    end
+end},'action')
+
+standup_action = Def('standup_action',{key='stand',callback = function(self) 
+    local is_player = self == player 
+    local chair = GetRelations(self,sits_on)[1]
+    if chair then
+
+        DestroyRelation(self,sits_on)
+        describe_action(self,L'you stand up',tostring(self)..' stands up')  
+             
+        return true
+    else
+        if is_player then printout('you are not sitting') end
+    end 
+end},'action')
+
+person:act_add(sit_action) 
+person:act_add(standup_action) 
+
+no_one = Def('no_one',{name='No one'},'person')

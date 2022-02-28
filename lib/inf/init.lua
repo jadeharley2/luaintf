@@ -8,3 +8,5 @@ Include('action.lua')
 
 Include('location.lua')
 Include('person.lua')
+
+Include('wearable.lua')

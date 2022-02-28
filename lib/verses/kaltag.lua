@@ -1,13 +1,17 @@
 
 
+
+
+
+
+
+
+fk_verse = Def('fk_verse',{name="Fluff Kevlar Universe"},'universe')
+
+
 year = 16510
 era = 'SST'
 
-subspace = Def('subspace',{name='Subspace'},'thing')
-subspace.description = "blue flickering space"--....
-
-organization = Def('organization','thing')
-soverign_state = Def('soverign_state',{name="Soverign state"},'organization')
 
 siania = Def('siania',{name="Queendom of Siania"},'soverign_state')
 
@@ -114,91 +118,6 @@ end
 
 
 
-moving_cabin = Def('moving_cabin',{ },'room')
-moving_cabin.close_doors = function(self)
-    DestroyRelations(self,direction)
-end
-moving_cabin.open_doors = function(self,floor)
-    self.stop = floor.room
-    MakeRelation(self,floor.room,floor.dir)
-end
-moving_cabin.add_stop = function(self,key, room,dir)
-    if type(dir)=='string' then
-        dir = direction_map[dir]
-    end
-    self.stops = self.stops or {}
-    self.stops[key] = {room = room, dir = dir} 
-end
-moving_cabin.move_to = function(self,key,callback) 
-    local v = self.stops[key] 
-    if v then
-        self:make_sound_inside('*be-ep*')
-        self:close_doors()
-        Delay(2,function()
-            self:make_sound_inside('*beep*')
-            self:open_doors(v)
-            if callback then callback(self,key) end 
-        end)
-        return true
-    end
-    return false
-end
-
-moving_cabin.set_path = function(self,key_array,looped,wait_time)
-    local index = 1
-    local current = key_array[index]
-    local direction = 1
-
-    self:open_doors(self.stops[current])
-    local function process() 
-        index = index + direction
-        if index>#key_array then
-            if looped then
-                index = 1
-            else
-                direction = -direction
-                index = #key_array-1
-            end
-        elseif index<1 then
-            if looped then
-                index = #key_array
-            else
-                direction = -direction
-                index = 2
-            end 
-        end
-        if index==0 then
-
-            local dfa = 0
-        end
-        current = key_array[index]
-
-        Delay(wait_time or 2, function() 
-            if self:move_to(current,function() 
-                process()
-            end) then
-
-            else
-                print('error!')
-            end
-        end)
-    end
-
-    process()
-end
-
-
---todo: buttons and interaction
-
-elevator = Def('elevator',{ },'moving_cabin')
-
-elevator.select_floor = function(self,key)
-    return self:move_to(key,function()
-        self:make_sound_inside('Floor '..tostring(key))
-    end) 
-end 
-
---end todo
 
 
 
@@ -207,29 +126,11 @@ end
 
 
 
-
-
-
-bulding = Def('bulding','thing')
-
-
-starsystem = Def('starsystem','thing')
-
-star = Def('star','thing')
-star._get_description = LF'star [self]' 
-
-planet = Def('planet','thing')
-planet._get_description = LF'planet [self]' 
-
-asteroid = Def('asteroid','thing')
-asteroid._get_description = LF'asteroid [self]' 
-
-asteroid_field = Def('asteroid_field','thing')
-asteroid_field._get_description = LF'asteroid field [self]' 
 
 
 
 some_random_starsystem = Def('some_random_starsystem','starsystem')
+some_random_starsystem.location = fk_verse
 
 main_star = Def('main_star','star')
 main_star.location = some_random_starsystem
@@ -240,7 +141,7 @@ random_planet.location = some_random_starsystem
 random_planet.in_orbit = main_star
 random_planet.orbit_radius = 1 -- in ae
 
-the_tower = Def('the_tower',{name='The tower'},'bulding')
+the_tower = Def('the_tower',{name='The tower'},'building')
 the_tower.location = random_planet
 
 
@@ -379,12 +280,10 @@ bridge_window.examine = function(self,user)
 end
 
 
-mirror = Def('mirror','thing')
-mirror.location = quarters
-mirror.examine = function(s) 
-    printout('you look into mirror and see..')
-    examine(player)
-end
+
+
+this_mirror = Def('this_mirror',{name='Mirror'},'mirror')
+this_mirror.location = quarters
 
 
 ara = Def('ara',{name='ARA', code = '0-1-1'},'person') ara:adj_set('anthroid','feline','female') 

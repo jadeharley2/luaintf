@@ -10,7 +10,7 @@
             "request": "launch",
             "name": "Server",
             "stopOnEntry": false,
-            "program": "${workspaceFolder}/test_inform.lua",
+            "program": "${workspaceFolder}/server.lua",
             "console": "integratedTerminal",
             "outputCapture": []
         },
@@ -22,6 +22,15 @@
             "program": "${workspaceFolder}/client.lua",
             "console": "integratedTerminal",
             "outputCapture": []
-        }
+        },
+        {
+            "type": "lua",
+            "request": "launch",
+            "name": "Single",
+            "stopOnEntry": false,
+            "program": "${workspaceFolder}/single.lua",
+            "console": "integratedTerminal",
+            "outputCapture": []
+        },
     ]
 } 
