@@ -2,7 +2,7 @@ function string.left( str, num ) return string.sub( str, 1, num ) end
 function string.right( str, num ) return string.sub( str, -num ) end
 
 function string.replace( str, tofind, toreplace )
-	local tbl = string.split( tofind, str )
+	local tbl = string.split( str, tofind )
 	if ( tbl[ 1 ] ) then return table.concat( tbl, toreplace ) end
 	return str
 end

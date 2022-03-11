@@ -60,25 +60,50 @@ function L(str)
 
 end
 ]]
+function emptystr() return "" end
 
 local function make_com(str)
 
     local lastid = 0
     --local command_mode = false
 
+    local index = false
+
     local parts = {}
 
     for k=1,#str do
         local char = str:sub(k,k)
-        if char=='[' then
+        if char=='[' then 
             parts[#parts+1] = '[['..str:sub(lastid,k-1)..']]'
             --command_mode = true
             lastid = k+1
         elseif char ==']' then
             local command = str:sub(lastid,k-1)
+            local made_index = false
             
+            if command:sub(1,1) == '!' then -- set as indexed table
+                command = command:sub(2) 
+                if #command==0 then
+                    index = false
+                else
+                    index = string.replace(command,';','')
+                end 
+                made_index = true 
+            end
             
-            parts[#parts+1] = 'tostring('..command..')' 
+            local lc = #command
+            if lc>0 then
+                 
+                if command:sub(lc,lc) ==';' then -- mute 
+                    parts[#parts+1] = 'emptystr('..command:sub(1,lc-1)..')' 
+                else
+                    if index and not made_index then
+                        parts[#parts+1] = 'tostring('..index..'.'..command..' or '..command..')' 
+                    else
+                        parts[#parts+1] = 'tostring('..command..')' 
+                    end
+                end
+            end
         
             --command_mode=false
             lastid = k+1

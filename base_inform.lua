@@ -2,6 +2,7 @@
 
 dofile('lib/script.lua')
 Include("lib/string.lua")
+Include("lib/table.lua")
 
 Include("lib/net.lua")
 
@@ -35,6 +36,10 @@ person:response("how are you",function(s,t)
     s:say(L"i'm [s.mood]")  
 end)
 
+person:response("do",function(s,t,str)  
+    s:act(unpack(str:sub(4):split(' ')))
+    --s:say(L"i'm [s.mood]")  
+end)
 
 
 
@@ -237,6 +242,7 @@ function main_server()
         net.receive(function(c,input)
             client = c
             player = c.person or no_one
+            personality = player.personality or player
 
             local args = input:split(' ')
             local aliased = {ComAlias(unpack(args))}

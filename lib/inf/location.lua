@@ -265,3 +265,44 @@ thing.parent_oftype = function(self,type,include_self)
         end
     end,include_self)
 end
+
+
+
+
+room.examine = function(target, ex) 
+    
+    printout(target.name..', '..target.description)
+
+    local things = {}
+    local characters = {}
+    local images = {}
+
+    target:foreach('contains',function(k,v)
+        if k~=player then
+            if k:is(person) then
+                characters[#characters+1] = tostring(k)
+                images[#images+1] = k.image 
+            else
+                things[#things+1] = tostring(k)
+            end 
+        end
+    end)
+ 
+    if #characters>0 then
+        printout('characters: '..table.concat(characters,', ')) 
+    end
+
+    if #things>0 then
+        printout('things: '..table.concat(things,', ')) 
+    end
+    if #images>0 then 
+        printout('$clear:target')
+        printout('$display_list:'..table.concat(images,';'))
+    end
+
+    for k,v in pairs(target:adjascent(true)) do
+        printout(' '..k.." -> "..tostring(v))
+    end
+end
+
+

@@ -120,3 +120,11 @@ function ComAlias(com,...)
         return com,...
     end
 end
+
+
+
+function send_actions() 
+    local actions = {}
+    player:foreach('actions',function(k,v) actions[#actions+1]=k end)
+    printout('$actions:',table.concat(actions, ';'))
+end

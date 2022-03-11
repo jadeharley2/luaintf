@@ -16,19 +16,27 @@ adjective_def = {
 
 function Def(id,data,kind)
     if data==nil then 
-        data = {name = id}
+        data = { name = id}
     end
     if type(data) == 'string' then -- Def('Sarah','person')
         kind = data
-        data = {name = id}
+        data = { name = id}
     end
 
-    if id then 
+    local adjectives
+
+    if id then   
         data.id = id
-    end
+    end 
 
 
     if kind then 
+        adjectives = kind:split(' ')
+         
+        kind = adjectives[#adjectives]
+        adjectives[#adjectives] = nil
+
+
         local parent = defines[kind]
         --for k,v in pairs(parent) do
         --    if data[k]==nil then
@@ -59,10 +67,41 @@ function Def(id,data,kind)
         adjective_def[id] = data
     end
 
+    if adjectives then
+        for k,v in pairs(adjectives) do
+            data:adj_set(v)
+        end
+    end
+
     return data;
 end
 function Inst(kind,data)
     return Def(nil,data,kind)
+end
+function Setup(data,a)
+    local args = a:split(' ')
+    for k,v in pairs(args) do
+        local f = v:sub(1,1)
+        if f == '-' or f=='!' then
+            data:adj_unset(v:sub(2))
+        else
+            local x = defines[v]
+            if x and not x:is('adjective') then
+                local parent = x
+                
+                setmetatable(data,nil)
+
+                data.base = parent 
+                data.__index = parent.__index
+                data.__newindex = parent.__newindex
+                data.__tostring = parent.__tostring
+        
+                setmetatable(data,parent)
+            else
+                data:adj_set(v)
+            end
+        end
+    end
 end
 
 function Identify(id)
@@ -149,7 +188,8 @@ function InheritableSet(kind,key)
     return set
 end
 thing = Def('thing',{
-    name = "A thing",
+    --name = "A thing",
+    --_get_name = function(s) return s.id end,
     _get_description = LF"You see nothing special about [self.name].",
     foreach = function(self,key,callback)
         local s = self
@@ -272,13 +312,33 @@ thing = Def('thing',{
                     return get_f(topt)
                 end
             end
+ 
+            --do not inherit name from adjectives
+            --try to redirect it
+            local adj_key
+            local adj_prop
+            if k=='name' then
+                adj_key = 'nounname'
+                adj_prop = '_get_nounname'
+            else
+                adj_key = k
+                adj_prop = prop_id
+            end
+
 
             local tadj = rawget(t,'adjectives')
             if tadj then
                 for ak,_ in pairs(tadj) do
                     local at = adjective_def[ak]
-                    if at then
-                        local v = rawget(at,k)
+                    if at then 
+                        if adj_prop then
+                            local get_f = rawget( at,adj_prop)
+                            if get_f then
+                                return get_f(topt)
+                            end
+                        end 
+
+                        local v = rawget(at,adj_key)
                         if v then  
                             return v 
                         end
@@ -354,6 +414,31 @@ thing = Def('thing',{
     adj_getall = function(self)
         return self.adjectives:getall()
     end,
+    adj_describe = function(self, adj_type)
+        local x = {}
+        for k,v in pairs(self.adjectives:getall()) do
+            local t = adjective_def[k] 
+            if t then
+                if not adj_type or t:is(adj_type) then 
+                    x[#x+1] = t.name
+                end
+            end
+        end
+        return table.concat(x,' ')
+    end,
+    adj_describe2 = function(self, s)
+        s = s or self.name
+        for k,v in pairs(self.adjectives:getall()) do
+            local t = adjective_def[k] 
+            if t then
+                s = t:describe2(self,s) or s
+            end
+        end
+        return s
+    end,
+    setup = function(self,a)
+        Setup(self,a)
+    end,
     is = function(self,k)
         if self == k then return true end
         if self.id == k then return true end
@@ -391,6 +476,29 @@ thing = Def('thing',{
             end
         end)  
     end,
+
+    find = function(self,a)
+        local args = a:split(' ')
+        return self:first('contains',function(x)
+            for k,v in pairs(args) do
+                if not x:is(v) then
+                    return nil
+                end
+            end
+            return x
+        end)
+    end,
+    findall = function(self,a)
+        local args = a:split(' ')
+        return self:collect('contains',function(x)
+            for k,v in pairs(args) do
+                if not x:is(v) then
+                    return nil
+                end
+            end
+            return x
+        end)
+    end,
 })
 InheritableSet(thing,'adjectives')
 
@@ -412,3 +520,6 @@ end
 
 
 adjective = Def('adjective','thing')
+adjective.describe = function(target,str)
+    return str
+end

@@ -69,9 +69,13 @@ person.wear = function(self,...)
             local c = Inst(v) 
             c.location = self
             MakeRelation(c,self,worn_by) 
+            v = c
         else
             v.location = self
             MakeRelation(v,self,worn_by) 
+        end
+        if not HasRelation(v,owner) then
+            MakeRelation(v,self,owner)
         end
     end
 end
@@ -89,7 +93,13 @@ end
 thing._get_is_worn = function(self)
     return HasRelation(self,worn_by)
 end
-
+person._get_clothes = function(self)
+       return self:collect('contains',function(k,v)
+            if k.is_worn then
+                return k
+            end
+       end)
+end
 
 clothing = Def("clothing","thing")
 clothing:adj_set('wearable')
@@ -98,7 +108,7 @@ shirt = Def("shirt","clothing")
 skirt = Def("skirt","clothing")
 pants = Def("pants","clothing")
 hat = Def("hat","clothing")
-boots = Def("boots","clothing")
+shoes = Def("shoes","clothing")
 gloves = Def("gloves","clothing") 
 underwear = Def("underwear","clothing")
 

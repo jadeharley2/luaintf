@@ -9,6 +9,8 @@ city = Def('city','thing')
 building = Def('building','thing')
 
 
+book = Def('book','thing') 
+book.description = 'an ordinary book'
 
 mirror = Def('mirror','thing') 
 mirror.examine = function(s) 
@@ -17,8 +19,13 @@ mirror.examine = function(s)
 end
 
 
+bedroom = Def('bedroom','room')
+kitchen = Def('kitchen','room')
+bathroom = Def('bathroom','room')
+guestroom = Def('guestroom','room')
 
---personal things
+--personal things -- outdated -- use owned adjective
+
 
 
 personal_room = Def('personal_room','room')

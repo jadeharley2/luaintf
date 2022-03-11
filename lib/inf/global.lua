@@ -1,6 +1,8 @@
 
 client = false
 player = false
+personality = false
+
 players = {}
 turn = 0
 
@@ -34,7 +36,11 @@ function describe_action(doer,desc_doer,desc_other,everywhere)
         else--if player.location==doer.location then
             for k,v in pairs(players) do
                 if k~=doer and k.location == doer.location then
-                    v.socket:send(desc_other..'\n')
+                    if v then
+                        v.socket:send(desc_other..'\n')
+                    else--single
+                        printout(desc_other..'\n')
+                    end
                 end
             end 
         end 

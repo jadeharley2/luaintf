@@ -285,17 +285,33 @@ end
 this_mirror = Def('this_mirror',{name='Mirror'},'mirror')
 this_mirror.location = quarters
 
+female  = Def('female',{gender = 'female',their = 'her', they = 'she', are = 'is'},'adjective')
+male    = Def('male',  {gender = 'male',their = 'his', they = 'he', are = 'is'},'adjective')
+neuter  = Def('neuter',{gender = 'neuter',their = 'its', they = 'it', are = 'is'},'adjective')
+plural  = Def('plural',{gender = 'plural',their = 'their', they = 'they', are = 'are'},'adjective')
 
-ara = Def('ara',{name='ARA', code = '0-1-1'},'person') ara:adj_set('anthroid','feline','female') 
-srk = Def('srk',{name='Warning', code ='07-4-31'},'person') srk:adj_set('anthroid','feline','female')
-zta = Def('zta',{name='Zeta', code='37-8-12'},'person') zta:adj_set('anthroid','kleika','female')
-tvk = Def('tvk',{name='Vale'},'person') tvk:adj_set('anthroid','male')
-vst = Def('vst',{name='VST'},'person') vst:adj_set('anthroid','male')
 
-vikna = Def('vikna',{name='Vikna', surname='Ramenskaya'},'person') vikna:adj_set('anthro','feline','female')
-nytro = Def('nytro',{name='Nytro', surname='Sykran'},'person') nytro:adj_set('anthro','canine','male')
-zofie = Def('zofie',{name='Zofie'},'person') zofie:adj_set('anthro','canine','female')
-ayn = Def('ayn',{name='Ayn'},'person') ayn:adj_set('anthro','jackal','female')
+
+ara = Def('ara',{name='ARA', code = '0-1-1'},'female feline anthroid person') 
+srk = Def('srk',{name='Warning', code ='07-4-31'},'female feline anthroid person') 
+zta = Def('zta',{name='Zeta', code='37-8-12'},'female kleika anthroid person') 
+tvk = Def('tvk',{name='Vale'},'male anthroid person') 
+vst = Def('vst',{name='VST'},'male anthroid person') 
+
+vikna = Def('vikna',{name='Vikna', surname='Ramenskaya'},'female feline anthro person')  
+nytro = Def('nytro',{name='Nytro', surname='Sykran'},'male canine anthro person') 
+zofie = Def('zofie',{name='Zofie'},'female canine anthro person') 
+ayn = Def('ayn',{name='Ayn'},'female jackal anthro person') 
+ayn.mood = 'angry'
+
+
+print(L"This is [!ayn] and [their] gender is [gender]. [they] [are] [mood]")
+print(L"This is [!nytro] and [their] gender is [gender]. [they] [are] [mood]")
+
+print(L"This is mute[!nytro;] example: [their] gender is [gender]. But[!ayn;] [they] [are] [mood]")
+
+
+
 
 ara.location = bridge
 srk.location = bridge
@@ -553,11 +569,11 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
 end},'action') 
 
  
-book = Def('book','thing')
-book.location = quarters
-book.description = 'an ordinary book'
-book:interact_add(read_interaction)
-book.on_read = function(self,user)
+swap_book = Def('swap_book',{name='Strange book', description = 'strange'},'book')
+swap_book.location = quarters
+swap_book.description = 'an ordinary book'
+swap_book:interact_add(read_interaction)
+swap_book.on_read = function(self,user)
     printout('you learn something')
     user:act_add(transfer_soul_action)
     send_actions() 
