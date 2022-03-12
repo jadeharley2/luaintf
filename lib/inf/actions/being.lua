@@ -15,9 +15,10 @@ be_action = Def('be_action',{key='be',callback = function(self,target)
                 personality = player.personality or player
                 players[v] = client
                 printout('you are now',v)
-                display_location(player.location)
 
                 send_actions() 
+                examine(player.location)
+                
                 return true
             end
         end

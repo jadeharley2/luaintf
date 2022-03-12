@@ -280,6 +280,14 @@ bridge_window.examine = function(self,user)
 end
 
 
+anthroid_visor = Def("anthroid_visor",{name="anthroid visor"},"visor")
+anthroid_collar = Def("anthroid_collar",{name="anthroid collar"},"necklace")
+anthroid_uniform = Def("anthroid_uniform",{name="anthroid uniform"},"uniform")
+anthroid_long_gloves = Def("anthroid_long_gloves",{name="anthroid long gloves"},"gloves")
+anthroid_gloves = Def("anthroid_gloves",{name="anthroid gloves"},"gloves")
+
+anthroid_stocking = Def("anthroid_stocking",{name="anthroid stocking"},"stocking")
+katrician_uniform = Def("katrician_uniform",{name="katrician uniform"},"uniform")
 
 
 this_mirror = Def('this_mirror',{name='Mirror'},'mirror')
@@ -293,16 +301,71 @@ plural  = Def('plural',{gender = 'plural',their = 'their', they = 'they', are = 
 
 
 ara = Def('ara',{name='ARA', code = '0-1-1'},'female feline anthroid person') 
+ara:wear('owned female anthroid_uniform','owned female anthroid_long_gloves','owned female anthroid_stocking','owned anthroid_collar','owned anthroid_visor')
+ara:find('anthroid_uniform').image = 'file://img/items/ara_uniform.png'
+ara:find('anthroid_long_gloves').image = 'file://img/items/ara_arms.png'
+ara:find('anthroid_stocking').image = 'file://img/items/ara_legs.png'
+ara:find('anthroid_collar').image = 'file://img/items/ara_collar.png'
+ara:find('anthroid_visor').image = 'file://img/items/ara_visor.png'
+
 srk = Def('srk',{name='Warning', code ='07-4-31'},'female feline anthroid person') 
+srk:wear('owned female anthroid_uniform','owned female anthroid_gloves','owned female anthroid_stocking','owned anthroid_collar')
+srk:find('anthroid_uniform').image = 'file://img/items/srk_uniform.png'
+srk:find('anthroid_gloves').image = 'file://img/items/srk_gloves.png'
+srk:find('anthroid_stocking').image = 'file://img/items/srk_legs.png'
+srk:find('anthroid_collar').image = 'file://img/items/srk_collar.png'
+
 zta = Def('zta',{name='Zeta', code='37-8-12'},'female kleika anthroid person') 
+zta:wear('owned female anthroid_uniform','owned female anthroid_gloves','owned female anthroid_stocking','owned anthroid_collar')
+zta:find('anthroid_uniform').image = 'file://img/items/zta_uniform2.png'
+zta:find('anthroid_gloves').image = 'file://img/items/zta_gloves2.png'
+zta:find('anthroid_stocking').image = 'file://img/items/zta_legs2.png'
+zta:find('anthroid_collar').image = 'file://img/items/zta_collar2.png'
+
 tvk = Def('tvk',{name='Vale'},'male anthroid person') 
+tvk:wear('owned male anthroid_uniform','owned anthroid_collar')
+tvk:find('anthroid_uniform').image = 'file://img/items/tvk_uniform.png'
+tvk:find('anthroid_collar').image = 'file://img/items/tvk_collar.png'
+
 vst = Def('vst',{name='VST'},'male anthroid person') 
 
-vikna = Def('vikna',{name='Vikna', surname='Ramenskaya'},'female feline anthro person')  
-nytro = Def('nytro',{name='Nytro', surname='Sykran'},'male canine anthro person') 
+
 zofie = Def('zofie',{name='Zofie'},'female canine anthro person') 
+zofie:wear('owned female uniform','owned female stocking')
+zofie:find('uniform').image = 'file://img/items/zofie_wear.png'
+zofie:find('stocking').image = 'file://img/items/zofie_legs.png' 
+
+vikna = Def('vikna',{name='Vikna', surname='Ramenskaya'},'female feline anthro person')  
+vikna:wear('owned female uniform','owned female boots','owned female hat')
+vikna:find('hat').image = 'file://img/items/cold_hat.png'
+vikna:find('uniform').image = 'file://img/items/cold_form.png'
+vikna:find('boots').image = 'file://img/items/cold_boots.png'
+
+
+nytro = Def('nytro',{name='Nytro', surname='Sykran'},'male canine anthro person') 
+nytro:wear('owned male uniform','owned visor','owned male boots')
+nytro:find('visor').image = 'file://img/items/nytro_visor.png'
+nytro:find('uniform').image = 'file://img/items/nytro_work.png'
+nytro:find('boots').image = 'file://img/items/nytro_boots.png'
+nytro_sword = Def('nytro_sword',{name='sword'},'owned thing')
+nytro_sword.location = nytro
+nytro_sword.owner = nytro
+nytro_sword.image = 'file://img/items/nytro_sword.png'
+MakeRelation(nytro_sword,nytro,owner)
+
+
 ayn = Def('ayn',{name='Ayn'},'female jackal anthro person') 
+ayn:wear('owned female uniform','owned female gloves','owned female boots','owned female tiara')
+ayn:find('uniform').image = 'file://img/items/ayn_form.png'
+ayn:find('gloves').image = 'file://img/items/ayn_gloves.png' 
+ayn:find('boots').image = 'file://img/items/ayn_boots.png' 
+ayn:find('tiara').image = 'file://img/items/ayn_tiara.png' 
 ayn.mood = 'angry'
+ayn_staff = Def('ayn_staff',{name='staff'},'owned thing')
+ayn_staff.location = ayn
+ayn_staff.owner = ayn
+ayn_staff.image = 'file://img/items/ayn_staff.png' 
+
 
 
 print(L"This is [!ayn] and [their] gender is [gender]. [they] [are] [mood]")
@@ -339,6 +402,7 @@ zofie.image = 'https://cdn.discordapp.com/attachments/760334294681124908/9432133
 ayn.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943214682087518238/ayn.png'
 
 katric_capital_ship.srk = srk
+
 
 local function prnth(node,level)
     for k,v in pairs(node) do
@@ -503,6 +567,12 @@ end},'interaction')
 command_interaction = Def('command_interaction',{key='command',callback = function(self,user,act,arg1,...) 
     local is_player = user == player 
 
+    local something = LocalIdentify(arg1)
+    if something then
+        if something:interact(self,act,arg2,arg3,...) then
+            return true 
+        end 
+    end
     --todo: check permissons or resist
     self:act(act,arg1,...)
 
@@ -542,19 +612,51 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
                 printout('this character is occupied')
             else
                 describe_action(self,L'you focus on [v]. And then blackout',tostring(self)..' stares at '..tostring(v))  
-
+                sleep(0.1)
+                describe_action(self,'you blackout',tostring(self)..' falls on the floor')  
+                local srcperson = self
+                local trgperson = v 
+                
                 if not v:act_get(transfer_soul_action) then
-                    player:act_rem(transfer_soul_action)
+                    self:act_rem(transfer_soul_action)
                     v:act_add(transfer_soul_action)
                 end
 
-                players[player] = nil
-                player = v 
-                players[v] = client
 
-                printout('you are now',v)
-                display_location(player.location)
-                send_actions() 
+
+                local srcmind = rawget(srcperson,'mind')
+                local trgmind = rawget(trgperson,'mind')
+
+                local temp1 = srcmind.memory['mind_'..srcperson.id]
+                srcmind.memory['mind_'..srcperson.id] = srcmind.memory['mind_'..trgperson.id] or trgperson
+                srcmind.memory['mind_'..trgperson.id] = temp1 or srcperson
+
+                local temp1 = trgmind.memory['mind_'..srcperson.id]
+                trgmind.memory['mind_'..srcperson.id] = trgmind.memory['mind_'..trgperson.id] or trgperson
+                trgmind.memory['mind_'..trgperson.id] = temp1 or srcperson
+
+                rawset(srcperson,'mind',trgmind)
+                rawset(trgperson,'mind',srcmind) 
+
+                local pcli = players[self] 
+                players[self] = nil
+
+                if is_player then
+                    player = v 
+                end
+
+                if pcli then
+                    players[v] = pcli
+                end
+
+
+                sleep(1)
+                send_character_images(self.location)
+                if is_player then
+                    printout('you are now',v)
+                    examine(srcperson) 
+                    send_actions() 
+                end
                 return true
             end 
             return true
@@ -568,14 +670,72 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
 
 end},'action') 
 
+
+matchclothes_action = Def('matchclothes_action',{key='matchclothes',callback = function(self,arg1,...) 
+    local is_player = self == player  
+    if arg1 then
+        local v = LocalIdentify(arg1)
+        if v and v:is(person) then
+            describe_action(self,L'you focus on [v]',tostring(self)..' stares at '..tostring(v))  
+            sleep(0.1)
  
-swap_book = Def('swap_book',{name='Strange book', description = 'strange'},'book')
-swap_book.location = quarters
-swap_book.description = 'an ordinary book'
-swap_book:interact_add(read_interaction)
-swap_book.on_read = function(self,user)
-    printout('you learn something')
+            local top_owner = false
+            local top_count = 0
+            for k2,v2 in pairs(v.clothes) do
+                local owner = v2.owner 
+                if not top_owner then
+                    top_owner = owner  
+                    top_count = 1
+                elseif top_owner~=owner then
+                    printout('spell breaks, target has clothes from multiple people.')
+                    return false
+                else
+                    top_count = top_count + 1
+                end
+            end
+            if top_owner then
+                if top_count>=3 then
+                    printout(L'[v] is changing')  
+                    sleep(1)
+
+                    v.original_image = v.image 
+                    v.image = top_owner.original_image or top_owner.image
+
+                    send_character_images(v.location)
+                    printout('$display:target;'..v.id..';'..(v.image or ''))
+                    return true
+                else
+                    printout('spell breaks, target should have at least 3 owned clothing.')
+                    return false
+                end 
+            else
+                printout('spell breaks, target does not have any owned clothing.')
+                return false
+            end
+
+            
+        else
+            if is_player then printout('there is no '..arg1) end
+        end 
+    else
+        if is_player then printout('specify target') end
+    end
+    
+
+end},'action') 
+
+
+ 
+spell_book = Def('spell_book',{name='Strange book', description = 'strange'},'book')
+spell_book.location = quarters
+spell_book.description = 'an ordinary book'
+spell_book:interact_add(read_interaction)
+spell_book.on_read = function(self,user)
+    if user==player then
+        printout('you learn something')
+    end
     user:act_add(transfer_soul_action)
+    user:act_add(matchclothes_action)
     send_actions() 
 end
 
@@ -611,3 +771,6 @@ person:response("does Kaltag happen to be one of those Dystopian MegaCorps who b
 end)
 
 
+
+
+zta.task = Task('follow',ara)

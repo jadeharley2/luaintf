@@ -109,9 +109,18 @@ skirt = Def("skirt","clothing")
 pants = Def("pants","clothing")
 hat = Def("hat","clothing")
 shoes = Def("shoes","clothing")
+boots = Def("boots","clothing")
 gloves = Def("gloves","clothing") 
 underwear = Def("underwear","clothing")
 
 necklace = Def("necklace","clothing")
 ring = Def("ring","clothing")
 bracelet = Def("bracelet","clothing")
+tiara = Def("tiara","clothing")
+
+
+socks = Def("socks","clothing") 
+stocking = Def("stocking","clothing") 
+
+uniform = Def("uniform","clothing")
+visor = Def("visor","clothing")

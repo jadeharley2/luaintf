@@ -9,7 +9,7 @@ take_action = Def('take_action',{key='take',callback = function(self,item)
         if something then
             if something.is_moveable~=false then
                 something.location = self
-                describe_action(self,item..' taken',tostring(self)..' takes '..tostring(item))  
+                describe_action(self,L'[something] taken',L'[self] takes [something]')  
                 return true
             else
                 if is_player then printout("you can't take "..item) end
@@ -30,7 +30,7 @@ drop_action = Def('drop_action',{key='drop',callback = function(self,item)
         if something then
             if something.is_moveable~=false then
                 something.location = self.location
-                describe_action(self,item..' dropped',tostring(self)..' drops '..tostring(item))  
+                describe_action(self,L'[something] dropped',L'[self] drops [something]')  
                 return true
             else
                 if is_player then printout("you can't drop "..item) end

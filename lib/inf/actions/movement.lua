@@ -6,12 +6,25 @@ move_action = Def('move_action',{key='move',callback = function(self,direction)
         local next = loc:dir(direction)
         if next then  
             describe_action(self,nil,tostring(self)..' leaves to '..tostring(next))  
+            others_action(self,function(ply)
+                printout('$display:line;'..self.id..';')
+            end)
+
             self.location = next
-            describe_action(self,nil,tostring(self)..' arrives from '..tostring(loc)) 
+
+            describe_action(self,nil,tostring(self)..' arrives from '..tostring(loc))
+
+            others_action(self,function(ply) 
+                printout('$display:line;'..self.id..';'..(self.image or ''))
+            end)
+
             if is_player then
-                printout('$clear:target')
+                printout('$display:target;clear')
+                printout('$display:line;clear')
                 examine(next) 
             end
+
+
             return true
         else
             if is_player then printout("you can't go that way") end
@@ -26,3 +39,12 @@ for k,v in pairs(direction_map) do
 end
 
 person:act_add(move_action) 
+
+
+
+--[[
+
+
+
+]]
+ 

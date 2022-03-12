@@ -214,6 +214,18 @@ room = Def('room',{
         end
         return r
     end,
+
+    direction_to = function(self,other_room) 
+        local directions = GetRelations(self,direction)
+        local r = {}
+        for k,v in pairs(directions) do
+            if v.to==other_room then 
+                return v.kind.key
+            elseif v.from==other_room then
+                return direction_reverse[v.kind].key
+            end 
+        end
+    end,
 },'thing')
 InheritableSet(room,'contains')
 
@@ -281,7 +293,7 @@ room.examine = function(target, ex)
         if k~=player then
             if k:is(person) then
                 characters[#characters+1] = tostring(k)
-                images[#images+1] = k.image 
+                images[k.id] = k.image 
             else
                 things[#things+1] = tostring(k)
             end 
@@ -295,14 +307,40 @@ room.examine = function(target, ex)
     if #things>0 then
         printout('things: '..table.concat(things,', ')) 
     end
-    if #images>0 then 
-        printout('$clear:target')
-        printout('$display_list:'..table.concat(images,';'))
+
+    printout('$display:target;clear')
+    for k,v in pairs(images) do
+        printout('$display:line;'..k..';'..v)
     end
 
+    printout('$directions_clear')
     for k,v in pairs(target:adjascent(true)) do
         printout(' '..k.." -> "..tostring(v))
-    end
+        printout('$direction:'..k..";"..tostring(v))
+    end 
 end
 
 
+function send_directions(room)
+    printout('$directions_clear')
+    for k,v in pairs(target:adjascent(true)) do
+        printout('$direction:'..k..";"..tostring(v))
+    end
+end
+
+function send_character_images(room)
+    local images = {}
+    
+    room:foreach('contains',function(k,v)
+        if k~=player then
+            if k:is(person) then 
+                images[k.id] = k.image  
+            end 
+        end
+    end)
+
+    printout('$display:line;clear')
+    for k,v in pairs(images) do
+        printout('$display:line;'..k..';'..v)
+    end
+end

@@ -62,6 +62,8 @@ function Def(id,data,kind)
         defines[id] = data
     end
     data:call('on_init')
+    data:event_call('on_init')
+    
 
     if id and data:is(adjective) then 
         adjective_def[id] = data
@@ -114,6 +116,7 @@ end
 EventAdd('end turn','kind update',function(turn)
     for k,v in pairs(turn_kind_def) do
         k:call('on_turn_end')
+        k:event_call('on_turn_end')
     end
 end)
 function InheritableSet(kind,key)
@@ -354,7 +357,7 @@ thing = Def('thing',{
             t = t.base
         end
     end,
-    __newindex = function(t,k,v)  
+    __newindex = function(t,k,v)   
         if k:sub(1,5)~='_set_' then
             local set_f = t['_set_'..k]
             if set_f then
@@ -383,6 +386,33 @@ thing = Def('thing',{
             return v
         end
         return x
+    end,
+
+    event_add = function(self,id,eid,callback)
+        local k ='_event_'..id
+        local t = rawget(self,k)
+        if not t then
+            t = InheritableSet(self,k)
+            rawset(self,k,t)
+        end
+        t[eid] = callback
+    end,
+    event_del = function(self,id,eid)
+        local k ='_event_'..id
+        local t = rawget(self,k)
+        if t then
+            t[eid] = nil
+        end
+    end,
+    event_call = function(self,id,...)
+        local k ='_event_'..id
+        local set = self[k]
+        if set then
+            for k,v in pairs(set:getall()) do
+                local r = v(self,...)
+                if r~=nil then return r end
+            end
+        end
     end,
 
     adj_set = function(self,k) 
@@ -518,6 +548,20 @@ function LocalIdentify(id,location)
     end
 end
 
+function ListIdentify(id,list)
+    if id then
+        for k,v in pairs(list) do
+            if v:is(id) then
+                return v
+            end
+        end
+        for k,v in pairs(list) do
+            if v.name:find_anycase(id) then
+                return v
+            end
+        end 
+    end
+end
 
 adjective = Def('adjective','thing')
 adjective.describe = function(target,str)

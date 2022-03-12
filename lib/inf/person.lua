@@ -27,8 +27,11 @@ person = Def('person',{
             self:foreach('topics',function(k,topic) 
 
                 if string.wmatch(about,k) then 
-                    topic.f(self,from,about)
+                    local rem = topic.f(self,from,about)
                     if topic.delete then
+                        self.topics[about] = nil 
+                    end
+                    if rem then
                         self.topics[about] = nil 
                     end
                     return true
@@ -44,7 +47,10 @@ person = Def('person',{
                     if mode == 'ambient' then
                         cli.socket:send('    '..text..'\n')
                     else -- speech
-                        cli.socket:send('    $gk'..source.name..'$wk: %2'..text..'\n')
+                        local xnm = source.name 
+                        local src = self.memory['mind_'..source.id]
+                        if src then xnm = xnm..'('..src.name..')' end
+                        cli.socket:send('    $gk'..xnm..'$wk: %2'..text..'\n')
                     end
                 end
                 --printout('    '..source.name..': '..text)
@@ -53,39 +59,18 @@ person = Def('person',{
                     if mode == 'ambient' then
                         printout('    '..text)
                     else -- speech
-                        printout('    $gk'..source.name..'$wk: %2'..text)
+                        local xnm = source.name 
+                        local src = self.memory['mind_'..source.id]
+                        if src then xnm = xnm..'('..src.name..')' end
+                        printout('    $gk'..xnm..'$wk: %2'..text)
                     end
-                end
-                --[[
-                if player == self then
-                    if mode == 'ambient' then
-                        for k=1,#text do
-                            local char = text:sub(k,k) 
-                            io.write(char)
-                            sleep(0.1)
-                        end
-                    else -- speech
-                        io.write('    '..source.name..': ')
-                        for k=1,#text do
-                            local char = text:sub(k,k) 
-                            io.write(char)
-                            if char==',' then
-                                sleep(0.2)
-                            elseif char=='.' then
-                                sleep(0.4)
-                            else
-                                sleep(0.1)
-                            end
-                        end
-                    end
-                    io.write('\n')
-                end
-                ]]
+                end 
             end
         --end
     end,
     say = function(self,text)  
         if text then
+            print(self,text)
             self.location:foreach('contains',function(k,v)
                 local hear = k.hear 
                 if hear then
@@ -121,7 +106,11 @@ likes = Def('likes',{},"relation")
 
 person.examine = function(target, ex)
     if target == player then
-            printout(L"that's you, [player]")
+            if target.personality~= player then
+                printout(L"You are inhabiting the body of [target]. You think you are still [target.personality], at least mentally.")
+            else
+                printout(L"that's you, [target]")
+            end
 
 
             local worn = {}
@@ -154,12 +143,23 @@ person.examine = function(target, ex)
                 end
             end
     else
+        local sw = ex.memory['mind_'..target.id]
+        if ex.personality==target then --sw then
+            printout(L'This was your body untill you switched. [sw] should be in control.')
+        elseif sw then
+            local tsw = tostring(sw)
+            local tnm = tostring(target)
+            if tsw~=tnm then
+                printout(L"Seems like [tsw] is inhabiting [tnm]'s body.")
+            end
+        end
         printout(target.description)
+
         local worn = target.clothes
         if #worn>0 then
-            printout(L'[!target] [are] wearing: '..table.concat(worn,', ')) 
+            printout(L'[target.they] [target.are] wearing: '..table.concat(worn,', ')) 
         else
-            printout(L'[!target] [are] wearing nothing ') 
+            printout(L'[target.they] [target.are] wearing nothing ') 
         end
         local body_parts = target:collect('contains',function(k,v)
             if k:is('body_part') and k:call('should_display',target)~=false then
@@ -175,5 +175,3 @@ person.examine = function(target, ex)
 end
 
 
-
-no_one = Def('no_one',{name='No one'},'person')

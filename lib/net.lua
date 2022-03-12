@@ -21,6 +21,7 @@ function net.accept()
             id = id,
         }
         print('accepted client ',id)
+        EventCall('player_connected',net.clients[id])
     end
 end 
 

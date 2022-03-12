@@ -34,8 +34,9 @@ function describe_action(doer,desc_doer,desc_other,everywhere)
         if everywhere then
             net.broadcast(desc_other,players[doer])
         else--if player.location==doer.location then
+            local loc = doer.location
             for k,v in pairs(players) do
-                if k~=doer and k.location == doer.location then
+                if k~=doer and k.location == loc then
                     if v then
                         v.socket:send(desc_other..'\n')
                     else--single
@@ -45,4 +46,38 @@ function describe_action(doer,desc_doer,desc_other,everywhere)
             end 
         end 
     end
+end
+
+function others_action(doer,callback)
+    local cp = player 
+    local cc = client
+
+    for k,v in pairs(players) do
+        local loc = doer.location
+        if k~=doer and k.location == loc then
+            player = k
+            client = v
+            callback(k,v)
+        end
+    end 
+
+
+    player = cp 
+    client = cc 
+end
+function location_action(location,callback)
+    local cp = player 
+    local cc = client
+
+    for k,v in pairs(players) do 
+        if k.location == location then
+            player = k
+            client = v
+            callback(k,v)
+        end
+    end 
+
+
+    player = cp 
+    client = cc 
 end

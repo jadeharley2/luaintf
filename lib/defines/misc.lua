@@ -1,5 +1,8 @@
 
 
+no_one = Def('no_one',{name='No one'},'person')
+
+
 organization = Def('organization','thing')
 soverign_state = Def('soverign_state',{name="Soverign state"},'organization')
 
@@ -32,3 +35,11 @@ personal_room = Def('personal_room','room')
 personal_room._get_name = LF[[ [self.prefix] [IF(player==self.owner,"My",self.owner.name.."'s")] [self.postfix] ]]
 personal_room.postfix = 'room'
 personal_room.owner = no_one
+
+
+person:response('give me your cloth',function(s,t,str)
+    s:say("ok")
+    for k,v in pairs(s.clothes) do
+        s:act('drop',v.id)
+    end
+end)
