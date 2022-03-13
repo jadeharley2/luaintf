@@ -68,8 +68,16 @@ person = Def('person',{
             end
         --end
     end,
+    process_speech = function(self,text)
+        return text
+    end,
     say = function(self,text)  
         if text then
+            local ts = s
+            s = self 
+            text = self:process_speech(L(text))
+            s = ts
+
             print(self,text)
             self.location:foreach('contains',function(k,v)
                 local hear = k.hear 
@@ -106,7 +114,7 @@ likes = Def('likes',{},"relation")
 
 person.examine = function(target, ex)
     if target == player then
-            if target.personality~= player then
+            if target.identity~= player then
                 printout(L"You are inhabiting the body of [target]. You think you are still [target.personality], at least mentally.")
             else
                 printout(L"that's you, [target]")
@@ -144,7 +152,7 @@ person.examine = function(target, ex)
             end
     else
         local sw = ex.memory['mind_'..target.id]
-        if ex.personality==target then --sw then
+        if ex.identity==target then --sw then
             printout(L'This was your body untill you switched. [sw] should be in control.')
         elseif sw then
             local tsw = tostring(sw)

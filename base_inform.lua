@@ -24,69 +24,9 @@ Include('lib/defines/misc.lua')
 Include('lib/defines/moving_cabin.lua')
 
 Include('lib/verses/homestuck.lua')
-Include('lib/verses/kaltag.lua')
+Include('lib/verses/kaltag/init.lua')
 Include('lib/verses/mlp.lua')
 --Include('parser.lua')
-
-
-person:response("hi|hello|hey",function(s,t)   
-    local tr = table.random
-    local name = s.memory['mind_'..t.id] or t
-    s:say(tr({'hi','hello','hey'}).. tr({",",'!'}) .. tr({"",L" [name]"}))   
-end)
-person:response("how are you",function(s,t) 
-    s:say(L"i'm [s.mood]")  
-end)
-person:response("who are you",function(s,t) 
-    local mn = s.memory.name 
-    if mn~=s.name then
-        local wannalie = s.memory.swap_lie
-        if wannalie==nil then
-            wannalie = math.random()>0.5
-            s.memory.swap_lie = wannalie
-        end
-
-        if not wannalie then
-            local real_id = LocalIdentify(mn) 
-            t.memory['mind_'..s.id] = real_id or mn
-            if real_id then
-                t.memory['mind_'..real_id.id] = s
-            end
-            local variation = table.random({
-                "I am [mn]",
-                "I am [mn] now",
-                "I am... or was [mn]"})
-            s:say(L(variation)) 
-
-            return
-        end 
-    end
-
-    local variation = table.random({
-        "I am [s]",
-        "My name is [s]"})
-    s:say(L(variation))  
-    
-end)
-person:response("follow me",function(s,t)  
-    s:say("ok")  
-    s.task = Task('follow',t)
-end)
-
-
-person:response("do",function(s,t,str)  
-    local args = str:sub(4):split(' ') 
-    
-    local something = LocalIdentify(args[2])
-    if something then
-        if something:interact(s,args[1],args[3],args[4],args[5]) then
-            return true 
-        end 
-    end
-
-    s:act(unpack(args))
-    --s:say(L"i'm [s.mood]")  
-end)
 
 
 

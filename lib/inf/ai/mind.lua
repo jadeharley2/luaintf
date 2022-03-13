@@ -32,6 +32,12 @@ end
 person._set_personality = function(self,value)
     rawget(self,'mind').personality = value
 end
+person._get_identity = function(self)
+    return rawget(self,'mind').identity
+end
+person._set_identity = function(self,value)
+    rawget(self,'mind').identity = value
+end
 person._get_task = function(self)
     return rawget(self,'mind').task
 end

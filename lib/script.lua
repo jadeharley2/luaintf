@@ -62,7 +62,7 @@ end
 ]]
 function emptystr() return "" end
 
-local function make_com(str)
+local function make_com(str,noreturn)
 
     local lastid = 0
     --local command_mode = false
@@ -71,80 +71,134 @@ local function make_com(str)
 
     local parts = {}
 
+    local level = 0
     for k=1,#str do
         local char = str:sub(k,k)
         if char=='[' then 
-            parts[#parts+1] = '[['..str:sub(lastid,k-1)..']]'
-            --command_mode = true
-            lastid = k+1
-        elseif char ==']' then
-            local command = str:sub(lastid,k-1)
-            local made_index = false
-            
-            if command:sub(1,1) == '!' then -- set as indexed table
-                command = command:sub(2) 
-                if #command==0 then
-                    index = false
-                else
-                    index = string.replace(command,';','')
-                end 
-                made_index = true 
+            if level == 0 then 
+                local s = str:sub(lastid,k-1)
+                if #s>0 then
+                    parts[#parts+1] = '[['..s..']]'
+                end
+                --command_mode = true
+                lastid = k+1
             end
-            
-            local lc = #command
-            if lc>0 then
-                 
-                if command:sub(lc,lc) ==';' then -- mute 
-                    parts[#parts+1] = 'emptystr('..command:sub(1,lc-1)..')' 
+            level = level + 1
+        elseif char ==']' then
+            level = level - 1
+            if level == 0 then 
+                local command = str:sub(lastid,k-1)
+                local made_index = false
+                
+                local cparts = command:split('|')
+                if #cparts>1 then
+                    local subs = {}
+                    for k,v in pairs(cparts) do
+                        subs[k] = make_com(v,true) or '[['..v..']]'
+                    end
+                    --if noreturn then
+                        parts[#parts+1] = 'table.random({'..table.concat(subs,',')..'})'
+                    --else
+                    --    parts[#parts+1] = 'return table.random({'..table.concat(subs,',')..'})'
+                    --end
                 else
-                    if index and not made_index then
-                        parts[#parts+1] = 'tostring('..index..'.'..command..' or '..command..')' 
-                    else
-                        parts[#parts+1] = 'tostring('..command..')' 
+                    if command:sub(1,1) == '!' then -- set as indexed table
+                        command = command:sub(2) 
+                        if #command==0 then
+                            index = false
+                        else
+                            index = string.replace(command,';','')
+                        end 
+                        made_index = true 
+                    end
+                    
+                    local lc = #command
+                    if lc>0 then
+                        
+                        if command:sub(lc,lc) ==';' then -- mute 
+                            parts[#parts+1] = 'emptystr('..command:sub(1,lc-1)..')' 
+                        else
+                            if index and not made_index then
+                                parts[#parts+1] = 'tostring('..index..'.'..command..' or '..command..')' 
+                            else
+                                parts[#parts+1] = 'tostring('..command..')' 
+                            end
+                        end
                     end
                 end
+
+               
+            
+                --command_mode=false
+                lastid = k+1
+            else
+
             end
-        
-            --command_mode=false
-            lastid = k+1
         end
     end
-    parts[#parts+1] = '[['..str:sub(lastid,#str)..']]'
+
+    if lastid==0 then return false end -- no commands
+
+    local s = str:sub(lastid,#str)
+    if #s>0 then 
+        parts[#parts+1] = '[['..s..']]'
+    end
  
-    return 'return table.concat({ ' ..table.concat(parts,', ')..' })'
+    if noreturn then
+        if #parts==1 then
+            return parts[1]
+        else
+            return 'table.concat({ ' ..table.concat(parts,', ')..' })'
+        end
+    else
+        if #parts==1 then
+            return 'return '..parts[1]
+        else
+            return 'return table.concat({ ' ..table.concat(parts,', ')..' })'
+        end
+    end
 end
 
-local lc_cache = {}
-function L(str)
-    --local upfunc = debug.getinfo(2,'f').func 
-    --local k,env = debug.getupvalue(upfunc,1)
-    local localvars = {}
-
+local function GatherLocalvars(x) 
+    local localvars = {} 
     local a = 1
     while true do
-      local name, value = debug.getlocal(2, a)
+      local name, value = debug.getlocal(3+(x or 0), a)
       if not name then break end
       localvars[name] = value 
       a = a + 1
-    end
+    end 
+    return setmetatable(localvars,{__index=_ENV}) 
+end
 
-    setmetatable(localvars,{__index=_ENV})
-    
+local lc_cache = {}
+function L(str,up1) 
 
     local r = lc_cache[str]
-    if r then 
-        debug.setupvalue(r,1,localvars)
-        return r()
+    if r~=nil then 
+        if r then
+            debug.setupvalue(r,1,GatherLocalvars(up1))
+            return r()
+        else
+            return str
+        end
     end
 
     local com = make_com(str)
- 
-    local cfun = load(com)
-    lc_cache[str] = cfun
-    debug.setupvalue(cfun,1,localvars)
+    if com then
+        local cfun = load(com)
+        lc_cache[str] = cfun
+        debug.setupvalue(cfun,1,GatherLocalvars(up1))
 
-    return cfun()
+        return cfun()
+    else--no code
+        lc_cache[str] = false
+        return str
+    end
 
+end
+function L2(str) 
+    return L(L(str,1),1)
 end
 
 function LF(str)

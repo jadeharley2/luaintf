@@ -71,6 +71,7 @@ function AddTaskType(typename,table)
             table[k] = v
         end
     end
+    table.class = typename
     table.__index = table
     task_types[typename] = table
 end

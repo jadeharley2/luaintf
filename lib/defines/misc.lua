@@ -10,6 +10,13 @@ soverign_state = Def('soverign_state',{name="Soverign state"},'organization')
 city = Def('city','thing')
 
 building = Def('building','thing')
+thing._get_is_inside_building = function(self)
+    return self:foreach_parent(function(s)
+        if s:is(building) then
+            return true
+        end
+    end,false)
+end
 
 
 book = Def('book','thing') 

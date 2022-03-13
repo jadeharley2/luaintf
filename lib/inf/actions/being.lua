@@ -12,7 +12,7 @@ be_action = Def('be_action',{key='be',callback = function(self,target)
             else
                 players[player] = nil
                 player = v 
-                personality = player.personality or player
+                personality = player.identity or player
                 players[v] = client
                 printout('you are now',v)
 
