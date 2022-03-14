@@ -15,3 +15,11 @@ function table.keys_to_values(t)
     end
     return n
 end
+
+function table.set(t)
+    local r = {}
+    for k,v in pairs(t) do
+        r[v] = true
+    end
+    return r
+end

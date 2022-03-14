@@ -43,8 +43,39 @@ drop_action = Def('drop_action',{key='drop',callback = function(self,item)
     end
 end},'action')
  
+give_action = Def('give_action',{key='give',callback = function(self,item,target) 
+    local is_player = self == player 
+    if item then
+        local something = LocalIdentify(item,self)
+        if something then
+            if something.is_moveable~=false then
+                if target then
+                    local someone = LocalIdentify(target)
+                    if someone and someone:is(person) then
+                        something.location = someone
+                        describe_action(self,L'you give [something] to [someone]',L'[self] gives [something] to [someone]')  
+                        return true
+                    else
+                        if is_player then printout("can't find "..target) end
+                    end
+                else
+                    if is_player then printout("give to who?") end
+                end
+            else
+                if is_player then printout("you can't give "..item) end
+            end
+        else
+            if is_player then printout('there is no '..item) end
+        end 
+    else
+        if is_player then printout('give what?') end
+    end
+end},'action')
+DefComAlias('put','give') 
+
 person:act_add(take_action)
 person:act_add(drop_action) 
+person:act_add(give_action) 
 
 
 

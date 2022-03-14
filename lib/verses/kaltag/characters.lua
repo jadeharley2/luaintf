@@ -27,6 +27,8 @@ zta:find('anthroid_uniform').image = 'file://img/items/zta_uniform2.png'
 zta:find('anthroid_gloves').image = 'file://img/items/zta_gloves2.png'
 zta:find('anthroid_stocking').image = 'file://img/items/zta_legs2.png'
 zta:find('anthroid_collar').image = 'file://img/items/zta_collar2.png'
+zta.intent_defaults = {formal=true,misspelling=false}
+zta.memory.hates_misspelling = true
 
 tvk = Def('tvk',{name='Vale', code='86-44-21'},'male anthroid person') 
 tvk.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943207738991857793/vc.png'
@@ -49,6 +51,7 @@ vst.process_speech = function(self,text)
     return text
 end
 vst.robotic = true
+vst.intent_defaults = {robotic=true} 
 
 
 

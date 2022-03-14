@@ -25,4 +25,5 @@ Include('actions/taste.lua')
 
 Include('ai/mind.lua')
 Include('ai/task.lua')
+Include('ai/intent.lua')
 Include('ai/responses.lua')

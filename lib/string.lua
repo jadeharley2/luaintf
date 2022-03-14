@@ -69,6 +69,38 @@ function string.wmatch(s, variants)
 	return false
 end
 
+local split_characters = {
+    [' '] = true,
+    ['?'] = '?',
+    ['!'] = '!',
+    [','] = ',',
+    ['.'] = '.',
+}
+function string.getwords(s) 
+	local result = {}
+	local lastpos = 1
+	local slen = #s
+	for k=1,slen do 
+		local c = sub(s,k,k)
+        local rx = split_characters[c]
+		if rx then
+			local x = sub(s,lastpos,k-1) 
+			if #x>0 then
+				result[#result+1] = x
+			end
+			lastpos = k+1
+            if rx~=true then
+                result[#result+1] = rx
+            end
+		end 
+	end
+	local x = sub(s,lastpos,slen)  
+	if #x>0 then
+		result[#result+1] = x
+	end 
+	return result
+end
+
 function string.find_anycase(s,sub)
 	return string.find( string.lower(s), string.lower(sub) ) and true or false
 end

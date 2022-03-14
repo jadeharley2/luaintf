@@ -9,10 +9,10 @@ action = Def('action',{
 
 InheritableSet(thing,'actions')
 
-thing.act = function(self,key,...)
+thing.act = function(self,key,a,b,c,d,...)
     local v = self.actions[key]
     if v then
-        return v.callback(self,...)
+        return v.callback(self,a,b,c,d,...)
     end
 end 
 thing.act_add = function(self,k) 

@@ -178,7 +178,8 @@ function parse(full,com,arg1,arg2,arg3,...)
             if tlk then
                 player:say(full)
                 if tlk.location == player.location then
-                    tlk:respond(player,full)
+ --                   tlk:respond(player,full)
+                    tlk:intent_respond(player,full)
                     return true
                 end
             else

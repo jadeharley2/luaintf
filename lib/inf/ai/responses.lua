@@ -48,9 +48,7 @@ P:Add('greet_robotic','unit [myname] awaiting orders')
 P:Add('greet_robotic','does [name] needs assistance?') 
   
  
-
-"I'm [s.mood]",
-"I feel [s.mood]",
+ 
 --local u = P.greet
 
 local name = 'uuuu'
@@ -58,7 +56,7 @@ local test00 =L2"[P.greet]"
 local name = 'lel'
 local test01 =L2"[P.greet]"
 
-
+--[[
 person:response("hi|hello|hey",function(s,t)   
     local tr = table.random
     local name = s.memory['mind_'..t.id] or t
@@ -74,12 +72,14 @@ person:response("hi|hello|hey",function(s,t)
         --s:say(tr({'hi','hello','hey'}).. tr({",",'!'}) .. tr({"",L" [name]"})) 
     end
 end)
-
+]]
 P:Add('mood',"I'm [mood]") 
 P:Add('mood',"I feel [mood]")  
 
 P:Add('mood_robotic',"this unit does not [simulate emotions|have sentiment programming]")  
 P:Add('mood_robotic',"sentiment module is not installed on this frame") 
+
+P:Add('name') 
 
 person:response("how are you",function(s,t) 
     local variation
@@ -90,6 +90,8 @@ person:response("how are you",function(s,t)
         s:say(L2"[P.mood]") 
     end
 end)
+
+
 person:response("who are you",function(s,t) 
     local mn = s.memory.name 
     if mn~=s.name then 
