@@ -1,7 +1,7 @@
 
 
 
-katric_capital_ship = Def('katric_capital_ship',{name = "Katric capital ship"},'spaceship')
+katric_capital_ship = Def('katric_capital_ship',{name = "'Rassvet'"},'spaceship')
 katric_capital_ship.location = kyo_starsystem
 katric_capital_ship.in_orbit = torus_station
 katric_capital_ship._get_outside = function(s)

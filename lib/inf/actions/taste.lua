@@ -5,7 +5,7 @@ thing.taste = 'nothing in particular'
 sniff_action = Def('sniff_action',{key='sniff',callback = function(self,item) 
     local is_player = self == player 
     if item then
-        local something = LocalIdentify(item) or LocalIdentify(target,self)
+        local something = LocalIdentify(item) or LocalIdentify(item,self)
         if something then
              
             describe_action(self,L'you sniff [something]... smells like [something.taste]',tostring(self)..' sniffs '..tostring(item))  
@@ -21,7 +21,7 @@ end},'action')
 lick_action = Def('lick_action',{key='lick',callback = function(self,item) 
     local is_player = self == player 
     if item then
-        local something = LocalIdentify(item) or LocalIdentify(target,self)
+        local something = LocalIdentify(item) or LocalIdentify(item,self)
         if something then
              
             describe_action(self,L'you lick [something]... tastes like [something.taste]',tostring(self)..' licks '..tostring(something))  
@@ -36,7 +36,7 @@ end},'action')
 eat_action = Def('eat_action',{key='eat',callback = function(self,item) 
     local is_player = self == player 
     if item then
-        local something = LocalIdentify(item) or LocalIdentify(target,self)
+        local something = LocalIdentify(item) or LocalIdentify(item,self)
         if something then
              
             describe_action(self,L'you eat [something]... tastes like [something.taste]',tostring(self)..' begins to eat '..tostring(something))  

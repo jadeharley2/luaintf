@@ -327,7 +327,8 @@ person.intent_respond = function(self,from,about)
                     local r = v.callback(self,from,intents,dialogue,about)
                     if r~=nil then
                         if r==true then
-                            H[k] = nil
+                            --H[k] = nil
+                            self.this.intent_hooks = {} -- clear all
                         end
                         return r
                     end
@@ -348,6 +349,7 @@ person.intent_respond = function(self,from,about)
     end
 end
 person.intent_say = function(self,intent,use_fallback)
+    if use_fallback==nil then use_fallback = true end
     self:say(GetIntentText(intent,nil,self.intent_defaults,use_fallback))
 end
 
@@ -367,6 +369,7 @@ DefineReplacement("wanna","want to",{misspelling=true})
 DefineReplacement("heya","hey",{misspelling=true}) 
 DefineReplacement("hai","hi",{misspelling=true}) 
 DefineReplacement("howdy","how have you been",{misspelling=true}) 
+DefineReplacement("lets","let's",{}) 
 
 DefineDefaultIntent('past',false)
 DefineDefaultIntent('future',false)
@@ -383,16 +386,36 @@ DefineIntents("what is my name",{"question","identity","own","get_name"})
 DefineIntents("what are you",{"question","identity","subject","unknown"})
 DefineIntents("what {target}?",{"question","surprise","identity","unknown"})
 
+DefineIntents("how?",{"question","simple","means"}) 
+DefineIntents("how we [gonna|will] do this?",{"question","means","action"}) 
+DefineIntents("where i can find it?",{"question","own","location","thing"}) 
+DefineIntents("where is it?",{"question","location","thing"})  
+DefineIntents("where?",{"question","location"}) 
+
 DefineIntents("i am {name}",{"statement","identity","own"})
 DefineIntents("i was {name}",{"statement","identity","own","past"})
 DefineIntents("you are {name}",{"statement","identity","subject"})
 DefineIntents("my name is {name}",{"statement","identity","own"})
 DefineIntents("this unit|copy designation is {name}",{"statement","identity","own","robotic"})
+DefineIntents("statement. this unit|copy designation is {name}",{"statement","identity","own","robotic"})
 
 DefineIntents("i am {name}?",{"question","identity","own"})
 DefineIntents("who i am?",{"question","identity","own"})
 
 DefineIntents("i am.. or was {name}",{"statement","identity","own","past"})
+
+DefineIntents("i am naked",{"statement","naked"})
+DefineIntents("this unit chassis is exposed",{"statement","naked",'robotic'})
+
+DefineIntents("i feel {mood}",{"statement","mood"})
+DefineIntents("this unit does not simulate emotions",{"statement","mood","robotic"})
+DefineIntents("this unit does not have sentiment programming",{"statement","mood","robotic"})
+DefineIntents("sentiment module is not installed on this frame",{"statement","mood","robotic"})
+
+DefineIntents("fine",{"fine"}) 
+DefineIntents("...",{"fine",'robotic'}) 
+DefineIntents("you won",{"capitulation"}) 
+DefineIntents("internal error",{"capitulation",'robotic'}) 
 
 DefineIntents("hello",{"greet"}) 
 DefineIntents("hi",{"greet"}) 
@@ -422,7 +445,7 @@ DefineIntents("see you soon, {target}",{"parting","wish"})
 DefineIntents("nice to see you",{"greet","wish"}) 
 DefineIntents("nice to meet you",{"greet","wish"}) 
 
-DefineIntents("howdy",{"question","check_condition","subject","misspelling"}) 
+--DefineIntents("howdy",{"question","check_condition","subject","misspelling"}) 
 DefineIntents("how are you",{"question","check_condition","subject"}) 
 DefineIntents("how have you been",{"question","check_condition","subject","past"}) 
 DefineIntents("what are you doing",{"question","check_activity","subject"})  
@@ -449,17 +472,29 @@ DefineIntents("corrupt data",{"answer","negative","data","robotic"})
 DefineIntents("{param} incorrect",{"answer","negative","data","robotic"}) 
 --DefineIntents("unavailable",{"answer","negative","robotic"}) 
 
-DefineIntents("uhh yes",{"answer","positive",'uncertain'}) 
-DefineIntents("yes",{"answer","positive"}) 
-DefineIntents("ok",{"answer","positive"}) 
-DefineIntents("sure",{"answer","positive","confident"}) 
+DefineIntents("uhh yes",{"answer","simple","positive",'uncertain'}) 
+DefineIntents("yes",{"answer","simple","positive"}) 
+DefineIntents("ok",{"answer","simple","positive"}) 
+DefineIntents("sure",{"answer","simple","positive","confident"}) 
 
-DefineIntents("affirmative",{"answer","positive","robotic"}) 
+DefineIntents("affirmative",{"answer","simple","positive","robotic"}) 
 
-DefineIntents("correct",{"answer","positive","data","robotic"}) 
-DefineIntents("correct {param}",{"answer","positive","data","robotic"})  
+DefineIntents("correct",{"answer","simple","positive","data","robotic"}) 
+DefineIntents("correct {param}",{"answer","simple","positive","data","robotic"})  
 
 DefineIntents("let's do this",{"answer","positive","confident","action"}) 
+
+
+
+DefineIntents("forget it|this",{"request","forget"}) 
+DefineIntents("follow {target}",{"request","follow","start"}) 
+DefineIntents("stop following",{"request","follow","stop"}) 
+DefineIntents("read it",{"request","read","thing"}) 
+DefineIntents("read this",{"request","read","thing"}) 
+DefineIntents("let's exchange|swap clothes",{"request","exchange","clothes"})
+
+
+
 
 
 DefineIntents("why?",{"question","reason"}) 
@@ -484,6 +519,8 @@ DefineIntents("{target} is [the] best",{"statement","adoration"})
 DefineIntents("what?",{"question","simple","need"}) 
 DefineIntents("what do you need|want ?",{"question","simple","need"})  
 DefineIntents("what do you need|want from me?",{"question","simple","need"}) 
+DefineIntents("unit awaiting orders",{"question","simple","need",'robotic'}) 
+DefineIntents("please state your request",{"question","simple","need",'robotic'}) 
 
 DefineIntents("i am sorry",{"apologize"}) 
 DefineIntents("sorry",{"apologize"}) 
@@ -498,14 +535,18 @@ DefineIntents("where are am",{"question","check_location","own"})
 DefineIntents("want to swap with {target}",{"question","desire","bodyswap"}) 
 DefineIntents("do you want to swap",{"question","desire","subject","bodyswap"}) 
 DefineIntents("do you want to be {target}",{"question","desire","bodyswap"}) 
+DefineIntents("designation change to {target} requested, confirm?",{"question","desire","bodyswap",'robotic'}) 
 --DefineIntents("i want to be you",{"statement","desire","being"})
  
 DefineIntents("i want to be {target}",{"statement","desire","being"})
 DefineIntents("i want to be you",{"statement","desire","being","subject"})
 DefineIntents("i want to become you",{"statement","desire","being","subject"})
+DefineIntents("you like being {target}",{"question","desire","being"})
 
 DefineIntents("i don't want to",{"statement","desire","negative"})
 DefineIntents("[do] you have [a|an|the] {target}",{"question","check_possession"})
+
+
 
 
 DefineIntents("yes i have it",{"statement","possession","positive"})
@@ -544,98 +585,11 @@ local rez10 = GetIntentTexts({greet=true,target='vikna'})
 
 local a = 0
 
-
-person:intent_response(function(self,from,intent,dialogue,text)
-    if dialogue.topic == "bodyswap" then
-        if intent.question then 
-            if intent.check_possession and intent.target:find("book") then
-                self:intent_say('oh',true) 
-                self:intent_say('yes i have it',true) 
-            elseif intent.reason then --why?
-                if dialogue.agreed then
-                    self:intent_say({"statement","desire","being","subject"},true) 
-                else
-                    self:intent_say("i don't want to",true) 
-                    if self.personality.empathic then
-                        self:intent_say('sorry') 
-                    end
-                end
-            end
-        end
-    else
-        if intent.greet then 
-            self:intent_say('hi')
-        elseif intent.parting then
-            self:intent_say('bye') 
-        elseif intent.question then
-            if intent.bodyswap then  -- ...
-                if math.random()>0.5 then
-                    dialogue.agreed = true
-                    self:intent_say('yes',true) 
-                    dialogue.topic = "bodyswap" 
-                else
-                    dialogue.agreed = false
-                    self:intent_say('no',true)  
-                end
-            elseif intent.identity then -- who are
-                if intent.subject then
-                    self:intent_say({
-                        statement = true,
-                        identity = true,
-                        own = true,
-                        name = self.memory.name
-                    }) 
-                    dialogue.topic = "your_name"
-                elseif intent.own then
-                    self:intent_say({
-                        statement = true,
-                        identity = true,
-                        subject = true,
-                        name = (self.memory['mind_'..from.id] or from).name
-                    }) 
-                    self:intent_hook({"answer"},function(S,F,I,D,T)
-                        if I.negative then
-                            self:intent_say('why?') 
-                            D.topic = "own_name"
-                        end 
-                        return true
-                    end)
-                end
-            elseif intent.check_condition and intent.subject then -- how are 
-                self:intent_say('i am '..(self.mood or 'ok'),true) 
-            elseif intent.check_location then -- where are
-                self:intent_say("i don't know",true) 
-            elseif intent.check_activity then -- what are doing?
-                self:intent_say('i am standing right here',true) 
-            elseif intent.check_possession and intent.target then -- do you have x
-                local x = LocalIdentify(intent.target,self)
-                if x then
-                    self:intent_say('yes i have it',true) 
-                    self:intent_say('do you need it?',true) 
-                    self:intent_hook({"answer"},function(S,F,I,D,T)
-                        if I.positive then
-                            self:intent_say('here you go') 
-                            self:act('give',intent.target,F.id)
-                            --x.location = F 
-                        end 
-                        return true
-                    end)
-                else
-                    self:intent_say('no',true) 
-                end
-            else
-
-            end
-        elseif LocalIdentify(text)==self then
-            self:intent_say('what?',true) 
-        end
-        if intent.misspelling then
-            if self.memory.hates_misspelling then
-                self:say("fix your language")
-            end
-        end
-    end
- 
-
-end)
-
+function person:remember_name(target,name) 
+    self.memory['nameof_'..target.id] = name 
+end
+function person:recall_name(target) 
+    return self.memory['nameof_'..target.id] 
+        or (self.memory['mind_'..target.id] or {}).name 
+        or target.name
+end

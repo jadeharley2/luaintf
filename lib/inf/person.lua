@@ -49,7 +49,7 @@ person = Def('person',{
                     else -- speech
                         local xnm = source.name 
                         local src = self.memory['mind_'..source.id]
-                        if src then xnm = xnm..'('..src.name..')' end
+                        if src and src~=source then xnm = xnm..'('..src.name..')' end
                         cli.socket:send('    $gk'..xnm..'$wk: %2'..text..'\n')
                     end
                 end
@@ -61,7 +61,7 @@ person = Def('person',{
                     else -- speech
                         local xnm = source.name 
                         local src = self.memory['mind_'..source.id]
-                        if src then xnm = xnm..'('..src.name..')' end
+                        if src and src~=source then xnm = xnm..'('..src.name..')' end
                         printout('    $gk'..xnm..'$wk: %2'..text)
                     end
                 end 
@@ -114,42 +114,55 @@ likes = Def('likes',{},"relation")
 
 person.examine = function(target, ex)
     if target == player then
-            if target.identity~= player then
-                printout(L"You are inhabiting the body of [target]. You think you are still [target.personality], at least mentally.")
-            else
-                printout(L"that's you, [target]")
-            end
+        if target.identity~= player then
+            printout(L"You are inhabiting the body of [target]. You think you are still [target.personality], at least mentally.")
+        else
+            printout(L"that's you, [target]")
+        end
 
 
-            local worn = {}
-            local things = {}
-            local body_parts = {}
+        local worn = {}
+        local things = {}
+        local body_parts = {}
 
-            target:foreach('contains',function(k,v)
-                if k~=player then
-                    if k.is_worn then
-                        worn[#worn+1] = tostring(k)
-                    elseif k:is('body_part') then 
-                        if k:call('should_display',target)~=false then
-                            body_parts[#body_parts+1] = k.description
-                        end
-                    else
-                        things[#things+1] = tostring(k)
-                    end 
-                end
-            end)
- 
-            if #worn>0 then
-                printout('you are wearing: '..table.concat(worn,', ')) 
+        target:foreach('contains',function(k,v)
+            if k~=player then
+                if k.is_worn then
+                    worn[#worn+1] = k
+                elseif k:is('body_part') then 
+                    if k:call('should_display',target)~=false then
+                        body_parts[#body_parts+1] = k.description
+                    end
+                else
+                    things[#things+1] = k
+                end 
             end
-            if #things>0 then
-                printout('you have: '..table.concat(things,', ')) 
+        end)
+
+        if #worn>0 then
+            printout('you are wearing: '..table.concat(worn,', ')) 
+        end
+        if #things>0 then
+            printout('you have: '..table.concat(things,', ')) 
+        end
+        if #body_parts>0 then
+            for k,v in pairs(body_parts) do
+                printout('your '..v) 
             end
-            if #body_parts>0 then
-                for k,v in pairs(body_parts) do
-                    printout('your '..v) 
-                end
+        end
+
+        printout('$display:clothes;clear')
+        for k,v in pairs(worn) do
+            if v.image then
+                printout('$display:clothes;'..tostring(k)..';'..v.image)
             end
+        end
+        for k,v in pairs(things) do
+            if v.image then
+                printout('$display:clothes;'..tostring(k)..';'..v.image)
+            end
+        end
+        
     else
         local sw = ex.memory['mind_'..target.id]
         if ex.identity==target then --sw then
@@ -169,6 +182,13 @@ person.examine = function(target, ex)
         else
             printout(L'[target.they] [target.are] wearing nothing ') 
         end
+        printout('$display:clothes;clear')
+        for k,v in pairs(worn) do
+            if v.image then
+                printout('$display:clothes;'..tostring(k)..';'..v.image)
+            end
+        end
+
         local body_parts = target:collect('contains',function(k,v)
             if k:is('body_part') and k:call('should_display',target)~=false then
                 return k.description

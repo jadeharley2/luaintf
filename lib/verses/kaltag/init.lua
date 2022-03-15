@@ -12,7 +12,7 @@ Include('spaceship.lua')
 
 Include('characters.lua')
 Include('kyo_system.lua')
-Include('capitalship.lua')
+Include('flagship.lua')
 
 Include('spellbook.lua')
 

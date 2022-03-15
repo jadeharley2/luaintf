@@ -58,7 +58,9 @@ end
 function task_meta:NextFailed(task)
     self.next_on_failed = task 
 end
-
+function task_meta:is(t)
+    return self.class == t 
+end
 
 
 
@@ -127,3 +129,6 @@ AddTaskType('follow', {
         end
     end, 
 })
+
+
+

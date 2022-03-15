@@ -36,13 +36,11 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
                 local srcmind = rawget(srcperson,'mind')
                 local trgmind = rawget(trgperson,'mind')
 
-                local temp1 = srcmind.memory['mind_'..srcperson.id]
-                srcmind.memory['mind_'..srcperson.id] = srcmind.memory['mind_'..trgperson.id] or trgperson
-                srcmind.memory['mind_'..trgperson.id] = temp1 or srcperson
-
-                local temp1 = trgmind.memory['mind_'..srcperson.id]
-                trgmind.memory['mind_'..srcperson.id] = trgmind.memory['mind_'..trgperson.id] or trgperson
-                trgmind.memory['mind_'..trgperson.id] = temp1 or srcperson
+                srcmind:swap_memory('mind_'..srcperson.id,'mind_'..trgperson.id)
+                trgmind:swap_memory('mind_'..srcperson.id,'mind_'..trgperson.id)
+                srcmind:swap_memory('nameof_'..srcperson.id,'name_'..trgperson.id)
+                trgmind:swap_memory('nameof_'..srcperson.id,'name_'..trgperson.id)
+                
 
                 rawset(srcperson,'mind',trgmind)
                 rawset(trgperson,'mind',srcmind) 
@@ -109,7 +107,9 @@ matchclothes_action = Def('matchclothes_action',{key='matchclothes',callback = f
                     printout(L'[v] is changing')  
                     sleep(1)
 
-                    v.original_image = v.image 
+                    if not v.original_image then
+                        v.original_image = v.image 
+                    end
                     v.image = top_owner.original_image or top_owner.image
 
                     send_character_images(v.location)

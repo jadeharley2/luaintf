@@ -145,3 +145,16 @@ tvk:response("undock",function(s,t)
         s:say('no...')
     end
 end)
+
+
+vikna.mind.swap_request = function(self,F,I,D,T)
+    if I.target then
+        if LocalIdentify(I.target)==vst then
+            self:intent_say('that giant robotic dog?',true)  
+            self:intent_say('i always wanted to know how being an anthroid feels',true)  
+            D.agreed = true
+            D.topic = "bodyswap" 
+            return true 
+        end
+    end
+end
