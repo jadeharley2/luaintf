@@ -124,6 +124,15 @@ AddTaskType('follow', {
             if d then
                 npc:act('move',d)
             else
+                loc:first('contains',function(v)
+                    if v:is(portal) then
+                        local o = v:other_side()
+                        if o and o.location == tloc then
+                            v:interact(npc,'trough')
+                        end
+                    end
+                end)
+                
                 --idk where to go!
             end
         end

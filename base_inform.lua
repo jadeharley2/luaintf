@@ -31,6 +31,11 @@ Include('lib/verses/mlp.lua')
 --Include('parser.lua')
 
 
+local p1 = Inst('portal') p1.location = jade_room
+local p2 = Inst('portal') p2.location = engine_room
+MakeRelation(p1,p2,portal_link)
+
+
 
 no_one:act_add(be_action)
 no_one.examine = function() 

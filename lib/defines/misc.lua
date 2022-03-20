@@ -72,3 +72,7 @@ person:response('give me your cloth',function(s,t,str)
         s:act('drop',v.id)
     end
 end)
+
+
+
+
