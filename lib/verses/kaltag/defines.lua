@@ -15,11 +15,6 @@ kaltag = Def('kaltag','organization')
 
 
 
-female  = Def('female',{gender = 'female',their = 'her', they = 'she', are = 'is'},'adjective')
-male    = Def('male',  {gender = 'male',their = 'his', they = 'he', are = 'is'},'adjective')
-neuter  = Def('neuter',{gender = 'neuter',their = 'its', they = 'it', are = 'is'},'adjective')
-plural  = Def('plural',{gender = 'plural',their = 'their', they = 'they', are = 'are'},'adjective')
-
 
 
 anthroid_visor = Def("anthroid_visor",{name="anthroid visor"},"visor")

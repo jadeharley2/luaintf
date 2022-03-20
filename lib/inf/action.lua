@@ -5,12 +5,30 @@ action = Def('action',{
     description = "",
     callback = function(self) printout('you are calling default action! stop!')  end
 },'thing')
+function action:is_restricted(actor)
+    local restrictions = self.restrictions
+    if restrictions then
+        for k,v in pairs(restrictions) do
+            if v:sub(1,1)=='!' then
+                if actor:is(v:sub(2)) then return true end
+            else
+                if not actor:is(v) then return true end
+            end
+        end
+    end
+    return false
+end
 
 
 InheritableSet(thing,'actions')
 
 thing.act = function(self,key,a,b,c,d,...)
-    local v = self.actions[key]
+    
+    local v = self:first('actions',function(k,v) 
+        if v:is_restricted(self) then return end
+        if key==k then return v end
+    end)
+    --local v = self.actions[key]
     if v then
         return v.callback(self,a,b,c,d,...)
     end
@@ -45,14 +63,27 @@ thing.act_rem = function(self,k)
 end
 thing.act_get = function(self,k)
     if type(k)=='string' then 
-        return self.actions[k]  
+        return self:first('actions',function(key,v) 
+            if v:is_restricted(self) then return end
+            if key==k then return v end
+        end)
+        --self.actions[k]  
     else
         local item = Identify(k)
-        return self.actions[item.key] 
+        return self:first('actions',function(key,v) 
+            if v:is_restricted(self) then return end
+            if item.key==k then return v end
+        end)
+        --self.actions[item.key] 
     end 
 end
 thing.act_list = function(self,k)
-    return self.actions:getall()
+    local r = {}
+    self:collect('actions',function(k,v) 
+        if v:is_restricted(self) then return end
+        r[k] = v
+    end)
+    return r --self.actions:getall()
 end
 
 ---

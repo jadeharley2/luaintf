@@ -1,7 +1,7 @@
 
 
 sits_on = Def('sits_on',{},"relation")
-sit_action = Def('sit_action',{key='sit',callback = function(self,target) 
+sit_action = Def('sit_action',{key='sit',restrictions = {"!asleep"},callback = function(self,target)  
     local is_player = self == player 
     if target then
         local something = LocalIdentify(target)
@@ -21,7 +21,7 @@ sit_action = Def('sit_action',{key='sit',callback = function(self,target)
     end
 end},'action')
 
-standup_action = Def('standup_action',{key='stand',callback = function(self) 
+standup_action = Def('standup_action',{key='stand',restrictions = {"!asleep"},callback = function(self)  
     local is_player = self == player 
     local chair = GetRelations(self,sits_on)[1]
     if chair then

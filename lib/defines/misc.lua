@@ -3,6 +3,18 @@
 no_one = Def('no_one',{name='No one'},'person')
 
 
+female  = Def('female',{gender = 'female',their = 'her', they = 'she', are = 'is'},'adjective')
+male    = Def('male',  {gender = 'male',their = 'his', they = 'he', are = 'is'},'adjective')
+neuter  = Def('neuter',{gender = 'neuter',their = 'its', they = 'it', are = 'is'},'adjective')
+plural  = Def('plural',{gender = 'plural',their = 'their', they = 'they', are = 'are'},'adjective')
+
+thing.gender = 'neuter'
+thing.their = 'its'
+thing.they = 'it'
+thing.are = 'is' 
+
+
+
 organization = Def('organization','thing')
 soverign_state = Def('soverign_state',{name="Soverign state"},'organization')
 
@@ -23,9 +35,19 @@ book = Def('book','thing')
 book.description = 'an ordinary book'
 
 mirror = Def('mirror','thing') 
+mirror.image = 'file://img/items/mirror.png'  
 mirror.examine = function(s) 
     printout('you look into mirror and see..')
     examine(player)
+    
+    printout('$display:target;clear')
+
+    printout('$display:target;mirror;file://img/background/mirror.png') 
+    local img = player.image
+    if img then printout('$display:target;'..player.id..';'..img) end
+
+    printout('$display:target;mirror_over;file://img/background/mirror_overlay.png') 
+    
 end
 
 

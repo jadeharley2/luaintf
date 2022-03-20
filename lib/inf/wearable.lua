@@ -112,11 +112,13 @@ shoes = Def("shoes","clothing")
 boots = Def("boots","clothing")
 gloves = Def("gloves","clothing") 
 underwear = Def("underwear","clothing")
+coat = Def("coat","clothing") 
 
 necklace = Def("necklace","clothing")
 ring = Def("ring","clothing")
 bracelet = Def("bracelet","clothing")
 tiara = Def("tiara","clothing")
+glasses = Def("glasses","clothing")
 
 
 socks = Def("socks","clothing") 

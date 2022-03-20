@@ -4,6 +4,8 @@ dofile('lib/script.lua')
 Include("lib/string.lua")
 Include("lib/table.lua")
 
+--Include("mclr/dsearch.lua")
+
 Include("lib/net.lua")
 
 winapi = require 'winapi'
@@ -23,7 +25,7 @@ Include('lib/defines/space.lua')
 Include('lib/defines/misc.lua')
 Include('lib/defines/moving_cabin.lua')
 
-Include('lib/verses/homestuck.lua')
+Include('lib/verses/homestuck/init.lua')
 Include('lib/verses/kaltag/init.lua')
 Include('lib/verses/mlp.lua')
 --Include('parser.lua')
@@ -158,18 +160,19 @@ function parse(full,com,arg1,arg2,arg3,...)
                 local something = LocalIdentify(arg1)
                 if something then
                     printout('interactions for '..something.name)
-                    for k,v in pairs(something:interact_list()) do
+                    for k,v in SortedPairs(something:interact_list()) do
                         printout(L" -[k] [v.description]")
                     end
                 else
                     printout('there is no '..arg1)
                 end
             else
-                for k,v in pairs(player:act_list()) do
+                for k,v in SortedPairs(player:act_list()) do
                     printout(L" -[k] [v.description]")
                 end
             end
         elseif com == 'z' or com=='wait' then
+            printout('time passes..')
             return true
         elseif com == 'turn' then
             printout('turn: '..tostring(turn))
@@ -178,9 +181,11 @@ function parse(full,com,arg1,arg2,arg3,...)
             if tlk then
                 player:say(full)
                 if tlk.location == player.location then
- --                   tlk:respond(player,full)
-                    tlk:intent_respond(player,full)
-                    return true
+                    if not tlk:adj_isset('asleep') then
+    --                   tlk:respond(player,full)
+                        tlk:intent_respond(player,full)
+                        return true
+                    end
                 end
             else
                 local something = LocalIdentify(com)

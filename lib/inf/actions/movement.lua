@@ -1,5 +1,5 @@
 
-move_action = Def('move_action',{key='move',callback = function(self,direction) 
+move_action = Def('move_action',{key='move',restrictions = {"!asleep"},callback = function(self,direction)  
     local is_player = self == player
     local loc = self.location
     if loc:is(room) then

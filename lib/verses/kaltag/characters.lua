@@ -43,10 +43,10 @@ vst.process_speech = function(self,text)
     text = string.upper(text)
     --text = text:replace("I AM",'THIS UNIT IS'
     if self.personality.robotic then
-        text = string.replace(text,'CAN','MAY')
-        text = string.replace(text,'BEGIN','INITIATE')
+        text = string.gsub(text,'CAN','MAY')
+        text = string.gsub(text,'BEGIN','INITIATE')
 
-        text = string.replace(text,'OK',table.random({'AFFIRMATIVE',"ACKNOWLEDGED"}))
+        text = string.gsub(text,'OK',table.random({'AFFIRMATIVE',"ACKNOWLEDGED"}))
     end
     return text
 end
@@ -158,3 +158,6 @@ vikna.mind.swap_request = function(self,F,I,D,T)
         end
     end
 end
+
+
+ 

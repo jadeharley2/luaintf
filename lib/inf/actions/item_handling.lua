@@ -2,7 +2,7 @@
 --take and drop items
 
 
-take_action = Def('take_action',{key='take',callback = function(self,item) 
+take_action = Def('take_action',{key='take',restrictions = {"!asleep"},callback = function(self,item) 
     local is_player = self == player 
     if item then
         local something = LocalIdentify(item)
@@ -23,7 +23,7 @@ take_action = Def('take_action',{key='take',callback = function(self,item)
 end},'action')
 
 
-drop_action = Def('drop_action',{key='drop',callback = function(self,item) 
+drop_action = Def('drop_action',{key='drop',restrictions = {"!asleep"},callback = function(self,item) 
     local is_player = self == player 
     if item then
         local something = LocalIdentify(item,self)
@@ -43,7 +43,9 @@ drop_action = Def('drop_action',{key='drop',callback = function(self,item)
     end
 end},'action')
  
-give_action = Def('give_action',{key='give',callback = function(self,item,target) 
+give_action = Def('give_action',{key='give',restrictions = {"!asleep"},callback = function(self,item,target) 
+     
+
     local is_player = self == player 
     if item then
         local something = LocalIdentify(item,self)

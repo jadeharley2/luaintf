@@ -2,7 +2,7 @@
 thing.smell = 'nothing in particular'
 thing.taste = 'nothing in particular'
 
-sniff_action = Def('sniff_action',{key='sniff',callback = function(self,item) 
+sniff_action = Def('sniff_action',{key='sniff',restrictions = {"!asleep"},callback = function(self,item)  
     local is_player = self == player 
     if item then
         local something = LocalIdentify(item) or LocalIdentify(item,self)
@@ -18,7 +18,7 @@ sniff_action = Def('sniff_action',{key='sniff',callback = function(self,item)
     end
 end},'action')
 
-lick_action = Def('lick_action',{key='lick',callback = function(self,item) 
+lick_action = Def('lick_action',{key='lick',restrictions = {"!asleep"},callback = function(self,item)  
     local is_player = self == player 
     if item then
         local something = LocalIdentify(item) or LocalIdentify(item,self)
@@ -33,7 +33,7 @@ lick_action = Def('lick_action',{key='lick',callback = function(self,item)
         if is_player then printout('lick what?') end
     end
 end},'action')
-eat_action = Def('eat_action',{key='eat',callback = function(self,item) 
+eat_action = Def('eat_action',{key='eat',restrictions = {"!asleep"},callback = function(self,item)  
     local is_player = self == player 
     if item then
         local something = LocalIdentify(item) or LocalIdentify(item,self)

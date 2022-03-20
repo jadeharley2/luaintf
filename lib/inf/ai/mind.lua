@@ -65,5 +65,6 @@ person._set_task = function(self,value)
 end
 
 person._get_memory = function(self)
-    return rawget(self,'mind').memory
+    return rawget(self,'mind').memory or {}
 end 
+

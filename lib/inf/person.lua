@@ -23,24 +23,26 @@ person = Def('person',{
         self.topics[about] = t
     end,
     respond = function(self,from,about)
-        if not players[self] then
-            self:foreach('topics',function(k,topic) 
+        if not self:adj_isset('asleep') then
+            if not players[self] then
+                self:foreach('topics',function(k,topic) 
 
-                if string.wmatch(about,k) then 
-                    local rem = topic.f(self,from,about)
-                    if topic.delete then
-                        self.topics[about] = nil 
+                    if string.wmatch(about,k) then 
+                        local rem = topic.f(self,from,about)
+                        if topic.delete then
+                            self.topics[about] = nil 
+                        end
+                        if rem then
+                            self.topics[about] = nil 
+                        end
+                        return true
                     end
-                    if rem then
-                        self.topics[about] = nil 
-                    end
-                    return true
-                end
-            end) 
+                end) 
+            end
         end
     end,
     hear = function(self,source,text,mode)
-        --if self~=source then
+        if not self:adj_isset('asleep') then 
             if client then
                 local cli = players[self]
                 if cli then
@@ -65,26 +67,28 @@ person = Def('person',{
                         printout('    $gk'..xnm..'$wk: %2'..text)
                     end
                 end 
-            end
-        --end
+            end 
+        end
     end,
     process_speech = function(self,text)
         return text
     end,
     say = function(self,text)  
         if text then
-            local ts = s
-            s = self 
-            text = self:process_speech(L(text))
-            s = ts
+            if not self:adj_isset('asleep') then
+                local ts = s
+                s = self 
+                text = self:process_speech(L(text))
+                s = ts
 
-            print(self,text)
-            self.location:foreach('contains',function(k,v)
-                local hear = k.hear 
-                if hear then
-                    hear(k,self,text)
-                end
-            end)  
+                print(self,text)
+                self.location:foreach('contains',function(k,v)
+                    local hear = k.hear 
+                    if hear then
+                        hear(k,self,text)
+                    end
+                end)  
+            end
         end
     end,
     on_init = function(self)
@@ -101,6 +105,7 @@ person = Def('person',{
 },'thing')
 
 person:adj_set("living")
+person.mood = "ok"
 --person:adj_set("male")
 
 likes = Def('likes',{},"relation")
@@ -113,6 +118,8 @@ likes = Def('likes',{},"relation")
 
 
 person.examine = function(target, ex)
+    printout('$display:target;clear')
+    
     if target == player then
         if target.identity~= player then
             printout(L"You are inhabiting the body of [target]. You think you are still [target.personality], at least mentally.")
@@ -163,6 +170,7 @@ person.examine = function(target, ex)
             end
         end
         
+        printout('$display:target;'..target.id..';file://null.png') 
     else
         local sw = ex.memory['mind_'..target.id]
         if ex.identity==target then --sw then
@@ -175,6 +183,10 @@ person.examine = function(target, ex)
             end
         end
         printout(target.description)
+         
+        if target:is('asleep') then
+            printout(L"[target.they] [target.are] asleep.")
+        end
 
         local worn = target.clothes
         if #worn>0 then
@@ -199,6 +211,13 @@ person.examine = function(target, ex)
                 printout(target.their..' '..v) 
             end
         end
+
+
+        local image = target.image
+        if image then 
+            printout('$display:target;'..target.id..';'..image) 
+        end
+ 
     end
 end
 

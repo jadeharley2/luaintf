@@ -117,3 +117,51 @@ function table.print(t,level,hash)
     end
 
 end
+
+function table.copy(t)
+	local n = {}
+	for k,v in pairs(t) do n[k] = v end
+	return n
+end
+
+local deepcopy
+
+deepcopy = function(t)
+	local n = {}
+	for k,v in pairs(t) do 
+		if type(v)=='table' then
+			n[k] = deepcopy(v)
+		else
+			n[k] = v 
+		end 
+	end
+	return n
+end
+
+table.deepcopy = deepcopy
+
+function table.permutations(A,B,C,D)
+	local perm = {} 
+	for k1,v1 in pairs(A) do
+		if B then 
+			for k2,v2 in pairs(B) do
+				if C then 
+					for k3,v3 in pairs(C) do
+						if D then
+							for k4,v4 in pairs(D) do
+								perm[#perm+1] = {v1,v2,v3,v4}
+							end
+						else 
+							perm[#perm+1] = {v1,v2,v3}
+						end
+					end
+				else 
+					perm[#perm+1] = {v1,v2}
+				end
+			end
+		else 
+			perm[#perm+1] = {v1}
+		end
+	end
+	return perm 
+end

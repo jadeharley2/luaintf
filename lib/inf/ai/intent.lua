@@ -336,16 +336,42 @@ person.intent_respond = function(self,from,about)
             end
         end
 
-        self:foreach('intent_responses',function(k,v) 
-            local result = v(self,from,intents,dialogue,about)
-            if result~=nil then
-                if result=='remove' then
-                    self.intent_responses[k] = nil 
-                    return true
+        local node = self.intent_tree
+        if node then
+            if dialogue.topic then
+                intents['topic_'..dialogue.topic] = true
+            end
+            local function treerun(node)
+                for k,v in pairs(node) do 
+                    if intents[k] then
+                        local t= type(v)
+                        if t=='table' then
+                            local r = treerun(v)
+                            if r then return r end 
+                        elseif t=='string' then
+                            self:intent_say(v)
+                            return true
+                        elseif t=='function' then
+                            local result = v(self,from,intents,dialogue,about)
+                            return result
+                        end
+                    end
                 end
-                return result
-            end 
-        end) 
+            end
+            
+            local r = treerun(node)
+        end
+
+        --self:foreach('intent_responses',function(k,v) 
+        --    local result = v(self,from,intents,dialogue,about)
+        --    if result~=nil then
+        --        if result=='remove' then
+        --            self.intent_responses[k] = nil 
+        --            return true
+        --        end
+        --        return result
+        --    end 
+        --end) 
     end
 end
 person.intent_say = function(self,intent,use_fallback)
@@ -557,7 +583,46 @@ DefineIntents("i don't have it with me",{"statement","possession","negative"})
 --sort by word count descending to match properly
 table.sort(text_intents, function(a,b) return #a.words>#b.words end)
 
+local function IsIncluded(a,b)--a in b
+    for k,v in pairs(a) do
+        if not b[k] then return false end
+    end
+    return true
+end
 
+local function MakeIntentTree()
+    local root = {}
+    --find all groups
+    local groups = {}
+    for k,v in pairs(text_intents) do
+        for _,I in pairs(v.intents) do
+            local g = groups[I] or {}
+            groups[I] = g 
+            g[v] = v.text
+        end 
+    end
+
+    
+    --find inclusions between groups
+    local newgroups = table.copy(groups)
+    for k,A in pairs(groups) do
+        for _,B in pairs(groups) do
+            if A~=B then
+                if IsIncluded(A,B) then
+                    newgroups[k] = nil 
+                    B[k] = A
+                    for kk,vv in pairs(A) do
+                        B[vv] = nil
+                    end
+                end
+            end
+        end
+    end
+
+    local xca = 0
+end
+
+--MakeIntentTree()
 local intents01 = GetIntents("anneke is best") 
 local intents02 = GetIntents("i want to be jade") 
 local intents03 = GetIntents("do you want to be jade?") 

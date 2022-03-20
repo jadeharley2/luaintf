@@ -22,18 +22,18 @@ function examine(target)
     else
         EventActCall("examine",target) 
     end
-    local image = target.image 
-    if target:is(room) then 
-        display_location(target)
-    else
-        printout('$display:target;clear')
-        if image then 
-            printout('$display:target;'..target.id..';'..image) 
-        end
-    end
 end
 
-look_action = Def('look_action',{key='look',callback = function(self,direction)  
+
+thing.examine = function(self,usr) 
+    local image = self.image
+    if image then 
+        printout('$display:target;'..self.id..';'..image) 
+    end 
+end
+
+
+look_action = Def('look_action',{key='look',restrictions = {"!asleep",'!blind'},callback = function(self,direction)   
     local is_player = self == player
     self.look_target = self.location
     if is_player then examine(self.location) end
@@ -68,7 +68,7 @@ function person:GetVisibleThings()
     return things
 end
 
-examine_action = Def('examine_action',{key='examine',callback = function(self,...) 
+examine_action = Def('examine_action',{key='examine',restrictions = {"!asleep",'!blind'},callback = function(self,...)  
     local is_player = self == player
     if is_player then
         local tl = {...}

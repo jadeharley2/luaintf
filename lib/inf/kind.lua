@@ -77,7 +77,7 @@ function Def(id,data,kind)
 
     return data;
 end
-function Inst(kind,data)
+function Inst(kind,data) 
     return Def(nil,data,kind)
 end
 function Setup(data,a)

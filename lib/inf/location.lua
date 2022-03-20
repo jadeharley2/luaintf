@@ -111,7 +111,7 @@ local direction_reverse = {
 }
 
 room = Def('room',{
-    name = 'A room',
+    name = 'room',
     description = "An empty room",
     dir = function(self,dir)
         if type(dir)=='string' then
@@ -235,9 +235,8 @@ thing._get_location = function(self)
     return rawget(self,'_loc') or nowhere
 end
 thing._set_location = function(self,v)
-    --if v:is(room) then 
-    --end
-    if v:call("on_enter",self)==false then
+    
+    if v and v:call("on_enter",self)==false then
         return 
     end  
 
@@ -250,12 +249,14 @@ thing._set_location = function(self,v)
     end
 
     rawset(self,'_loc',v) 
-    
-    local t = rawget(v,'contains')
-    if not t then
-        t = InheritableSet(v,'contains')
+
+    if v then
+        local t = rawget(v,'contains')
+        if not t then
+            t = InheritableSet(v,'contains')
+        end
+        t[self] = true
     end
-    t[self] = true
 end
 thing.foreach_parent = function(self,callback,include_self)
     local c 
@@ -291,7 +292,7 @@ room.examine = function(target, ex)
 
     target:foreach('contains',function(k,v)
         if k~=player then
-            if k:is(person) then
+            if k:is(person) or k:is(soul) then
                 characters[#characters+1] = tostring(k)
                 images[k.id] = k.image 
             else
@@ -318,6 +319,10 @@ room.examine = function(target, ex)
         printout(' '..k.." -> "..tostring(v))
         printout('$direction:'..k..";"..tostring(v))
     end 
+
+    display_location(target)
+
+
 end
 
 

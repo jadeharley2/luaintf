@@ -5,6 +5,46 @@ read_interaction = Def('read_interaction',{key='read',callback = function(self,u
     self:call('on_read',user)  
 end},'interaction') 
 
+function mind_transfer(srcperson,trgperson)
+
+    local srct = rawget(srcperson,'topics')
+    local trgt = rawget(trgperson,'topics')
+
+    rawset(trgperson,'topics',srct)
+    rawset(srcperson,'topics',trgt)
+
+
+    local srcmind = rawget(srcperson,'mind')
+    local trgmind = rawget(trgperson,'mind')
+
+    if srcmind and trgmind then
+        srcmind:swap_memory('mind_'..srcperson.id,'mind_'..trgperson.id)
+        trgmind:swap_memory('mind_'..srcperson.id,'mind_'..trgperson.id)
+        srcmind:swap_memory('nameof_'..srcperson.id,'name_'..trgperson.id)
+        trgmind:swap_memory('nameof_'..srcperson.id,'name_'..trgperson.id)
+    end
+
+    rawset(srcperson,'mind',trgmind)
+    rawset(trgperson,'mind',srcmind) 
+
+    local psrcp = players[srcperson] 
+    local ptrgp = players[trgperson] 
+
+    if player==trgperson then
+        player = srcperson 
+    elseif player==srcperson then
+        player = trgperson 
+    end
+
+    players[trgperson] = psrcp
+    players[srcperson] = ptrgp
+
+    send_character_images(srcperson.location)
+    if trgperson==player then 
+        examine(srcperson) 
+        send_actions() 
+    end
+end
 
 transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback = function(self,arg1,...) 
     local is_player = self == player  
@@ -12,10 +52,10 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
         local v = LocalIdentify(arg1)
         if v and v:is(person) then
 
-            if players[v] then 
-                printout('this character is occupied')
-            else
-                describe_action(self,L'you focus on [v]. And then blackout',tostring(self)..' stares at '..tostring(v))  
+            --if players[v] then 
+            --    printout('this character is occupied')
+            --else
+                describe_action(self,L'you focus on [v]',tostring(self)..' stares at '..tostring(v))  
                 sleep(0.1)
                 describe_action(self,'you blackout',tostring(self)..' falls on the floor')  
                 local srcperson = self
@@ -26,48 +66,16 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
                     v:act_add(transfer_soul_action)
                 end
 
-                local srct = rawget(srcperson,'topics')
-                local trgt = rawget(trgperson,'topics')
-
-                rawset(trgperson,'topics',srct)
-                rawset(srcperson,'topics',trgt)
-
-
-                local srcmind = rawget(srcperson,'mind')
-                local trgmind = rawget(trgperson,'mind')
-
-                srcmind:swap_memory('mind_'..srcperson.id,'mind_'..trgperson.id)
-                trgmind:swap_memory('mind_'..srcperson.id,'mind_'..trgperson.id)
-                srcmind:swap_memory('nameof_'..srcperson.id,'name_'..trgperson.id)
-                trgmind:swap_memory('nameof_'..srcperson.id,'name_'..trgperson.id)
-                
-
-                rawset(srcperson,'mind',trgmind)
-                rawset(trgperson,'mind',srcmind) 
-
-                local pcli = players[self] 
-                players[self] = nil
-
-                if is_player then
-                    player = v 
-                end
-
-                if pcli then
-                    players[v] = pcli
-                end
+                mind_transfer(srcperson,trgperson)
  
                 srcmind.memory.swap_lie = math.random()>0.5
                 trgmind.memory.swap_lie = math.random()>0.5
 
-                sleep(1)
-                send_character_images(self.location)
+                sleep(1) 
                 if is_player then
-                    printout('you are now',v)
-                    examine(srcperson) 
-                    send_actions() 
-                end
-                return true
-            end 
+                    printout('you are now',v) 
+                end 
+            --end 
             return true
         else
             if is_player then printout('there is no '..arg1) end
