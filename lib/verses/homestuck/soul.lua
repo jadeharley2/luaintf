@@ -21,7 +21,7 @@ posess_action = Def('posess_action',{key='posess',callback = function(self,arg1,
         local v = LocalIdentify(arg1)
         if v and v:is(person) then
             if v.mind == nil then
-                printout(L"you merge with [v]'s body.")  
+                describe_action(self,L"you merge with [v]'s body.")  
                 sleep(0.1) 
                 
                 mind_transfer(self,v)
@@ -33,7 +33,7 @@ posess_action = Def('posess_action',{key='posess',callback = function(self,arg1,
     
                 return true
             else
-                printout(L"you try to enter [v]'s body but feel resistance, something is blocking your way in!") 
+                describe_action(self,L"you try to enter [v]'s body but feel resistance, something is blocking your way in!") 
             end
         else
             if is_player then printout('there is no '..arg1) end

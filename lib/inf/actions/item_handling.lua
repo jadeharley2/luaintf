@@ -5,18 +5,28 @@
 take_action = Def('take_action',{key='take',restrictions = {"!asleep"},callback = function(self,item) 
     local is_player = self == player 
     if item then
-        local something = LocalIdentify(item)
-        if something then
-            if something.is_moveable~=false then
-                something.location = self
-                describe_action(self,L'[something] taken',L'[self] takes [something]')  
-                return true
+        if item == 'all' or item == 'everything' then
+            self.location:foreach('contains',function(k,v)
+                if k:is(person) then  
+                else
+                    self:act('take',k)
+                end 
+            end)
+            return true
+        else 
+            local something = LocalIdentify(item)
+            if something then
+                if something.is_moveable~=false then
+                    something.location = self
+                    describe_action(self,L'[something] taken',L'[self] takes [something]')  
+                    return true
+                else
+                    if is_player then printout("you can't take "..item) end
+                end
             else
-                if is_player then printout("you can't take "..item) end
-            end
-        else
-            if is_player then printout('there is no '..item) end
-        end 
+                if is_player then printout('there is no '..item) end
+            end 
+        end
     else
         if is_player then printout('take what?') end
     end
@@ -26,18 +36,33 @@ end},'action')
 drop_action = Def('drop_action',{key='drop',restrictions = {"!asleep"},callback = function(self,item) 
     local is_player = self == player 
     if item then
-        local something = LocalIdentify(item,self)
-        if something then
-            if something.is_moveable~=false then
-                something.location = self.location
-                describe_action(self,L'[something] dropped',L'[self] drops [something]')  
-                return true
+        if item == 'all' or item == 'everything' then
+            self:foreach('contains',function(k,v)
+                if k.is_worn then 
+                elseif k:is('body_part') then  
+                else
+                    self:act('drop',k)
+                end 
+            end)
+            return true
+        else 
+            local something = LocalIdentify(item,self)
+            if something then
+                if something.is_moveable~=false then 
+                    if HasRelationWith(something,self,worn_by) then
+                        self:act('takeoff',something)
+                    end
+
+                    something.location = self.location
+                    describe_action(self,L'[something] dropped',L'[self] drops [something]')  
+                    return true
+                else
+                    if is_player then printout("you can't drop "..item) end
+                end
             else
-                if is_player then printout("you can't drop "..item) end
-            end
-        else
-            if is_player then printout('there is no '..item) end
-        end 
+                if is_player then printout('there is no '..item) end
+            end 
+        end
     else
         if is_player then printout('drop what?') end
     end

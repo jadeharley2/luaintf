@@ -157,6 +157,7 @@ person.examine = function(target, ex)
                 printout('your '..v) 
             end
         end
+        
 
         printout('$display:clothes;clear')
         for k,v in pairs(worn) do
@@ -186,6 +187,10 @@ person.examine = function(target, ex)
          
         if target:is('asleep') then
             printout(L"[target.they] [target.are] asleep.")
+        end
+        local size =player:relative_textsize(target)
+        if size~='normal' then
+            printout(L"[target.they] [target.are] [size].")
         end
 
         local worn = target.clothes

@@ -336,31 +336,52 @@ person.intent_respond = function(self,from,about)
             end
         end
 
-        local node = self.intent_tree
-        if node then
-            if dialogue.topic then
-                intents['topic_'..dialogue.topic] = true
+
+        if dialogue.topic then
+            intents['topic_'..dialogue.topic] = true
+        end
+        if #about>=3 then 
+            if string.find_anycase(self.name,about) then
+                intents['own_name'] = true
             end
-            local function treerun(node)
-                for k,v in pairs(node) do 
-                    if intents[k] then
-                        local t= type(v)
-                        if t=='table' then
-                            local r = treerun(v)
-                            if r then return r end 
-                        elseif t=='string' then
-                            self:intent_say(v)
-                            return true
-                        elseif t=='function' then
-                            local result = v(self,from,intents,dialogue,about)
-                            return result
-                        end
+            if string.find_anycase(self.memory.name,about) then
+                intents['memory_name'] = true
+            end
+        end
+
+        local function treerun(node)
+            for k,v in pairs(node) do 
+                if intents[k] then
+                    local t= type(v)
+                    if t=='table' then
+                        local r = treerun(v)
+                        if r then return r end 
+                    elseif t=='string' then
+                        self:intent_say(v)
+                        return true
+                    elseif t=='function' then
+                        local result = v(self,from,intents,dialogue,about)
+                        return result
                     end
                 end
             end
-            
-            local r = treerun(node)
         end
+        
+
+        local r = self:foreach_type(function(x)
+            local tree = rawget(x,'intent_tree')
+            if tree then
+                local r = treerun(tree)
+                if r then return r end 
+            end
+        end,true)
+        if r then return r end 
+
+        --local node = self.intent_tree
+        --if node then 
+        --    local r = treerun(node)
+        --    if r then return r end 
+        --end
 
         --self:foreach('intent_responses',function(k,v) 
         --    local result = v(self,from,intents,dialogue,about)

@@ -190,10 +190,27 @@ function InheritableSet(kind,key)
     kind[key] = set
     return set
 end
+
+
+foreach_type = function(self,callback,include_self)
+    local c 
+    if include_self then 
+        c = self
+    else
+        c = self.base
+    end
+    while c do
+        local r = callback(c)
+        if r then return r end
+        c = c.base
+    end
+end
+
+
 thing = Def('thing',{
     --name = "A thing",
     --_get_name = function(s) return s.id end,
-    _get_description = LF"You see nothing special about [self.name].",
+    _get_description = LF"You see nothing special about [self.name].", 
     foreach = function(self,key,callback)
         local s = self
         while s do
@@ -224,6 +241,7 @@ thing = Def('thing',{
             s = s.base
         end
     end,
+    foreach_type = foreach_type,
     first = function(self,key,callback)
         local s = self
         while s do
@@ -421,7 +439,8 @@ thing = Def('thing',{
         else
             local t = rawget(self,'adjectives')
             if not t then
-                t = InheritableSet(self,'adjectives')
+                t = {}--InheritableSet(self,'adjectives')
+                rawset(self,'adjectives',t)
             end
             t[k] = true
         end
@@ -432,14 +451,22 @@ thing = Def('thing',{
         else
             local t = rawget(self,'adjectives')
             if not t then
-                t = InheritableSet(self,'adjectives')
+                t = {}--InheritableSet(self,'adjectives')
+                rawset(self,'adjectives',t)
             end
             t[k] = false
         end
     end,
     adj_isset = function(self,k)
-        local a = self.adjectives
-        return a and a[k] 
+        return foreach_type(self,function(b) 
+            local a = rawget(b,'adjectives')
+            if a then 
+                return a[k]  
+            end
+        end,true)
+
+        --local a = self.adjectives
+        --return a and a[k] 
     end,
     adj_getall = function(self)
         return self.adjectives:getall()
@@ -535,31 +562,39 @@ InheritableSet(thing,'adjectives')
 
 function LocalIdentify(id,location)
     if id then
-        location = location or player.location
-        return location:first('contains',function(k,v)
-            if k:is(id) then
-                return k
-            end
-        end) or location:first('contains',function(k,v)
-            if k.name:find_anycase(id) then
-                return k
-            end
-        end)
+        if type(id) == 'string' then
+            location = location or player.location
+            return location:first('contains',function(k,v)
+                if k:is(id) then
+                    return k
+                end
+            end) or location:first('contains',function(k,v)
+                if k.name:find_anycase(id) then
+                    return k
+                end
+            end)
+        else
+            return id  
+        end
     end
 end
 
 function ListIdentify(id,list)
     if id then
-        for k,v in pairs(list) do
-            if v:is(id) then
-                return v
+        if type(id) == 'string' then
+            for k,v in pairs(list) do
+                if v:is(id) then
+                    return v
+                end
             end
+            for k,v in pairs(list) do
+                if v.name:find_anycase(id) then
+                    return v
+                end
+            end 
+        else
+            return id  
         end
-        for k,v in pairs(list) do
-            if v.name:find_anycase(id) then
-                return v
-            end
-        end 
     end
 end
 

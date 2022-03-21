@@ -68,8 +68,16 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
 
                 mind_transfer(srcperson,trgperson)
  
-                srcmind.memory.swap_lie = math.random()>0.5
-                trgmind.memory.swap_lie = math.random()>0.5
+
+                local srcmind = rawget(srcperson,'mind')
+                local trgmind = rawget(trgperson,'mind')
+                
+                if srcmind then 
+                    srcmind.memory.swap_lie = math.random()>0.5
+                end
+                if trgmind then
+                    trgmind.memory.swap_lie = math.random()>0.5
+                end
 
                 sleep(1) 
                 if is_player then

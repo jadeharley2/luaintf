@@ -320,6 +320,11 @@ room.examine = function(target, ex)
         printout('$direction:'..k..";"..tostring(v))
     end 
 
+    local size = player:relative_textsize(target)
+    if size~='normal' then
+        printout(L"everything looks [size] to you.") 
+    end
+
     display_location(target)
 
 

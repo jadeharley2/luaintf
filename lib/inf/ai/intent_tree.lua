@@ -357,6 +357,7 @@ end)
 person.intent_tree = {
     greet = "hi",
     parting = "bye",
+    own_name = "what do you need?",
     question = {
         bodyswap = function(self,F,I,D,T)
             local X = self.mind.swap_request
@@ -465,6 +466,19 @@ person.intent_tree = {
         }
     },
     request = {
+        _ = DefineIntents("[i] command [you] [to] {action} {target} {target2}",{"request","command"}),
+        command = function(self,F,I,D,T)
+            
+            local something = LocalIdentify(I.target) or LocalIdentify(I.target,self)
+            if something then
+                if something:interact(self,I.action,I.target2) then
+                    return true 
+                end 
+            end
+        
+            self:act(I.action,I.target,I.target2)
+            return true 
+        end,
         forget = function(self,F,I,D,T)
             if D.topic then
                 self:intent_say('ok',true) 
@@ -506,7 +520,7 @@ person.intent_tree = {
                     self:intent_say('ok',true) 
                     self:act('drop',v)
                 else 
-                    self:intent_say("i don't have "..v,true) 
+                    self:intent_say("i don't have "..target,true) 
                 end
             end
         end,
@@ -747,5 +761,5 @@ person.intent_tree = {
             }
         },
     },
-}
 
+}

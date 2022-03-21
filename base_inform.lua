@@ -162,7 +162,7 @@ function parse(full,com,arg1,arg2,arg3,...)
         --else
         if com == 'actions' then
             if arg1 then
-                local something = LocalIdentify(arg1)
+                local something = LocalIdentify(arg1) or LocalIdentify(arg1,player)
                 if something then
                     printout('interactions for '..something.name)
                     for k,v in SortedPairs(something:interact_list()) do
@@ -253,7 +253,11 @@ function main_server()
         end)  
         EventAdd('player_connected','init',function(c)
             client = c
-            player = c.person or no_one 
+            player = c.person or no_one  
+            print('$display:target;clear')
+            print('$display:background;clear')
+            print('$display:line;clear')
+            print('$display:clothes;clear')
             examine(player)
             c.person = player
             client = false

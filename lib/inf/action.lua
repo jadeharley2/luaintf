@@ -25,8 +25,10 @@ InheritableSet(thing,'actions')
 thing.act = function(self,key,a,b,c,d,...)
     
     local v = self:first('actions',function(k,v) 
-        if v:is_restricted(self) then return end
-        if key==k then return v end
+        if v then 
+            if v:is_restricted(self) then return end
+            if key==k then return v end
+        end
     end)
     --local v = self.actions[key]
     if v then

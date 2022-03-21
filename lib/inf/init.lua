@@ -8,6 +8,7 @@ Include('action.lua')
 
 Include('location.lua')
 Include('person.lua')
+Include('size.lua')
 
 Include('bodypart.lua')
 
