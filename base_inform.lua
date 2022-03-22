@@ -3,6 +3,7 @@
 dofile('lib/script.lua')
 Include("lib/string.lua")
 Include("lib/table.lua")
+Include("lib/io.lua")
 
 --Include("mclr/dsearch.lua")
 

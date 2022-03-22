@@ -58,7 +58,7 @@ station_laboratory = Def('station_laboratory',{name='laboratory'},'room') statio
 station_hub = Def('station_hub',{name='hub'},'room') station_hub.location = torus_station
 station_space_elevator_entrance = Def('station_space_elevator_entrance',{name='space elevator space hub'},'room') station_space_elevator_entrance.location = torus_station
 
---station_habitat.image = 'file://img/background/3973946.webp'
+--station_habitat.image = '/img/background/3973946.webp'
  
 
 MakeRelation(station_hub,station_airlock,direction_east)

@@ -1,6 +1,6 @@
 
 soul = Def('soul','owned invisible thing')
-soul.image = 'file://img/characters/soul.png'  
+soul.image = '/img/characters/soul.png'  
 soul:act_add(look_action)
 soul:act_add(examine_action)
 soul:act_add(move_action) 

@@ -7,14 +7,14 @@ tower.location = hs_verse
 jade_room = Def('jade_room',{},'owned room') 
 jade_room.owner = jade
 jade_room.location = tower
-jade_room.image = 'file://img/background/r_jade_bedroom.png' 
+jade_room.image = '/img/background/r_jade_bedroom.png' 
 
 local m = Inst("mirror")
 m.location = jade_room
 
 
 local keytar = Def("keytar","thing")
-keytar.image = 'file://img/items/keytar.png' 
+keytar.image = '/img/items/keytar.png' 
 keytar.location = jade_room
 
 
@@ -48,8 +48,8 @@ garden_w.location = tower
 garden_s.location = tower
 garden_n.location = tower
 garden_e.location = tower
-garden_c.image = 'file://img/background/r_jade_atrium.png' 
-garden_w.image = 'file://img/background/r_jade_atrium.png' 
-garden_s.image = 'file://img/background/r_jade_atrium.png' 
-garden_n.image = 'file://img/background/r_jade_atrium.png' 
-garden_e.image = 'file://img/background/r_jade_atrium.png' 
+garden_c.image = '/img/background/r_jade_atrium.png' 
+garden_w.image = '/img/background/r_jade_atrium.png' 
+garden_s.image = '/img/background/r_jade_atrium.png' 
+garden_n.image = '/img/background/r_jade_atrium.png' 
+garden_e.image = '/img/background/r_jade_atrium.png' 

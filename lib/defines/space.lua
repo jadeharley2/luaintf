@@ -41,7 +41,7 @@ asteroid_field._get_description = LF'asteroid field [self]'
 portal_link = Def('portal_link','relation') 
 
 portal = Def('portal','thing') 
-portal.image = 'file://img/items/portal.png'  
+portal.image = '/img/items/portal.png'  
 portal.description = 'you see purple swirling mass'
 
 step_trough_interaction = Def('step_trough_interaction',{key='trough',callback = function(self,user)  

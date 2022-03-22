@@ -1,3 +1,7 @@
+
+package.path = 'modules/?.lua;' .. package.path 
+package.cpath = 'modules/?.dll;' .. package.cpath 
+
 function Include(path)
     local info = debug.getinfo(2,'S');  
     local str = info.source:sub(2)
@@ -10,6 +14,27 @@ function Include(path)
         dofile(path)
     end
 end
+  
+--[[
+local R = require
+function require(path)
+    local module_path = 'modules/'..string.gsub(path,'%.','/')
+    if io.exists(module_path..'.lua') or io.exists(module_path..'.dll') then
+        local module_path2 = 'modules.'..path 
+        return R(module_path2)
+    end
+
+    local info = debug.getinfo(2,'S');  
+    local str = info.source:sub(2)
+    local dir = str:match("(.*/)")
+    if dir and (io.exists(dir..'.lua') or io.exists(dir..'.dll')) then   
+        dir = string.gsub(dir,'/','.')
+        return R(dir..path) 
+    else 
+        return R(path)
+    end
+end
+]]
 
 function error_handler(x) 
     print ("error! ", x)
@@ -20,46 +45,6 @@ unpack = table.unpack
 
 
 
---[[ --outdated 
-function L(str)
-    local faf = debug.getinfo(2,'f')
-    local upfunc = faf.func
-    local k,env = debug.getupvalue(upfunc,1)
-
-
-    local parsed = ""
-    local lastid = 0
-    --local command_mode = false
-
-    for k=1,#str do
-        local char = str:sub(k,k)
-        if char=='[' then
-            parsed = parsed .. str:sub(lastid,k-1)
-            --command_mode = true
-            lastid = k+1
-        elseif char ==']' then
-            local command = str:sub(lastid,k-1)
-            local v = env[command]
-            if v then
-                if type(v) == 'function' then
-                    parsed = parsed .. tostring( v() )
-                else
-                    parsed = parsed .. tostring( v )
-                end
-            else
-                local f = load('return '..command,'com','t',env) 
-                
-                parsed = parsed .. tostring( f() )
-            end
-            --command_mode=false
-            lastid = k+1
-        end
-    end
-    parsed = parsed .. str:sub(lastid,#str)
-    return parsed
-
-end
-]]
 function emptystr() return "" end
 
 local function make_com(str,noreturn)

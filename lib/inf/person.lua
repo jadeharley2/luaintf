@@ -171,7 +171,7 @@ person.examine = function(target, ex)
             end
         end
         
-        printout('$display:target;'..target.id..';file://null.png') 
+        printout('$display:target;'..target.id..';/null.png') 
     else
         local sw = ex.memory['mind_'..target.id]
         if ex.identity==target then --sw then

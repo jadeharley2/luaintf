@@ -12,7 +12,8 @@
             "stopOnEntry": false,
             "program": "${workspaceFolder}/server.lua",
             "console": "integratedTerminal",
-            "outputCapture": []
+            "outputCapture": [],
+            "path": "${workspaceFolder}/?.lua"
         },
         {
             "type": "lua",
