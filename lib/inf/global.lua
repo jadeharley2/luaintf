@@ -18,7 +18,7 @@ function printout(a,...)
             t[k] = tostring(v)
         end
         t[#t+1] = '\n'
-        client.socket:send(table.concat(t,' '))
+        client:send(table.concat(t,' '))
     end
     if a:sub(1,1)~='$' then
         print_c_msg('    '..a,...)
@@ -38,7 +38,7 @@ function describe_action(doer,desc_doer,desc_other,everywhere)
             for k,v in pairs(players) do
                 if k~=doer and k.location == loc then
                     if v then
-                        v.socket:send(desc_other..'\n')
+                        v:send(desc_other..'\n')
                     else--single
                         printout(desc_other..'\n')
                     end

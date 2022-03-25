@@ -12,7 +12,10 @@ function display_location(target)
 end
 
 EventAdd('examine','default',function(target)
-    printout(target.description)
+    --printout(target.description)
+    local interactions = {}
+    target:foreach('interactions',function(k,v) interactions[#interactions+1]=k end)
+    printout('$interactions:',table.concat(interactions, ';'))
 end)
 
 
@@ -20,8 +23,8 @@ function examine(target)
     if target.examine then
         target:examine(player)
     else
-        EventActCall("examine",target) 
     end
+    EventActCall("examine",target) 
 end
 
 

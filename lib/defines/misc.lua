@@ -37,7 +37,11 @@ book.description = 'an ordinary book'
 mirror = Def('mirror','thing') 
 mirror.image = '/img/items/mirror.png'  
 mirror.examine = function(s) 
-    printout('you look into mirror and see..')
+    if player.robotic then
+        printout('scanning mirror surface...')
+    else
+        printout('you look into mirror and see..')
+    end
     examine(player)
     
     printout('$display:target;clear')

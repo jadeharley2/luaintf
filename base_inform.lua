@@ -234,6 +234,7 @@ end
 function main_server()
     print('ok server!')
     net.start('localhost',9999)
+    local nextcheck = 0
     while true do
         net.accept()
 
@@ -252,6 +253,13 @@ function main_server()
             c.person = player
             client = false
         end)  
+        
+        local ctime = os.clock()
+        if nextcheck<ctime then
+            net.check()
+            nextcheck = ctime + 2
+        end
+
         EventAdd('player_connected','init',function(c)
             client = c
             player = c.person or no_one  
@@ -262,6 +270,12 @@ function main_server()
             examine(player)
             c.person = player
             client = false
+        end)
+        EventAdd('player_disconnected','init',function(c)
+            if players[c.person]==c then
+                players[c.person] = nil
+            end
+            print(c.person,'leaves')
         end)
     end
 end

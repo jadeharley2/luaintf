@@ -47,12 +47,12 @@ person = Def('person',{
                 local cli = players[self]
                 if cli then
                     if mode == 'ambient' then
-                        cli.socket:send('    '..text..'\n')
+                        cli:send('    '..text..'\n')
                     else -- speech
                         local xnm = source.name 
                         local src = self.memory['mind_'..source.id]
                         if src and src~=source then xnm = xnm..'('..src.name..')' end
-                        cli.socket:send('    $gk'..xnm..'$wk: %2'..text..'\n')
+                        cli:send('    $gk'..xnm..'$wk: %2'..text..'\n')
                     end
                 end
                 --printout('    '..source.name..': '..text)
@@ -122,9 +122,17 @@ person.examine = function(target, ex)
     
     if target == player then
         if target.identity~= player then
-            printout(L"You are inhabiting the body of [target]. You think you are still [target.personality], at least mentally.")
+            if player.robotic then
+                printout(L"Your frame designation is [target]. Warning: Detected mismatched personality core: [target.personality].")
+            else
+                printout(L"You are inhabiting the body of [target]. You think you are still [target.personality], at least mentally.")
+            end
         else
-            printout(L"that's you, [target]")
+            if player.robotic then
+                printout(L"Your designation is [target]")
+            else
+                printout(L"that's you, [target]")
+            end
         end
 
 
@@ -147,10 +155,18 @@ person.examine = function(target, ex)
         end)
 
         if #worn>0 then
-            printout('you are wearing: '..table.concat(worn,', ')) 
+            if player.robotic then
+                printout('equipped items: '..table.concat(worn,', ')) 
+            else
+                printout('you are wearing: '..table.concat(worn,', ')) 
+            end
         end
         if #things>0 then
-            printout('you have: '..table.concat(things,', ')) 
+            if player.robotic then
+                printout('storage contents: '..table.concat(things,', ')) 
+            else
+                printout('you have: '..table.concat(things,', ')) 
+            end
         end
         if #body_parts>0 then
             for k,v in pairs(body_parts) do
@@ -175,18 +191,33 @@ person.examine = function(target, ex)
     else
         local sw = ex.memory['mind_'..target.id]
         if ex.identity==target then --sw then
-            printout(L'This was your body untill you switched. [sw] should be in control.')
+            if player.robotic then
+                printout(L'Memory reads [target] as your previous frame.')
+            else
+                printout('This was your body untill you switched.') 
+            end
+            if sw then
+                printout(L'[sw] should be in control.') 
+            end
         elseif sw then
             local tsw = tostring(sw)
             local tnm = tostring(target)
             if tsw~=tnm then
-                printout(L"Seems like [tsw] is inhabiting [tnm]'s body.")
+                if player.robotic then
+                    printout(L"Memory reads [tnm] contains [tsv]'s personality.")
+                else
+                    printout(L"Seems like [tsw] is inhabiting [tnm]'s body.")
+                end
             end
         end
         printout(target.description)
          
         if target:is('asleep') then
-            printout(L"[target.they] [target.are] asleep.")
+            if target:is('anthroid') then 
+                printout(L"[target.they] [target.are] deactivated.")
+            else
+                printout(L"[target.they] [target.are] asleep.")
+            end
         end
         local size =player:relative_textsize(target)
         if size~='normal' then
@@ -222,7 +253,6 @@ person.examine = function(target, ex)
         if image then 
             printout('$display:target;'..target.id..';'..image) 
         end
- 
     end
 end
 

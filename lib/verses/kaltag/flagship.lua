@@ -60,15 +60,54 @@ bridge_window.outside = katric_capital_ship
 bridge_window.examine = function(self,user) 
     local o = self.outside
     if o.docked then
-        printout(L'you look trough [self] and see that [o] is docked to [o.docked]')
+        if user.robotic then
+            printout(L'scanning [self]... scan result: ship [o] is docked to [o.docked]')
+        else
+            printout(L'you look trough [self] and see that [o] is docked to [o.docked]')
+        end
     elseif o.in_orbit then
-        printout(L'you look trough [self] and see [o.in_orbit]') 
+        if user.robotic then
+            printout(L'scanning [self]... scan result: ship is in orbit of [o.in_orbit]')
+        else
+            printout(L'you look trough [self] and see [o.in_orbit]')
+        end 
     else
-        printout(L'you look trough [self] and see [o.location.description]')
+        if user.robotic then
+            printout(L'scanning [self]... scan result: outside environment: [o.location.description]')
+        else
+            printout(L'you look trough [self] and see [o.location.description]')
+        end 
     end
-end
+     
+    
+    printout('$display:target;clear') 
 
+    printout('$display:background;space;/img/background/space.png') 
 
+    local imgs = {}
+    local x = o
+    for k=1,10 do
+        x = x.in_orbit
+        if x then
+
+            local img = x.image
+            if img then imgs[#imgs+1] ='$display:background;'..x.id..';'..img end
+
+            if x.orbit_radius and x.orbit_radius>0.1 then break end 
+        else
+            break
+        end
+    end 
+    for k,v in reversedipairs(imgs) do
+        printout(v)
+    end
+ 
+    --printout('$display:background;planet;/img/background/planet4.png') 
+
+    printout('$display:background;frame;/img/background/space_window.png') 
+    printout('$display:target;null;/null.png') 
+    
+end 
 
 
 

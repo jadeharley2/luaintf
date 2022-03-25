@@ -4,12 +4,14 @@ kyo_starsystem.location = fk_verse
 
 main_star = Def('main_star','star')
 main_star.location = kyo_starsystem
+main_star.image = '/img/background/star.png'
 
 
 katric_planet = Def('katric_planet',{name='Rng'},'planet') 
 katric_planet.location = kyo_starsystem
 katric_planet.in_orbit = main_star
 katric_planet.orbit_radius = 1 -- in ae
+katric_planet.image = '/img/background/planet1.png'
 
 the_tower = Def('the_tower',{name='The tower'},'building')
 the_tower.location = katric_planet
@@ -19,6 +21,7 @@ asteroid_field = Def('asteroid_field',{name='debree'},'asteroid_field')
 asteroid_field.location = kyo_starsystem
 asteroid_field.in_orbit = main_star
 asteroid_field.orbit_radius = 4 -- in ae
+asteroid_field.image = '/img/background/asteroid_field.png'
 
 
 

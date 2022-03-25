@@ -1,7 +1,11 @@
 
 
 read_interaction = Def('read_interaction',{key='read',callback = function(self,user,act,arg1,...)  
-    describe_action(user,'you read a '..tostring(self),tostring(user)..' reads a '..tostring(self)) 
+    if user.robotic then
+        describe_action(user,'scanning '..tostring(self)..'...',tostring(user)..' scans '..tostring(self)) 
+    else
+        describe_action(user,'you read a '..tostring(self),tostring(user)..' reads a '..tostring(self)) 
+    end
     self:call('on_read',user)  
 end},'interaction') 
 
@@ -159,7 +163,11 @@ spell_book.description = 'an ordinary book'
 spell_book:interact_add(read_interaction)
 spell_book.on_read = function(self,user)
     if user==player then
-        printout('you learn something')
+        if user.robotic then
+            printout('deep learning session completed')
+        else
+            printout('you learn something')
+        end
     end
     user:act_add(transfer_soul_action)
     user:act_add(matchclothes_action)

@@ -3,6 +3,20 @@ socket = require "socket"
 net = {}
 net.clients = {}
 
+local meta_client = {}
+
+function meta_client:send(data)
+    local result,err,arg = self.socket:send(data)
+    if err then
+        local x=0
+        print('socket error:',err)
+        self.socket:close()
+        EventCall('player_disconnected',self)
+        net.clients[self.id] = nil
+    end
+end
+meta_client.__index = meta_client
+
 function net.start(host,port)
     net.s = socket.tcp()
     local x,err = net.s:bind(host,port) --'localhost',9999)
@@ -16,28 +30,41 @@ function net.accept()
     if x then 
         local id = #net.clients+1
         x:settimeout(0)
-        net.clients[id] = {
+        local cli = setmetatable({
             socket = x,
             id = id,
-        }
+        },meta_client)
+        net.clients[id] = cli
         print('accepted client ',id)
-        EventCall('player_connected',net.clients[id])
+        EventCall('player_connected',cli)
     end
 end 
+
+function net.check()--check connections
+    for k,v in pairs(net.clients) do
+        v:send('$\n')
+    end
+end
 
 --callback(client, message)
 function net.receive(callback) 
     for k,v in pairs(net.clients) do
         local x,code = v.socket:receive('*l')
         if x then
-            callback(v,x)
+            if x=='$Q'then
+                v.socket:close()
+                EventCall('player_disconnected',v)
+                net.clients[v.id] = nil
+            else
+                callback(v,x)
+            end
         end
     end
 end
 function net.broadcast(msg,ignore)
     for k,v in pairs(net.clients) do
         if v~=ignore then
-            v.socket:send(msg..'\n')
+            v:send(msg..'\n')
         end
     end
 end

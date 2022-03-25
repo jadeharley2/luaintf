@@ -289,6 +289,7 @@ room.examine = function(target, ex)
     local things = {}
     local characters = {}
     local images = {}
+    local things_2 = {}
 
     target:foreach('contains',function(k,v)
         if k~=player then
@@ -297,6 +298,7 @@ room.examine = function(target, ex)
                 images[k.id] = k.image 
             else
                 things[#things+1] = tostring(k)
+                things_2[k.id] = tostring(k)
             end 
         end
     end)
@@ -318,6 +320,10 @@ room.examine = function(target, ex)
     for k,v in pairs(target:adjascent(true)) do
         printout(' '..k.." -> "..tostring(v))
         printout('$direction:'..k..";"..tostring(v))
+    end 
+    printout('$things_clear')
+    for k,v in pairs(things_2) do 
+        printout('$thing:'..'x '..k..";"..v)
     end 
 
     local size = player:relative_textsize(target)

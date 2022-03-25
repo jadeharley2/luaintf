@@ -1,5 +1,39 @@
 
 
+anthroid = Def('anthroid',{name='anthroid' },'adjective') 
+
+anthroid:interact_add(press_interaction)
+anthroid.this.buttons = {
+    toggle_power = function(self,user)
+        if self:is('asleep') then 
+            self:adj_unset('asleep')
+            self:say('all systems online')
+        else
+            self:say('shutting down...')
+            self:adj_set('asleep')
+        end
+    end,
+    reset_personality_core = function(self,user)
+        if self.personality ~= self then
+            self:say('downloading personality core update from the tower...')
+            self:say('download complete, restarting...')
+            self:adj_set('asleep')
+            self.personality = self
+            self.identity = self
+            self:adj_unset('asleep')
+        else
+            self:say('personality core is up to date')
+        end
+    end
+    --display = function(self,user)
+    --    printout("$display:target;https://cdn.discordapp.com/attachments/531891665993203722/942877231997415484/unknown.png")
+    --end,
+}
+
+
+
+
+
 ara = Def('ara',{name='ARA', code = '0-1-1'},'female feline anthroid person') 
 ara.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943211101754118245/ara.png'
 --'https://cdn.discordapp.com/attachments/531891665993203722/943137499256074260/furry-f-furry-art-furry--6411268.png'
@@ -115,17 +149,6 @@ tvk:act_add(navigate_ship_action)
 tvk:interact_add(command_interaction)
 
 
-
-tvk:interact_add(press_interaction)
-tvk.this.buttons = {
-    toggle_power = function(self,user)
-        
-        self:say('...')
-    end,
-    display = function(self,user)
-        printout("$display:target;https://cdn.discordapp.com/attachments/531891665993203722/942877231997415484/unknown.png")
-    end,
-}
 
 
 
