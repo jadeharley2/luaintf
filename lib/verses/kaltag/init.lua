@@ -53,6 +53,10 @@ ayn.location = quarters
 
 katric_capital_ship.srk = srk
 
+lia.location = hangar
+twix.location = hangar
+kesis.location = hangar
+radoslav.location = hangar
 
 
 

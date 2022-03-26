@@ -312,6 +312,7 @@ room.examine = function(target, ex)
     end
 
     printout('$display:target;clear')
+    printout('$display:line;clear')
     for k,v in pairs(images) do
         printout('$display:line;'..k..';'..v)
     end

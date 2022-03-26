@@ -20,7 +20,7 @@ corridor = Def('corridor','room')
 corridor2 = Def('corridor2',{name='south corridor'},'room')
 quarters = Def('quarters',{name="crew quarters"},'room')
 engine_room = Def('engine_room',{name="engine room"},'room')
-hangar = Def('hangar',{name="hangar"},'room')
+hangar = Def('hangar',{name="hangar"},'room') 
 
 bridge.location = katric_capital_ship
 airlock.location = katric_capital_ship
@@ -35,7 +35,7 @@ MakeRelation(corridor,airlock,direction_west)
 MakeRelation(corridor,quarters,direction_east)
 MakeRelation(corridor,corridor2,direction_south)
 MakeRelation(corridor2,engine_room,direction_east)
-MakeRelation(corridor2,hangar,direction_west)
+MakeRelation(corridor2,hangar,direction_west) 
 
 katric_capital_ship.airlock = airlock
 
@@ -82,7 +82,11 @@ bridge_window.examine = function(self,user)
     
     printout('$display:target;clear') 
 
-    printout('$display:background;space;/img/background/space.png') 
+    local top = o.universe
+    if top then
+        local img = top.image or '/img/background/space.png'
+        printout('$display:background;space;'..img) 
+    end
 
     local imgs = {}
     local x = o

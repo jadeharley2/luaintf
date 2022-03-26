@@ -14,8 +14,9 @@ thing._get_universe = function(self)
 end
 
 
-subspace = Def('subspace',{name='Subspace'},'thing')
+subspace = Def('subspace',{name='Subspace'},'universe')
 subspace.description = "blue flickering space"--....
+subspace.image = "/img/background/hyperspace.png"
 
 
 starsystem = Def('starsystem','thing')

@@ -38,6 +38,14 @@ spaceship.subspace_travel = function(self,target)
             self:message('ship arrived at '..tostring(target))
         end)
         return true
+    else
+        self:alert(L'unable to lock jump target')
+        if self.docked then 
+            self:alert(L'ship is docked')
+        end
+        if self.in_travel then 
+            self:alert(L'jump in progress')
+        end
     end
 end
 

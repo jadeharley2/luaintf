@@ -29,7 +29,7 @@ katrician_uniform = Def("katrician_uniform",{name="katrician uniform"},"uniform"
 
 
 
-local function prnth(node,level)
+function prnth(node,level)
     for k,v in pairs(node) do
         printout(string.rep(" ", level*2)..L' > [v.val] is a [v.val.base.name]') 
         prnth(v.subs,level+1)

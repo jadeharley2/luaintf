@@ -33,6 +33,7 @@ end
 
 book = Def('book','thing') 
 book.description = 'an ordinary book'
+book.image = '/img/items/book.png'
 
 mirror = Def('mirror','thing') 
 mirror.image = '/img/items/mirror.png'  
@@ -42,9 +43,9 @@ mirror.examine = function(s)
     else
         printout('you look into mirror and see..')
     end
+    printout('$display:target;clear')
     examine(player)
     
-    printout('$display:target;clear')
 
     printout('$display:target;mirror;/img/background/mirror.png') 
     local img = player.image

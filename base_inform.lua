@@ -230,11 +230,29 @@ function main()
     end
 end
 
-
+is_running = is_running or false
 function main_server()
+    if is_running then return end 
+    is_running = true 
+
     print('ok server!')
     net.start('localhost',9999)
     local nextcheck = 0
+    local update_files = {}
+    if winapi then
+        local LAST_WRITE,FILE_NAME =
+                winapi.FILE_NOTIFY_CHANGE_LAST_WRITE,
+                winapi.FILE_NOTIFY_CHANGE_FILE_NAME
+        local dir = string.sub(arg[0],1,-12)
+        local wtch,err =winapi.watch_for_file_changes(dir,LAST_WRITE+FILE_NAME,true,function(ch,fn)
+            if not string.starts_with(fn,'.') and string.ends_with(fn,'.lua') then
+                print('file changed',ch,fn) 
+                update_files[fn] = true
+            end
+        end)
+        print('filesystem watcher',dir,wtch,err)
+    end
+    
     while true do
         net.accept()
 
@@ -277,6 +295,14 @@ function main_server()
             end
             print(c.person,'leaves')
         end)
+        if winapi then
+            winapi.sleep(1)
+
+            for k,v in pairs(update_files) do
+                update_files[k] = nil
+                Include(k)
+            end
+        end
     end
 end
 

@@ -88,6 +88,26 @@ person.wear = function(self,...)
         end
     end
 end
+person.set_clothes = function(self,...)
+    for k,v in pairs(self.clothes) do
+        DestroyRelation(v,self,worn_by) 
+        v.location = nil
+    end
+    for k,v in pairs({...}) do
+        if type(v)=='string' then
+            local c = Inst(v) 
+            c.location = self
+            MakeRelation(c,self,worn_by) 
+            v = c
+        else
+            v.location = self
+            MakeRelation(v,self,worn_by) 
+        end
+        if not HasRelation(v,owner) then
+            MakeRelation(v,self,owner)
+        end
+    end
+end
 person.takeoff = function(self,...)
     for k,v in pairs({...}) do
         if type(v)=='string' then

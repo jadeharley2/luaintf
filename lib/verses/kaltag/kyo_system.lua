@@ -17,17 +17,17 @@ the_tower = Def('the_tower',{name='The tower'},'building')
 the_tower.location = katric_planet
 
 
-asteroid_field = Def('asteroid_field',{name='debree'},'asteroid_field') 
-asteroid_field.location = kyo_starsystem
-asteroid_field.in_orbit = main_star
-asteroid_field.orbit_radius = 4 -- in ae
-asteroid_field.image = '/img/background/asteroid_field.png'
+debree_asteroid_field = Def('debree_asteroid_field',{name='debree'},'asteroid_field') 
+debree_asteroid_field.location = kyo_starsystem
+debree_asteroid_field.in_orbit = main_star
+debree_asteroid_field.orbit_radius = 4 -- in ae
+debree_asteroid_field.image = '/img/background/asteroid_field.png'
 
 
 
 random_asteroid = Def('random_asteroid',{name='Met'},'asteroid') 
 random_asteroid.location = kyo_starsystem
-random_asteroid.in_orbit = asteroid_field
+random_asteroid.in_orbit = debree_asteroid_field
 random_asteroid.orbit_radius = 0
 
 

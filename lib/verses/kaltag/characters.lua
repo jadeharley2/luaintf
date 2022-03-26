@@ -38,7 +38,7 @@ ara = Def('ara',{name='ARA', code = '0-1-1'},'female feline anthroid person')
 ara.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943211101754118245/ara.png'
 --'https://cdn.discordapp.com/attachments/531891665993203722/943137499256074260/furry-f-furry-art-furry--6411268.png'
 --'https://cdn.discordapp.com/attachments/531891665993203722/943211236538089622/ara.png'
-ara:wear('owned female anthroid_uniform','owned female anthroid_long_gloves','owned female anthroid_stocking','owned anthroid_collar','owned anthroid_visor')
+ara:set_clothes('owned female anthroid_uniform','owned female anthroid_long_gloves','owned female anthroid_stocking','owned anthroid_collar','owned anthroid_visor')
 ara:find('anthroid_uniform').image = '/img/items/ara_uniform.png'
 ara:find('anthroid_long_gloves').image = '/img/items/ara_arms.png'
 ara:find('anthroid_stocking').image = '/img/items/ara_legs.png'
@@ -48,7 +48,7 @@ ara:find('anthroid_visor').image = '/img/items/ara_visor.png'
 
 srk = Def('srk',{name='Warning', code ='07-4-31'},'female feline anthroid person') 
 srk.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943209342293905478/srk.png'
-srk:wear('owned female anthroid_uniform','owned female anthroid_gloves','owned female anthroid_stocking','owned anthroid_collar')
+srk:set_clothes('owned female anthroid_uniform','owned female anthroid_gloves','owned female anthroid_stocking','owned anthroid_collar')
 srk:find('anthroid_uniform').image = '/img/items/srk_uniform.png'
 srk:find('anthroid_gloves').image = '/img/items/srk_gloves.png'
 srk:find('anthroid_stocking').image = '/img/items/srk_legs.png'
@@ -56,7 +56,7 @@ srk:find('anthroid_collar').image = '/img/items/srk_collar.png'
 
 zta = Def('zta',{name='Zeta', code='37-8-12'},'female kleika anthroid person') 
 zta.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943209772088426506/zta.png'
-zta:wear('owned female anthroid_uniform','owned female anthroid_gloves','owned female anthroid_stocking','owned anthroid_collar')
+zta:set_clothes('owned female anthroid_uniform','owned female anthroid_gloves','owned female anthroid_stocking','owned anthroid_collar')
 zta:find('anthroid_uniform').image = '/img/items/zta_uniform2.png'
 zta:find('anthroid_gloves').image = '/img/items/zta_gloves2.png'
 zta:find('anthroid_stocking').image = '/img/items/zta_legs2.png'
@@ -67,7 +67,7 @@ zta.memory.hates_misspelling = true
 tvk = Def('tvk',{name='Vale', code='86-44-21'},'male anthroid person') 
 tvk.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943207738991857793/vc.png'
 --'https://cdn.discordapp.com/attachments/531891665993203722/943216181962244118/vale.png'
-tvk:wear('owned male anthroid_uniform','owned anthroid_collar')
+tvk:set_clothes('owned male anthroid_uniform','owned anthroid_collar')
 tvk:find('anthroid_uniform').image = '/img/items/tvk_uniform.png'
 tvk:find('anthroid_collar').image = '/img/items/tvk_collar.png'
 
@@ -90,15 +90,15 @@ vst.intent_defaults = {robotic=true}
 
 
 zofie = Def('zofie',{name='Zofie'},'female canine anthro person') 
-zofie.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943213388979400814/zofie.png'
-zofie:wear('owned female uniform','owned female stocking')
+zofie.image = '/img/characters/zofie2.png'
+zofie:set_clothes('owned female uniform','owned female stocking')
 zofie:find('uniform').image = '/img/items/zofie_wear.png'
 zofie:find('stocking').image = '/img/items/zofie_legs.png' 
 
 
 vikna = Def('vikna',{name='Vikna', surname='Ramenskaya'},'female feline anthro person')  
 vikna.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943210593094078474/vikna.png'
-vikna:wear('owned female uniform','owned female boots','owned female hat')
+vikna:set_clothes('owned female uniform','owned female boots','owned female hat')
 vikna:find('hat').image = '/img/items/cold_hat.png'
 vikna:find('uniform').image = '/img/items/cold_form.png'
 vikna:find('boots').image = '/img/items/cold_boots.png'
@@ -106,7 +106,7 @@ vikna:find('boots').image = '/img/items/cold_boots.png'
 
 nytro = Def('nytro',{name='Nytro', surname='Sykran'},'male canine anthro person') 
 nytro.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943212074878783548/nytro.png'
-nytro:wear('owned male uniform','owned visor','owned male boots')
+nytro:set_clothes('owned male uniform','owned visor','owned male boots')
 nytro:find('visor').image = '/img/items/nytro_visor.png'
 nytro:find('uniform').image = '/img/items/nytro_work.png'
 nytro:find('boots').image = '/img/items/nytro_boots.png'
@@ -119,7 +119,7 @@ MakeRelation(nytro_sword,nytro,owner)
 
 ayn = Def('ayn',{name='Ayn'},'female jackal anthro person') 
 ayn.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943214682087518238/ayn.png'
-ayn:wear('owned female uniform','owned female gloves','owned female boots','owned female tiara')
+ayn:set_clothes('owned female uniform','owned female gloves','owned female boots','owned female tiara')
 ayn:find('uniform').image = '/img/items/ayn_form.png'
 ayn:find('gloves').image = '/img/items/ayn_gloves.png' 
 ayn:find('boots').image = '/img/items/ayn_boots.png' 
@@ -132,6 +132,25 @@ ayn_staff.image = '/img/items/ayn_staff.png'
 
 
 
+
+twix = Def('twix',{name='Twix'},'female canine anthro person') 
+twix.image = '/img/characters/twix.png'
+twix:set_clothes('owned female uniform','owned female stocking')
+
+lia = Def('lia',{name='Lia'},'female canine anthro person') 
+lia.image = '/img/characters/lia.png'
+lia:set_clothes('owned female uniform','owned female stocking')
+--lia:find('uniform').image = '/img/items/zofie_wear.png'
+--lia:find('stocking').image = '/img/items/zofie_legs.png' 
+
+
+kesis = Def('kesis',{name='Kesis'},'female canine anthro person') 
+kesis.image = '/img/characters/kesis.png'
+kesis:set_clothes('owned female uniform','owned female stocking')
+
+radoslav = Def('radoslav',{name='Radoslav'},'male kleika anthro person') 
+radoslav.image = '/img/characters/radoslav.png'
+radoslav:set_clothes('owned male uniform' )
 
 
 --tvk

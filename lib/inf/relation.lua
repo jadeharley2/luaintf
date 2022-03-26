@@ -26,16 +26,17 @@ function MakeRelation(a,b,kind)
     local kind_id = Identify(kind)
     if kind_id then
         if kind_id:is("relation") then
-            local rel = setmetatable({
-                from = a,
-                to = b,
-                kind = kind_id
-            },relation_meta)
-            local ar = a:ensure('relations',{})
-            local br = b:ensure('relations',{})
-            ar[#ar+1] = rel
-            br[#br+1] = rel
-
+            if not HasRelationWith(a,b,kind) then
+                local rel = setmetatable({
+                    from = a,
+                    to = b,
+                    kind = kind_id
+                },relation_meta)
+                local ar = a:ensure('relations',{})
+                local br = b:ensure('relations',{})
+                ar[#ar+1] = rel
+                br[#br+1] = rel
+            end
         else
             print(kind..' is not a relation kind')
         end

@@ -66,7 +66,7 @@ end
 thing.act_get = function(self,k)
     if type(k)=='string' then 
         return self:first('actions',function(key,v) 
-            if v:is_restricted(self) then return end
+            if v and v:is_restricted(self) then return end
             if key==k then return v end
         end)
         --self.actions[k]  

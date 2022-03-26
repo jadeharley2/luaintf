@@ -110,8 +110,8 @@ luna  = Def('luna',{name='Luna'},'female pony')
 luna.location = luna_room
 luna.title = 'Princess'
 
-luna:wear('owned peytral','owned crown','owned shoes')
-celestia:wear('owned peytral','owned crown','owned shoes')
+luna:set_clothes('owned peytral','owned crown','owned shoes')
+celestia:set_clothes('owned peytral','owned crown','owned shoes')
 
 
 --[[

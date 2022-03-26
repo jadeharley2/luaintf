@@ -1,26 +1,39 @@
 
-defines = {
+defines = defines or {}
+kind_def = kind_def or {}
+turn_kind_def = turn_kind_def or {}
 
-}
-kind_def = {
-    
-}
-turn_kind_def = {
-
-}
-
-adjective = false
-adjective_def = {
-
-}
+adjective = adjective or false
+adjective_def = adjective_def or {}
 
 function Def(id,data,kind)
-    if data==nil then 
-        data = { name = id}
+
+    local old_data
+    if id then
+        old_data = defines[id] or {}
+        if defines[id] then
+            rawset(old_data,'__newindex', nil) 
+            rawset(old_data,'__index', nil) 
+        end 
+    else
+        old_data = {}
     end
-    if type(data) == 'string' then -- Def('Sarah','person')
+
+    if data==nil then 
+        data = old_data
+        data.name = id 
+        --data = { name = id}  
+    elseif type(data) == 'string' then -- Def('Sarah','person')
         kind = data
-        data = { name = id}
+        data = old_data
+        data.name = id 
+        --data = { name = id}
+    else
+        local nd = data 
+        for k,v in pairs(data) do
+            old_data[k] = v
+        end
+        data = old_data
     end
 
     local adjectives
@@ -52,9 +65,9 @@ function Def(id,data,kind)
         }
         data._this = setmetatable({ },this_meta)--get and set raw values 
         
-        data.__index = parent.__index
-        data.__newindex = parent.__newindex
-        data.__tostring = parent.__tostring
+        rawset(data,'__index',rawget(parent,'__index'))
+        rawset(data,'__newindex',rawget(parent,'__newindex'))
+        rawset(data,'__tostring',rawget(parent,'__tostring'))
         
         setmetatable(data,parent)
     end
