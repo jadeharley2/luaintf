@@ -28,14 +28,33 @@ Include('lib/defines/moving_cabin.lua')
 
 Include('lib/verses/homestuck/init.lua')
 Include('lib/verses/kaltag/init.lua')
-Include('lib/verses/mlp.lua')
+Include('lib/verses/mlp/init.lua')
 --Include('parser.lua')
+warp_c = Def('warp_c',{name = "Subspace Central"},'room')
+warp_c.image = '/img/background/space_dark.png'
 
+warp_mlp = Def('warp_mlp',{name = "Subspace mlp"},'room')
+warp_fk = Def('warp_fk',{name = "Subspace fk"},'room')
+warp_hs = Def('warp_hs',{name = "Subspace hs"},'room')
+warp_mlp.image = '/img/background/space_dark.png'
+warp_fk.image = '/img/background/space_dark.png'
+warp_hs.image = '/img/background/space_dark.png'
 
-local p1 = Inst('portal') p1.location = jade_room
+MakeRelation(warp_c,warp_mlp,direction_east)
+MakeRelation(warp_c,warp_fk,direction_west)
+MakeRelation(warp_c,warp_hs,direction_south)
+
+local p1 = Inst('portal') p1.location = warp_hs 
+local p2 = Inst('portal') p2.location = chamber
+MakeRelation(p1,p2,portal_link)
+
+local p1 = Inst('portal') p1.location = warp_fk
 local p2 = Inst('portal') p2.location = engine_room
 MakeRelation(p1,p2,portal_link)
 
+local p1 = Inst('portal') p1.location = warp_mlp
+local p2 = Inst('portal') p2.location = hall_corridor
+MakeRelation(p1,p2,portal_link)
 
 
 no_one:act_add(be_action)
@@ -132,16 +151,19 @@ function parse(full,com,arg1,arg2,arg3,...)
 
     ]]
     
-    local result = player:act(com,arg1,arg2,arg3,...)
-    if result~=nil then 
-        return result
-    else
-        local something = LocalIdentify(arg1)
+    if arg1 then
+        local something = ReachableIdentify(arg1)
         if something then
             if something:interact(player,com,arg2,arg3,...) then
                 return true 
             end 
         end
+    end
+
+    local result = player:act(com,arg1,arg2,arg3,...)
+    if result~=nil then 
+        return result
+    else
         --if com == 'be' then 
         --    local v = Identify(arg1)
         --    if v and v:is(person) then
@@ -211,7 +233,6 @@ end
 
 
 
-
 function main()
     print('ok!')
     while true do
@@ -252,49 +273,61 @@ function main_server()
         end)
         print('filesystem watcher',dir,wtch,err)
     end
+
+    EventAdd('end turn','status update',function(turn)
+        for k,v in pairs(players) do
+            v:send(L'$status:turn [turn] time [GetTime()] \n')
+            if (v.nextturn or 0)<=turn then
+                v:send(L'$unblock:\n')
+            end
+        end
+    end)
+    
+    EventAdd('player_connected','init',function(c)
+        client = c
+        player = c.person or no_one  
+        print('$display:target;clear')
+        print('$display:background;clear')
+        print('$display:line;clear')
+        print('$display:clothes;clear')
+        examine(player)
+        c.person = player
+        client = false
+    end)
+    EventAdd('player_disconnected','init',function(c)
+        if players[c.person]==c then
+            players[c.person] = nil
+        end
+        print(c.person,'leaves')
+    end)
     
     while true do
         net.accept()
 
         net.receive(function(c,input)
-            client = c
-            player = c.person or no_one
-            personality = player.personality or player
+            if (c.nextturn or 0)<=turn then
+                SETPLAYER(c) 
 
-            local args = input:split(' ')
-            local aliased = {ComAlias(unpack(args))}
-            if parse(input,unpack(aliased)) then
- 
-                EndTurn()
-
+                local args = input:split(' ')
+                local aliased = {ComAlias(unpack(args))}
+                if parse(input,unpack(aliased)) then
+    
+                -- EndTurn()
+                c.nextturn = turn+1
+                printout("$block:")
+                end
+                c.person = player
+                SETPLAYER() 
             end
-            c.person = player
-            client = false
         end)  
         
         local ctime = os.clock()
         if nextcheck<ctime then
             net.check()
             nextcheck = ctime + 2
+            EndTurn()
         end
 
-        EventAdd('player_connected','init',function(c)
-            client = c
-            player = c.person or no_one  
-            print('$display:target;clear')
-            print('$display:background;clear')
-            print('$display:line;clear')
-            print('$display:clothes;clear')
-            examine(player)
-            c.person = player
-            client = false
-        end)
-        EventAdd('player_disconnected','init',function(c)
-            if players[c.person]==c then
-                players[c.person] = nil
-            end
-            print(c.person,'leaves')
-        end)
         if winapi then
             winapi.sleep(1)
 

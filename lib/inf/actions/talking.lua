@@ -19,7 +19,7 @@ end},'action')
 
 --say
 
-say_action = Def('say_action',{key='say',restrictions = {"!asleep"},callback = function(self,text)  
+say_action = Def('say_action',{key='say',restrictions = {"!asleep",'!mute'},callback = function(self,text)  
     local is_player = self == player 
   
     --local tlk = self.talk_target

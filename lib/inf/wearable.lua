@@ -122,12 +122,15 @@ end
 thing._get_is_worn = function(self)
     return HasRelation(self,worn_by)
 end
+thing._get_wearer = function(self) 
+    return GetRelationOther(self,worn_by)
+end
 person._get_clothes = function(self)
     return self:collect('contains',function(k,v)
-        if k.is_worn then
+        if k.is_worn and not k:is(person) then
             return k
         end
-    end)
+    end,true)
 end
 
 clothing = Def("clothing","thing")

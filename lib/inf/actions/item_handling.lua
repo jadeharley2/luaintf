@@ -14,8 +14,8 @@ take_action = Def('take_action',{key='take',restrictions = {"!asleep"},callback 
             end)
             return true
         else 
-            local something = LocalIdentify(item)
-            if something then
+            local something = ReachableIdentify(item)
+            if something and something~=self and not something:is(person) then
                 if something.is_moveable~=false then
                     something.location = self
                     describe_action(self,L'[something] taken',L'[self] takes [something]')  
@@ -46,7 +46,7 @@ drop_action = Def('drop_action',{key='drop',restrictions = {"!asleep"},callback 
             end)
             return true
         else 
-            local something = LocalIdentify(item,self)
+            local something = ReachableIdentify(item,self)
             if something then
                 if something.is_moveable~=false then 
                     if HasRelationWith(something,self,worn_by) then
@@ -73,11 +73,11 @@ give_action = Def('give_action',{key='give',restrictions = {"!asleep"},callback 
 
     local is_player = self == player 
     if item then
-        local something = LocalIdentify(item,self)
+        local something = ReachableIdentify(item,self)
         if something then
             if something.is_moveable~=false then
                 if target then
-                    local someone = LocalIdentify(target)
+                    local someone = ReachableIdentify(target)
                     if someone and someone:is(person) then
                         something.location = someone
                         describe_action(self,L'you give [something] to [someone]',L'[self] gives [something] to [someone]')  

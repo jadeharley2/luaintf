@@ -45,18 +45,16 @@ portal = Def('portal','thing')
 portal.image = '/img/items/portal.png'  
 portal.description = 'you see purple swirling mass'
 
-step_trough_interaction = Def('step_trough_interaction',{key='trough',callback = function(self,user)  
-    return self:call('step_trough',user) 
-end},'interaction')
-portal:interact_add(step_trough_interaction)
+portal:interact_add(step_in_interaction)
 
-function portal:step_trough(user)
+
+function portal:step_in(user)
     local is_player = user == player
     local other_side = GetRelationOther(self,portal_link)
     if other_side then
         local next = other_side.location
         user.location = next
-        describe_action(user,L'you step trough [self]',L"[user] enters [self] and vanishes")  
+        describe_action(user,L'you step in [self]',L"[user] enters [self] and vanishes")  
         if is_player then
             printout('$display:target;clear')
             printout('$display:line;clear')

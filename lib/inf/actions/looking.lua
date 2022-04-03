@@ -20,6 +20,7 @@ end)
 
 
 function examine(target)  
+    printout('$display:target;clear')
     if target.examine then
         target:examine(player)
     else

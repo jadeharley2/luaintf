@@ -21,33 +21,45 @@ function mind_transfer(srcperson,trgperson)
     local srcmind = rawget(srcperson,'mind')
     local trgmind = rawget(trgperson,'mind')
 
-    if srcmind and trgmind then
+    if srcmind and trgmind and srcmind ~=no_mind and trgmind~=no_mind then
         srcmind:swap_memory('mind_'..srcperson.id,'mind_'..trgperson.id)
         trgmind:swap_memory('mind_'..srcperson.id,'mind_'..trgperson.id)
         srcmind:swap_memory('nameof_'..srcperson.id,'name_'..trgperson.id)
         trgmind:swap_memory('nameof_'..srcperson.id,'name_'..trgperson.id)
     end
 
-    rawset(srcperson,'mind',trgmind)
-    rawset(trgperson,'mind',srcmind) 
+    rawset(srcperson,'mind',trgmind or no_mind)
+    rawset(trgperson,'mind',srcmind or no_mind) 
 
     local psrcp = players[srcperson] 
     local ptrgp = players[trgperson] 
+
+    local srcp = srcperson.player 
+    local trgp = trgperson.player 
+
+    --srcperson.player = trgp
+    --trgperson.player = srcp
 
     if player==trgperson then
         player = srcperson 
     elseif player==srcperson then
         player = trgperson 
     end
-
+--
     players[trgperson] = psrcp
     players[srcperson] = ptrgp
-
+    
     send_character_images(srcperson.location)
     if trgperson==player then 
         examine(srcperson) 
         send_actions() 
     end
+    if srcperson==player then 
+        examine(trgperson) 
+        send_actions() 
+    end
+    send_style(srcperson)
+    send_style(trgperson)
 end
 
 transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback = function(self,arg1,...) 

@@ -38,9 +38,11 @@ function SortedPairs (t, f)
 	return iter
 end
 function AscendingPairs (t, f) 
+    f = f or stdcomp
 	return SortedPairs(t,function(a,b) return f(a) < f(b) end)
 end
 function DescendingPairs (t, f) 
+    f = f or stdcomp
 	return SortedPairs(t,function(a,b) return f(a) > f(b) end)
 end
 local function reversedipairsiter(t, i)

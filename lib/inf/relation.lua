@@ -36,6 +36,8 @@ function MakeRelation(a,b,kind)
                 local br = b:ensure('relations',{})
                 ar[#ar+1] = rel
                 br[#br+1] = rel
+                a:call('on_new_'..kind_id.id,b)
+                b:call('on_new_'..kind_id.id,a)
             end
         else
             print(kind..' is not a relation kind')
@@ -53,11 +55,13 @@ function DestroyRelation(a,b,kind)
             for k,v in pairs(ar) do
                 if v.from == a and v.to == b and v.kind == kind_id then
                     ar[k] = nil
+                    a:call('on_rem_'..kind_id.id,b)
                 end
             end
             for k,v in pairs(br) do
                 if v.from == a and v.to == b and v.kind == kind_id then
                     br[k] = nil
+                    b:call('on_rem_'..kind_id.id,a)
                 end
             end
         else

@@ -4,14 +4,15 @@ soul.image = '/img/characters/soul.png'
 soul:act_add(look_action)
 soul:act_add(examine_action)
 soul:act_add(move_action) 
-soul._get_memory = function(self)
-    return rawget(self,'mind').memory or {}
+soul.mind = no_mind
+soul._get_memory = function(self) 
+    return (rawget(self,'mind') or {}).memory or {}
 end 
 soul._get_task = function(self)
-    return rawget(self,'mind').task
+    return (rawget(self,'mind') or {}).task
 end
 soul._set_task = function(self,value)
-    rawget(self,'mind').task = value
+    (rawget(self,'mind') or {}).task = value
 end
 
 
@@ -20,7 +21,7 @@ posess_action = Def('posess_action',{key='posess',callback = function(self,arg1,
     if arg1 then
         local v = LocalIdentify(arg1)
         if v and v:is(person) then
-            if v.mind == nil then
+            if v.mind==no_mind then
                 describe_action(self,L"you merge with [v]'s body.")  
                 sleep(0.1) 
                 
@@ -30,6 +31,7 @@ posess_action = Def('posess_action',{key='posess',callback = function(self,arg1,
 
                 v:adj_unset('asleep') 
                 describe_action(self,'you awake',L'[v] awakes')  
+                send_style(v)
     
                 return true
             else
@@ -58,10 +60,11 @@ AddTaskType('find_body', {
     OnUpdate = function(self,npc,mind,memory)
         self.timer = self.timer + 1
         local loc = npc.location
+        if self.timer<10 then return end 
         if math.random()>0.8 then
             local body = loc:first('contains',function(v)
-                if v:is(person) and v.mind==nil then
-                    if v==self.old_body and self.timer<4 then return end -- skip own body early (4 turns)
+                if v:is(person) and v.mind==no_mind then
+                    if v==self.old_body and self.timer<20 then return end -- skip own body early (10 turns)
                     return v
                 end
             end)
@@ -79,7 +82,7 @@ soul.on_init = function(self)
 end
 soul:event_add('on_turn_end','mind',function(self)
     local mind = rawget(self,'mind')
-    if mind then 
+    if mind and mind~=no_mind then 
         local t = mind.task 
         if t then 
             if not t.is_started then

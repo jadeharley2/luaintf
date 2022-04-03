@@ -492,7 +492,7 @@ person.intent_tree = {
         follow = {
             start = function(self,F,I,D,T)
                 local target = LocalIdentify(I.target)
-                if target=='me' then target = F end 
+                if I.target=='me' then target = F end 
                 if target and target:is(person) then
                     self:intent_say('ok',true) 
                     self.task = Task('follow',target)
@@ -574,7 +574,35 @@ person.intent_tree = {
                     F:act('give',v,self)
                 end
             end,
-        }
+        },
+        _ = DefineIntents("[can] [you] swap {source} with {target}",{"request","swapwith"}),
+        swapwith = function(self,F,I,D,T)
+            if self:is("rogue_class") then
+                local v = LocalIdentify(I.target)
+                if v then
+                    if I.source=='me' then
+                        self:intent_say("sure")
+                        self:act("soulrip",v)
+                        self:act("soulrip",F)
+                        self:intent_say("there you go")
+                    else
+                        local v2 = LocalIdentify(I.source)
+                        if v2 then
+                            self:intent_say("sure")
+                            self:act("soulrip",v)
+                            self:act("soulrip",v2)
+                            self:intent_say("there you go")
+                        else
+                            self:intent_say(L"bring me to [I.source] first")
+                        end
+                    end
+                else
+                    self:intent_say(L"bring me to [I.target] first")
+                end
+            else
+                self:intent_say("i can't")
+            end
+        end,
     },
     
     topic_bodyswap = {

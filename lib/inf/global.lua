@@ -1,83 +1,58 @@
 
-client = false
-player = false
-personality = false
+turn = turn or 0
 
-players = {}
-turn = 0
+time_callbacks = time_callbacks or {}
 
 function EndTurn()
     turn = turn + 1
     EventActCall('end turn',turn)
+
+    local h = math.floor(turn/60)
+    local m = turn-h*60
+    CallTime(m,h+1)
 end
 
-function printout(a,...)
-    if client then
-        local t = {'   ',a,...}
-        for k,v in pairs(t) do
-            t[k] = tostring(v)
-        end
-        t[#t+1] = '\n'
-        client:send(table.concat(t,' '))
-    end
-    if a:sub(1,1)~='$' then
-        print_c_msg('    '..a,...)
-    end
+function GetTime() 
+    local h = math.floor(turn/60)
+    local m = turn-h*60 
+    return (h+1)..':'..m
 end
 
-function describe_action(doer,desc_doer,desc_other,everywhere)
-
-    if doer==player then
-        if desc_doer then printout(desc_doer) end
-    end
-    if desc_other then
-        if everywhere then
-            net.broadcast(desc_other,players[doer])
-        else--if player.location==doer.location then
-            local loc = doer.location
-            for k,v in pairs(players) do
-                if k~=doer and k.location == loc then
-                    if v then
-                        v:send(desc_other..'\n')
-                    else--single
-                        printout(desc_other..'\n')
-                    end
-                end
-            end 
+function At(hour,min,id,callback)
+   local x = hour..':'..min 
+   time_callbacks[x] = time_callbacks[x] or {}
+   time_callbacks[x][id] = callback
+end
+function CallTime(min,hour)
+    local x = hour..':'..min 
+    local u = time_callbacks[x]
+    if u then 
+        for k,v in pairs(u) do
+            v()
         end 
-    end
+    end 
 end
 
-function others_action(doer,callback)
-    local cp = player 
-    local cc = client
+--:say('ok!')
+for k=1,10 do 
+    At(k,12,'test1',function()
+        nepeta.task = Task('moveto',jade_room)
+    end)
+    At(k,22,'test1',function()
+        nepeta.task = Task('moveto',garden_e)
+    end)
+    At(k,32,'test1',function()
+        nepeta.task = Task('moveto',aradia_room)
+    end)
 
-    for k,v in pairs(players) do
-        local loc = doer.location
-        if k~=doer and k.location == loc then
-            player = k
-            client = v
-            callback(k,v)
-        end
-    end 
-
-
-    player = cp 
-    client = cc 
-end
-function location_action(location,callback)
-    local cp = player 
-    local cc = client
-
-    for k,v in pairs(players) do 
-        if k.location == location then
-            player = k
-            client = v
-            callback(k,v)
-        end
-    end 
-
-
-    player = cp 
-    client = cc 
+    
+    At(k,42,'test1',function()
+        nepeta.task = Task('moveto',jade_room)
+    end)
+    At(k,50,'test1',function()
+        nepeta.task = Task('moveto',garden_e)
+    end)
+    At(k,58,'test1',function()
+        nepeta.task = Task('moveto',aradia_room)
+    end)
 end

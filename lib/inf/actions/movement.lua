@@ -8,6 +8,7 @@ move_action = Def('move_action',{key='move',restrictions = {"!asleep"},callback 
             describe_action(self,nil,tostring(self)..' leaves to '..tostring(next))  
             others_action(self,function(ply)
                 printout('$display:line;'..self.id..';')
+                printout('$display:target;'..self.id..';')
             end)
 
             self.location = next
@@ -41,6 +42,103 @@ end
 person:act_add(move_action) 
 
 
+function thing:step_in(user)
+    local is_player = user == player 
+
+    if self:is('opened') then
+        local next = self
+        user.location = next
+
+        
+        others_action(user,function(ply)
+            printout('$display:line;'..user.id..';')
+            printout('$display:target;'..user.id..';')
+        end)
+
+        describe_action(user,L'you step in [self]',L"[user] enters [self]")  
+
+        if is_player then
+            printout('$display:background;clear')
+        end
+
+        
+        others_action(user,function(ply) 
+            printout('$display:line;'..self.id..';'..(self.image or ''))
+        end)
+
+
+        if is_player then
+            printout('$display:target;clear')
+            printout('$display:line;clear')
+            examine(next) 
+
+
+            local things = {}
+            self:foreach('contains',function(k,v)
+                if k~=player then
+                    things[k.id] = tostring(k)
+                end
+            end)
+
+            printout('$directions_clear') 
+            printout('$things_clear')
+            for k,v in pairs(things) do 
+                printout('$thing:'..'x '..k..";"..v)
+            end 
+        end 
+    else 
+        describe_action(user,L"you can't get inside [self], it's closed!")  
+    end
+    return true 
+end
+
+function thing:step_out(user)
+    local is_player = user == player 
+
+    if self:is('opened') then
+        local next = self.location
+        user.location = next
+    
+        others_action(user,function(ply)
+            printout('$display:line;'..user.id..';')
+            printout('$display:target;'..user.id..';')
+        end)
+    
+    
+        if is_player then
+            printout('$display:background;clear')
+        end
+
+        describe_action(user,L'you step out of [self]',L"[user] exits [self]")  
+    
+        
+        others_action(user,function(ply) 
+            printout('$display:line;'..self.id..';'..(self.image or ''))
+        end)
+    
+    
+        if is_player then
+            printout('$display:target;clear')
+            printout('$display:line;clear')
+            examine(next) 
+        end 
+    else 
+        describe_action(user,L"you can't get out of [self], it's closed!")  
+    end
+    return true 
+end
+step_in_interaction = Def('step_in_interaction',{key='step_in',
+    restrictions = {"opened"},
+    user_restrictions = {"!asleep",'!blind'},
+    callback = function(self,user)  
+        return self:call('step_in',user) 
+end},'interaction')
+step_out_interaction = Def('step_out_interaction',{key='step_out',
+    restrictions = {"opened"},
+    user_restrictions = {"!asleep",'!blind'},
+    callback = function(self,user)  
+        return self:call('step_out',user) 
+end},'interaction')
 
 --[[
 

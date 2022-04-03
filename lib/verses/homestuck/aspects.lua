@@ -32,7 +32,41 @@ soul_rip = Def('soul_rip',{key='soulrip',callback = function(self,arg1,...)
     end 
 end},'action') 
 
+soul_adapt = Def('soul_adapt',{key='souladapt',callback = function(self,arg1,...) 
+    local is_player = self == player  
+    if arg1 then
+        local v = LocalIdentify(arg1)
+        if v and v:is(person) then
+            if v.identity~=v then
+                describe_action(self,L'you prepare your abilities.',L'[!self] prepares to use [their] abilities as a Rogue of Heart.')  
+                sleep(0.1)
+                describe_action(self,L'you cast soul adaptation on [v]',L'[self] casts something on [v]!')  
+                
+                v:adj_set('asleep')
+
+                local old_identity = v.identity
+                describe_action(v,'you feel yourself changing... mentally') 
+                v.identity = v 
+                v.personality = v 
+                describe_action(v,'you feel different') 
+                describe_action(v,L'you are no longer consider yourself [old_identity]')  
+                
+                v:adj_unset('asleep')
+    
+                return true
+            else
+                if is_player then printout(arg1..' has already adapted') end
+            end
+        else
+            if is_player then printout('there is no '..arg1) end
+        end 
+    else
+        if is_player then printout('specify target') end
+    end 
+end},'action') 
+
 heart_aspect:act_add(soul_rip)
+heart_aspect:act_add(soul_adapt)
 
 
 

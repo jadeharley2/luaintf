@@ -73,7 +73,7 @@ thing.act_get = function(self,k)
     else
         local item = Identify(k)
         return self:first('actions',function(key,v) 
-            if v:is_restricted(self) then return end
+            if v and v:is_restricted(self) then return end
             if item.key==k then return v end
         end)
         --self.actions[item.key] 
@@ -88,23 +88,63 @@ thing.act_list = function(self,k)
     return r --self.actions:getall()
 end
 
----
+---------------------------------------
+---------------------------------------
+---------------------------------------
+---------------------------------------
+---------------------------------------
+---------------------------------------
+---------------------------------------
 
 interaction = Def('interaction',{ 
     key='default',
     description = "",
     callback = function(self) printout('you are calling default interaction! stop!')  end
 },'thing')
+function interaction:is_restricted(actor,user)
+    local restrictions = self.restrictions
+    if restrictions then
+        for k,v in pairs(restrictions) do
+            if v:sub(1,1)=='!' then
+                if actor:is(v:sub(2)) then return true end
+            else
+                if not actor:is(v) then return true end
+            end
+        end
+    end
+
+    if user then
+        local user_restrictions = self.user_restrictions
+        if user_restrictions then
+            for k,v in pairs(user_restrictions) do
+                if v:sub(1,1)=='!' then
+                    if user:is(v:sub(2)) then return true end
+                else
+                    if not user:is(v) then return true end
+                end
+            end
+        end
+    end
+    return false
+end
 
 InheritableSet(thing,'interactions')
 thing.interact = function(self,user,key,...)
     local v = self.interactions[key]
     if v then
+        if v:is_restricted(self,user) then return end
         return v.callback(self,user,...)
     end
 end 
 thing.interact_list = function(self,k)
-    return self.interactions:getall()
+    local r = {}
+    self:collect('interactions',function(k,v) 
+        if v:is_restricted(self) then return end
+        r[k] = v
+    end)
+    return r --self.actions:getall()
+
+    --return self.interactions:getall()
 end
 thing.interact_add = function(self,k)  
     local item = Identify(k)
@@ -128,11 +168,24 @@ thing.interact_rem = function(self,k)
 end
 thing.interact_get = function(self,k)
     if type(k)=='string' then 
-        return self.interactions[k]  
+        return self:first('interactions',function(key,v) 
+            if v and v:is_restricted(self) then return end
+            if key==k then return v end
+        end) 
     else
         local item = Identify(k)
-        return self.interactions[item.key] 
+        return self:first('interactions',function(key,v) 
+            if v and v:is_restricted(self) then return end
+            if item.key==k then return v end
+        end) 
     end 
+
+    --if type(k)=='string' then 
+    --    return self.interactions[k]  
+    --else
+    --    local item = Identify(k)
+    --    return self.interactions[item.key] 
+    --end 
 end
 
 

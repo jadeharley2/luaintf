@@ -30,7 +30,7 @@ person:event_add('on_init','mind',function(self)
 end)
 person:event_add('on_turn_end','mind',function(self)
     local mind = rawget(self,'mind')
-    if mind then 
+    if mind and not self.player then 
         local t = mind.task 
         if t then 
             if not t.is_started then

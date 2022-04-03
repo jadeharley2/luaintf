@@ -228,6 +228,7 @@ room = Def('room',{
     end,
 },'thing')
 InheritableSet(room,'contains')
+room.image = '/img/background/emptyroom.png'
 
 
 nowhere = Def('nowhere',{name = 'Nowhere', description = '???'},'room')
@@ -280,7 +281,18 @@ thing.parent_oftype = function(self,type,include_self)
 end
 
 
+room.get_reachables = function(self, user, output)
+    output = output or {}
 
+    self:foreach('contains',function(k,v)
+        local r = k.get_reachables 
+        output[#output+1] = k
+        if r then 
+            r(k,user,output)
+        end 
+    end)
+    return output
+end
 
 room.examine = function(target, ex) 
     

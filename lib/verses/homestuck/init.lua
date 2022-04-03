@@ -14,9 +14,17 @@ MakeRelation(jade,aradia,likes)
 
 
 jade.location = jade_room
-aradia.location = jade_room
-nepeta.location = jade_room
+rose.location = jade_room
+dave.location = jade_room
+john.location = jade_room
 
+jadebot.location = chamber
+
+aradia.location = aradia_room
+nepeta.location = aradia_room
+kanaya.location = aradia_room
+terezi.location = aradia_room
+aradiabot.location = aradia_room
 
 --[[
 local ajd = jade_room:adjascent(true)

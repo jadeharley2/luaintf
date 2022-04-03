@@ -44,7 +44,7 @@ function Def(id,data,kind)
 
 
     if kind then 
-        adjectives = kind:split(' ')
+        adjectives =string.split(kind,' ')
          
         kind = adjectives[#adjectives]
         adjectives[#adjectives] = nil
@@ -224,7 +224,7 @@ thing = Def('thing',{
     --name = "A thing",
     --_get_name = function(s) return s.id end,
     _get_description = LF"You see nothing special about [self.name].", 
-    foreach = function(self,key,callback)
+    foreach = function(self,key,callback,thisonly)
         local s = self
         while s do
             local t = rawget(s,key)
@@ -232,6 +232,10 @@ thing = Def('thing',{
                 for k,v in pairs(t) do
                     callback(k,v)
                 end
+            end
+            
+            if thisonly then
+                return 
             end
 
             local tadj = rawget(self,'adjectives')
@@ -255,7 +259,7 @@ thing = Def('thing',{
         end
     end,
     foreach_type = foreach_type,
-    first = function(self,key,callback)
+    first = function(self,key,callback,thisonly)
         local s = self
         while s do
             local t = rawget(s,key)
@@ -267,6 +271,10 @@ thing = Def('thing',{
                     end
                 end
             end
+            if thisonly then
+                return 
+            end
+
 
             local tadj = rawget(self,'adjectives')
             if tadj then
@@ -290,7 +298,7 @@ thing = Def('thing',{
             s = s.base
         end
     end,
-    collect = function(self,key,callback)
+    collect = function(self,key,callback,thisonly)
         local s = self
         local rez_ray = {}
         while s do
@@ -299,6 +307,9 @@ thing = Def('thing',{
                 for k,v in pairs(t) do
                     rez_ray[#rez_ray+1] = callback(k,v) 
                 end
+            end
+            if thisonly then
+                return rez_ray
             end
 
             local tadj = rawget(s,'adjectives')
@@ -360,28 +371,30 @@ thing = Def('thing',{
             end
 
 
-            local tadj = rawget(t,'adjectives')
-            if tadj then
-                for ak,_ in pairs(tadj) do
-                    local at = adjective_def[ak]
-                    if at then 
-                        if adj_prop then
-                            local get_f = rawget( at,adj_prop)
-                            if get_f then
-                                return get_f(topt)
-                            end
-                        end 
+            if k~='id' then
+                local tadj = rawget(t,'adjectives')
+                if tadj then
+                    for ak,_ in pairs(tadj) do
+                        local at = adjective_def[ak]
+                        if at then 
+                            if adj_prop then
+                                local get_f = rawget( at,adj_prop)
+                                if get_f then
+                                    return get_f(topt)
+                                end
+                            end 
 
-                        local v = rawget(at,adj_key)
-                        if v then  
-                            return v 
+                            local v = rawget(at,adj_key)
+                            if v~=nil then  
+                                return v 
+                            end
                         end
                     end
                 end
             end
 
             local v = rawget(t,k)
-            if v then  
+            if v~=nil then  
                 return v 
             end
             
@@ -577,15 +590,31 @@ function LocalIdentify(id,location)
     if id then
         if type(id) == 'string' then
             location = location or player.location
-            return location:first('contains',function(k,v)
+
+            local c = location:first('contains',function(k,v)
                 if k:is(id) then
                     return k
                 end
-            end) or location:first('contains',function(k,v)
+            end) 
+            if c then return c end 
+
+            
+            local candidates = {}
+            location:foreach('contains',function(k,v)
                 if k.name:find_anycase(id) then
-                    return k
+                    candidates[string.levenshtein(k.name, id) ]= k
                 end
             end)
+
+            for k,v in AscendingPairs(candidates) do
+                return v
+            end
+            
+            --or location:first('contains',function(k,v)
+            --    if k.name:find_anycase(id) then
+            --        return k
+            --    end
+            --end)
         else
             return id  
         end
@@ -610,8 +639,18 @@ function ListIdentify(id,list)
         end
     end
 end
+function ReachableIdentify(id,user,room)
+    user = user or player
+    room = room or user.location
+    local lst = {}
+    room:call('get_reachables',user,lst)
+    if lst then
+        return ListIdentify(id,lst)
+    end
+end
 
 adjective = Def('adjective','thing')
 adjective.describe = function(target,str)
     return str
 end
+

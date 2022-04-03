@@ -66,6 +66,15 @@ person = Def('person',{
                         if src and src~=source then xnm = xnm..'('..src.name..')' end
                         printout('    $gk'..xnm..'$wk: %2'..text)
                     end
+                else
+                    local p = self.player
+                    if p then
+                        local xnm = source.name 
+                        local src = self.memory['mind_'..source.id]
+                        if src and src~=source then xnm = xnm..'('..src.name..')' end
+                        p:send('    $gk'..xnm..'$wk: %2'..text..'\n')
+                    end
+                    
                 end 
             end 
         end
@@ -75,7 +84,7 @@ person = Def('person',{
     end,
     say = function(self,text)  
         if text then
-            if not self:adj_isset('asleep') then
+            if not self:adj_isset('asleep') and not self:adj_isset('mute') then
                 local ts = s
                 s = self 
                 text = self:process_speech(L(text))
@@ -111,7 +120,7 @@ person.mood = "ok"
 likes = Def('likes',{},"relation")
 
 
-
+person.should_wear_clothes = true
 
 
 
@@ -142,7 +151,9 @@ person.examine = function(target, ex)
 
         target:foreach('contains',function(k,v)
             if k~=player then
-                if k.is_worn then
+                if k:is('person') then 
+
+                elseif k.is_worn then
                     worn[#worn+1] = k
                 elseif k:is('body_part') then 
                     if k:call('should_display',target)~=false then
@@ -152,7 +163,7 @@ person.examine = function(target, ex)
                     things[#things+1] = k
                 end 
             end
-        end)
+        end,true)
 
         if #worn>0 then
             if player.robotic then
@@ -227,9 +238,10 @@ person.examine = function(target, ex)
         local worn = target.clothes
         if #worn>0 then
             printout(L'[target.they] [target.are] wearing: '..table.concat(worn,', ')) 
-        else
+        elseif target.should_wear_clothes then
             printout(L'[target.they] [target.are] wearing nothing ') 
         end
+
         printout('$display:clothes;clear')
         for k,v in pairs(worn) do
             if v.image then
@@ -241,7 +253,7 @@ person.examine = function(target, ex)
             if k:is('body_part') and k:call('should_display',target)~=false then
                 return k.description
             end
-        end)
+        end,true)
         if #body_parts>0 then
             for k,v in pairs(body_parts) do
                 printout(target.their..' '..v) 
@@ -256,4 +268,28 @@ person.examine = function(target, ex)
     end
 end
 
+person.get_reachables = function(self, user, output)  
+    output[#output+1] = self
+    if self==user then
+        self:foreach('contains',function(k,v)
+            local r = k.get_reachables 
+            output[#output+1] = k
+            if r then 
+                r(k,user,output)
+            end 
+        end) 
+    end 
+end
 
+
+person.view_style = [[ 
+    --bg1-color: #000000;
+
+    --bg2d-color: #000000;
+    --bg2l-color: #3b3b3b;
+
+    --bg3d-color: rgb(56, 56, 56);
+    --bg3l-color: #1f1f1f;
+
+    --text-color: #ffffff; 
+]]

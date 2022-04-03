@@ -6,6 +6,8 @@ Include('kind.lua')
 Include('relation.lua')
 Include('action.lua')
 
+Include('player.lua')
+
 Include('location.lua')
 Include('person.lua')
 Include('size.lua')

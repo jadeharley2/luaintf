@@ -8,7 +8,7 @@ sniff_action = Def('sniff_action',{key='sniff',restrictions = {"!asleep"},callba
         local something = LocalIdentify(item) or LocalIdentify(item,self)
         if something then
              
-            describe_action(self,L'you sniff [something]... smells like [something.taste]',tostring(self)..' sniffs '..tostring(item))  
+            describe_action(self,L'you sniff [something]... [something.they] smells like [something.smell]',tostring(self)..' sniffs '..tostring(item))  
             return true
         else
             if is_player then printout('there is no '..item) end
@@ -24,7 +24,7 @@ lick_action = Def('lick_action',{key='lick',restrictions = {"!asleep"},callback 
         local something = LocalIdentify(item) or LocalIdentify(item,self)
         if something then
              
-            describe_action(self,L'you lick [something]... tastes like [something.taste]',tostring(self)..' licks '..tostring(something))  
+            describe_action(self,L'you lick [something]... [something.they] tastes like [something.taste]',tostring(self)..' licks '..tostring(something))  
             return true
         else
             if is_player then printout('there is no '..item) end

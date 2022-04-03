@@ -1,6 +1,7 @@
 
 
 no_one = Def('no_one',{name='No one'},'person')
+no_mind = no_mind or {}
 
 
 female  = Def('female',{gender = 'female',their = 'her', they = 'she', are = 'is'},'adjective')
@@ -80,4 +81,99 @@ end)
 
 
 
+unzip_action = Def('unzip_action',{key='unzip',restrictions = {"!asleep","!animatronic"},callback = function(self) 
+    local is_player = self == player 
+    local ins = self.costume 
+    if ins then
+        ins.wearer:takeoff(ins) 
+    end
+end},'action') 
 
+
+morph_costume = Def('morph_costume','clothing')
+morph_costume.on_new_worn_by = function(self, wearer)
+    local pm = self.pmorph
+    if not pm then 
+        pm = Inst(self.morph.id)
+        pm.costume = self 
+        pm:act_add(unzip_action)
+        pm.mind = no_mind
+        self.pmorph = pm 
+    end
+    pm.location = wearer.location
+    wearer.location = pm
+    mind_transfer(wearer,pm) 
+end
+morph_costume.on_rem_worn_by = function(self, wearer)
+    local pm = self.pmorph
+    pm:foreach('contains',function(x)
+        pm:act('drop',x)
+    end)
+    wearer.location = pm.location
+    pm.location = self
+    mind_transfer(pm,wearer)  
+end
+
+
+
+robot = Def('robot','adjective')
+robot.should_wear_clothes = false
+
+
+
+open_action = Def('open_action',{key='open',restrictions = {"!asleep"},callback = function(self,user) 
+    self:call('open',user)
+    return true;
+end},'interaction') 
+close_action = Def('close_action',{key='close',restrictions = {"!asleep"},callback = function(self,user) 
+    self:call('close',user)
+    return true;
+end},'interaction') 
+
+ 
+
+cabinet = Def('cabinet','thing')
+
+cabinet:interact_add(open_action)
+cabinet:interact_add(close_action)
+function cabinet:open(user)
+    if not self:is('opened') then
+        self:adj_set('opened')
+        describe_action(user,L'you open [self]',L"[user] opens [self]")  
+        if user==player then
+            examine(self)
+        end
+    end
+end
+function cabinet:close(user) 
+    if self:is('opened') then
+        self:adj_unset('opened')
+        describe_action(user,L'you close [self]',L"[user] closes [self]")  
+    end
+end
+function cabinet:examine(user)
+    thing.examine(self,user)
+    
+    if self:is('opened') then
+        local things = self:collect('contains',function(k,v) return k end)
+        if #things>0 then
+            printout(L'[self] contains: '..table.concat(things,', ')) 
+        else
+            printout(L'[self] is empty') 
+        end
+    else
+        printout(L'[self] is closed') 
+    end
+end
+cabinet.get_reachables = function(self, user, output)  
+    output[#output+1] = self
+    if self:is('opened') then
+        self:foreach('contains',function(k,v)
+            local r = k.get_reachables 
+            output[#output+1] = k
+            if r then 
+                r(k,user,output)
+            end 
+        end)
+    end 
+end
