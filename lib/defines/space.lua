@@ -41,7 +41,7 @@ asteroid_field._get_description = LF'asteroid field [self]'
 
 portal_link = Def('portal_link','relation') 
 
-portal = Def('portal','thing') 
+portal = Def('portal','opened thing') 
 portal.image = '/img/items/portal.png'  
 portal.description = 'you see purple swirling mass'
 

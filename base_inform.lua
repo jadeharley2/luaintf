@@ -45,7 +45,7 @@ MakeRelation(warp_c,warp_fk,direction_west)
 MakeRelation(warp_c,warp_hs,direction_south)
 
 local p1 = Inst('portal') p1.location = warp_hs 
-local p2 = Inst('portal') p2.location = chamber
+local p2 = Inst('portal') p2.location = rose_forest
 MakeRelation(p1,p2,portal_link)
 
 local p1 = Inst('portal') p1.location = warp_fk
@@ -70,12 +70,16 @@ no_one.examine = function()
             loc_u[u] = lu
         end
     end
+    local chars = {}
     for k,v in pairs(loc_u) do
         printout(L"  [k.name]")
         for kk,vv in ipairs(v) do
             printout(L"    >'be [vv.id]' [vv.name] at [vv.location]")
+            chars[#chars+1] = 'be '..vv.id
         end
     end
+     
+    printout('$actions:',table.concat(chars, ';'))
 end
 
 player = no_one
@@ -276,7 +280,7 @@ function main_server()
 
     EventAdd('end turn','status update',function(turn)
         for k,v in pairs(players) do
-            v:send(L'$status:turn [turn] time [GetTime()] \n')
+            v:send(L'$status:turn [turn] time [GetTimeDate()] \n')
             if (v.nextturn or 0)<=turn then
                 v:send(L'$unblock:\n')
             end

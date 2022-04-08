@@ -3,6 +3,10 @@
 fk_verse = Def('fk_verse',{name="Fluff Kevlar Universe"},'universe')
 
 
+year = 16510
+epoch = 'SST'
+
+
 
 
 Include('defines.lua')

@@ -1,9 +1,5 @@
 
 
-year = 16510
-era = 'SST'
-
-
 siania = Def('siania',{name="Queendom of Siania"},'soverign_state')
 
 katric = Def('katric',{name="Katric"},'soverign_state') -- founded: 3120 SE from siania

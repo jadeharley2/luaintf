@@ -8,10 +8,16 @@ function Include(path)
     local dir = str:match("(.*/)") or str:match("(.*\\)") 
     if dir then
         print('Include: '..dir..path)
-        dofile(dir..path)
+        local status, err = pcall(function() 
+            dofile(dir..path)
+        end)
+        if err then print(status,err) end
     else
         print('Include: '..path)
-        dofile(path)
+        local status, err = pcall(function() 
+            dofile(path)
+        end)
+        if err then print(status,err) end
     end
 end
   

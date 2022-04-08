@@ -1,13 +1,47 @@
 
 
+local_town = Def('town',{},'thing')
+local_town.location = hs_verse
 
 tower = Def('tower',{},'building')
-tower.location = hs_verse
+tower.location = local_town
+
+home = Def('home','building')
+
+rose_house = Def('rose_house',{},'owned home')
+rose_house.location = local_town
+rose_house.owner = rose
+
+dave_house = Def('dave_house',{},'owned home')
+dave_house.location = local_town
+dave_house.owner = dave
+
+john_house = Def('john_house',{},'owned home')
+john_house.location = local_town
+john_house.owner = john
+
+
 
 jade_room = Def('jade_room',{},'owned room') 
 jade_room.owner = jade
 jade_room.location = tower
 jade_room.image = '/img/hs/background/r_jade_bedroom.png' 
+
+
+
+
+
+
+aradia_room = Def('aradia_room',{},'owned room')
+aradia_room.owner = aradia
+aradia_room.location = tower
+
+
+
+
+
+
+
 
 
 change_action = Def('change_action',{key='change',restrictions = {"!asleep"},callback = function(self,arg) 
@@ -73,10 +107,6 @@ roxy_costume.location = jade_cabinet
 
 
 
-aradia_room = Def('aradia_room',{},'owned room')
-aradia_room.owner = aradia
-aradia_room.location = tower
-
 
 chamber = Def('chamber',{name = "Chamber"},'room')
 chamber.on_enter = function(s,t) print('welcome',t) end
@@ -108,3 +138,145 @@ garden_w.image = '/img/hs/background/r_jade_atrium.png'
 garden_s.image = '/img/hs/background/r_jade_atrium.png' 
 garden_n.image = '/img/hs/background/r_jade_atrium.png' 
 garden_e.image = '/img/hs/background/r_jade_atrium.png' 
+
+central_hall = Def('central_hall',{name = "Central hall"},'room')
+foyer = Def('foyer',{name = "Foyer"},'room')
+
+MakeRelation(central_hall,garden_c,direction_up)
+MakeRelation(central_hall,foyer,direction_east)
+
+local_corner = Def('local_corner',{name = "Local corner"},'room')
+local_corner.image = '/img/hs/background/rose_bg_outside_daytime.png' 
+MakeRelation(foyer,local_corner,direction_east)
+
+
+
+
+rose_room = Def('rose_room',{},'owned room')
+rose_room.owner = rose
+rose_room.location = rose_house
+rose_room.image = '/img/hs/background/rose_bg_bedroom.png' 
+
+
+roxy_room = Def('roxy_room',{},'owned room')
+roxy_room.owner = roxy
+roxy_room.location = rose_house
+roxy_room.image = '/img/hs/background/rose_bg_moms_room.png' 
+
+
+rose_hallway = Def('rose_hallway',{name='Hallway'},'room')
+rose_hallway.location = rose_house
+rose_hallway.image = '/img/hs/background/rose_bg_hallway.png' 
+
+rose_livingroom = Def('rose_livingroom',{name='Livingroom'},'room')
+rose_livingroom.location = rose_house
+rose_livingroom.image = '/img/hs/background/roxy_bg_rose_livingroom.png' 
+
+rose_laundry = Def('rose_laundry',{name='Laundry'},'room')
+rose_laundry.location = rose_house
+rose_laundry.image = '/img/hs/background/rose_bg_laundry_room.png' 
+
+rose_outside = Def('rose_outside',{name='Near house'},'room')
+rose_outside.location = local_town
+rose_outside.image = '/img/hs/background/roxy_bg_alpharose_frontdoor.png' 
+
+rose_forest = Def('rose_forest',{name='Pine forest clearing'},'room')
+rose_forest.location = local_town
+rose_forest.image = '/img/hs/background/rose_bg_outside_daytime.png' 
+
+MakeRelation(rose_room,rose_hallway,direction_east)
+MakeRelation(roxy_room,rose_hallway,direction_south)
+MakeRelation(rose_hallway,rose_livingroom,direction_down)
+MakeRelation(rose_livingroom,rose_outside,direction_south)
+MakeRelation(rose_livingroom,rose_laundry,direction_north)
+
+MakeRelation(rose_outside,rose_forest,direction_west)
+MakeRelation(rose_forest,local_corner,direction_west)
+
+
+
+dave_room = Def('dave_room',{},'owned room')
+dave_room.owner = dave
+dave_room.location = dave_house
+dave_room.image = '/img/hs/background/dave_room.png' 
+
+dave_kitchen = Def('dave_kitchen',{name='Kitchen'},'room')
+dave_kitchen.location = dave_house
+dave_kitchen.image = '/img/hs/background/dave_kitchen.png' 
+
+dave_livingroom = Def('dave_livingroom',{name='Livingroom'},'room')
+dave_livingroom.location = dave_house
+dave_livingroom.image = '/img/hs/background/dave_livingroom.png' 
+
+dave_hallway = Def('dave_hallway',{name='Hallway'},'room')
+dave_hallway.location = dave_house
+
+dave_staircase = Def('dave_staircase',{name='Staircase'},'room')
+dave_staircase.location = dave_house 
+
+dave_roof = Def('dave_roof',{name='Roof'},'room')
+dave_roof.location = dave_house
+dave_roof.image = '/img/hs/background/dave_roof.png' 
+
+dave_outside = Def('dave_outside',{name='City street'},'room')
+dave_outside.location = local_town 
+
+MakeRelation(dave_hallway,dave_livingroom,direction_east) 
+MakeRelation(dave_hallway,dave_room,direction_north) 
+MakeRelation(dave_hallway,dave_kitchen,direction_south) 
+
+MakeRelation(dave_staircase,dave_hallway,direction_east) 
+MakeRelation(dave_staircase,dave_roof,direction_up)
+MakeRelation(dave_staircase,dave_outside,direction_down)
+
+
+MakeRelation(dave_outside,local_corner,direction_south)
+
+
+
+john_room = Def('john_room',{},'owned room')
+john_room.owner = john
+john_room.location = john_house
+john_room.image = '/img/hs/background/john_room.png' 
+
+john_hallway = Def('john_hallway',{name = 'Hallway'},'room') 
+john_hallway.location = john_house 
+
+john_fatherroom = Def('john_fatherroom',{name = 'Father room'},'room') 
+john_fatherroom.location = john_house 
+
+john_livingroom = Def('john_livingroom',{name = 'Livingroom'},'room') 
+john_livingroom.location = john_house 
+
+john_kitchen = Def('john_kitchen',{name = 'Kitchen'},'room') 
+john_kitchen.location = john_house 
+
+john_laundry = Def('john_laundry',{name = 'Laundry'},'room') 
+john_laundry.location = john_house 
+
+john_study = Def('john_study',{name = 'Study'},'room') 
+john_study.location = john_house 
+
+
+john_backyard = Def('john_backyard',{name = 'Back yard'},'room') 
+john_backyard.location = john_house 
+john_backyard.image = '/img/hs/background/john_backyard.png' 
+
+john_frontyard = Def('john_frontyard',{name = 'Front yard'},'room') 
+john_frontyard.location = john_house 
+john_frontyard.image = '/img/hs/background/john_frontyard.png' 
+
+MakeRelation(john_hallway,john_room,direction_north)
+MakeRelation(john_hallway,john_fatherroom,direction_east)
+
+MakeRelation(john_livingroom,john_hallway,direction_up)
+MakeRelation(john_livingroom,john_study,direction_east)
+MakeRelation(john_livingroom,john_kitchen,direction_north)
+MakeRelation(john_livingroom,john_frontyard,direction_west)
+MakeRelation(john_kitchen,john_laundry,direction_east)
+
+MakeRelation(john_laundry,john_backyard,direction_east)
+
+MakeRelation(john_backyard,john_frontyard,direction_north)
+
+MakeRelation(john_backyard,local_corner,direction_north)

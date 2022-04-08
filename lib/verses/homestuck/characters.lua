@@ -55,6 +55,28 @@ rose:set_clothes('owned shirt','owned skirt','owned shoes')
 --rose:find('skirt').image = '/img/hs/items/jh_skirt.png'
 --rose:find('shoes').image = '/img/hs/items/jh_shoes.png' 
 
+
+
+roxy = Def('roxy','rogue_class void_aspect female person')
+roxy.image = '/img/hs/characters/roxy.png'  
+roxy.view_style = [[ 
+    --bg1-color: #321544;
+
+    --bg2d-color: #4b3d5d;
+    --bg2l-color: #fe8bfd;
+
+    --bg3d-color: #03266a;
+    --bg3l-color: #104ea2;
+
+    --text-color: #ffd4f7; 
+]]
+roxy:set_clothes('owned shirt','owned skirt','owned shoes')
+
+
+
+
+
+
 john = Def('john','heir_class breath_aspect male person')
 john.image = '/img/hs/characters/john.png'  
 john.view_style = [[ 

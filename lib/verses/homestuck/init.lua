@@ -14,9 +14,10 @@ MakeRelation(jade,aradia,likes)
 
 
 jade.location = jade_room
-rose.location = jade_room
-dave.location = jade_room
-john.location = jade_room
+rose.location = rose_room
+roxy.location = roxy_room
+dave.location = dave_room
+john.location = john_room
 
 jadebot.location = chamber
 
