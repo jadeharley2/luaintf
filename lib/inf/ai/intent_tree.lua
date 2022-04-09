@@ -580,18 +580,22 @@ person.intent_tree = {
             if self:is("rogue_class") then
                 local v = LocalIdentify(I.target)
                 if v then
-                    if I.source=='me' then
-                        self:intent_say("sure")
-                        self:act("soulrip",v)
-                        self:act("soulrip",F)
-                        self:intent_say("there you go")
+                    if I.source=='me' then                
+                        Scene(function()
+                            self:intent_say("sure") 
+                            self:act("soulrip",v) 
+                            self:act("soulrip",F)
+                            self:intent_say("there you go")
+                        end) 
                     else
                         local v2 = LocalIdentify(I.source)
-                        if v2 then
-                            self:intent_say("sure")
-                            self:act("soulrip",v)
-                            self:act("soulrip",v2)
-                            self:intent_say("there you go")
+                        if v2 then                     
+                            Scene(function()
+                                self:intent_say("sure") 
+                                self:act("soulrip",v) 
+                                self:act("soulrip",v2)
+                                self:intent_say("there you go")
+                            end)
                         else
                             self:intent_say(L"bring me to [I.source] first")
                         end

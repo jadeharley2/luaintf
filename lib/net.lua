@@ -56,7 +56,7 @@ function net.receive(callback)
                 EventCall('player_disconnected',v)
                 net.clients[v.id] = nil
             else
-                callback(v,x)
+                pcall(callback,v,x)
             end
         end
     end

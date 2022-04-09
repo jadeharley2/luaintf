@@ -32,7 +32,10 @@ thing.act = function(self,key,a,b,c,d,...)
     end)
     --local v = self.actions[key]
     if v then
-        return v.callback(self,a,b,c,d,...)
+        local r1,r2,r3 = v.callback(self,a,b,c,d,...)
+
+        cor.wait(1)
+        return r1,r2,r3
     end
 end 
 thing.act_add = function(self,k) 

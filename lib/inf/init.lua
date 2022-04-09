@@ -1,5 +1,6 @@
  
 Include('global.lua') 
+Include('time.lua') 
 Include('event.lua')
 
 Include('kind.lua')
@@ -16,6 +17,7 @@ Include('bodypart.lua')
 
 Include('ownership.lua')
 Include('wearable.lua')
+Include('scenario.lua')
 
 Include('actions/being.lua')
 Include('actions/item_handling.lua')
