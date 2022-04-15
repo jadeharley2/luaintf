@@ -129,69 +129,69 @@ room = Def('room',{
         end 
 
         --[[
-        if dir==direction_down then
-            local r = GetRelations(self,direction_down)[1] 
-            if r then 
-                local r = r:xor_to(self) 
-                if r then return r end 
-            end
-            local r = GetRelations(self,direction_up)[1]
-            if r then return r:xor_from(self) end
-        elseif dir==direction_up then
-            local r = GetRelations(self,direction_up)[1] 
-            if r then 
-                local r = r:xor_to(self) 
-                if r then return r end 
-            end
-            local r = GetRelations(self,direction_down)[1]
-            if r then return r:xor_from(self) end
-        elseif dir==direction_west then
-            for k,v in pairs(GetRelations(self,direction_west)) do 
-                local r = r:xor_to(self) 
-                if r then return r end 
-            end 
-            local r = GetRelations(self,direction_east)[1]
-            if r then return r:xor_from(self) end
-        elseif dir==direction_east then
-            local r = GetRelations(self,direction_east)[1] 
-            if r then 
-                local r = r:xor_to(self) 
-                if r then return r end 
-            end
-            local r = GetRelations(self,direction_west)[1]
-            if r then return r:xor_from(self) end
-        elseif dir==direction_south then
-            local r = GetRelations(self,direction_south)[1] 
-            if r then 
-                local r = r:xor_to(self) 
-                if r then return r end 
-            end
-            local r = GetRelations(self,direction_north)[1]
-            if r then return r:xor_from(self) end
-        elseif dir==direction_north then
-            local r = GetRelations(self,direction_north)[1] 
-            if r then 
-                local r = r:xor_to(self) 
-                if r then return r end 
-            end
-            local r = GetRelations(self,direction_south)[1]
-            if r then return r:xor_from(self) end
-        elseif dir==direction_in then
-            local r = GetRelations(self,direction_in)[1] 
-            if r then 
-                local r = r:xor_to(self) 
-                if r then return r end 
-            end
-            local r = GetRelations(self,direction_out)[1]
-            if r then return r:xor_from(self) end
-        elseif dir==direction_out then
-            local r = GetRelations(self,direction_out)[1] 
-            if r then 
-                local r = r:xor_to(self) 
-                if r then return r end 
-            end
-            local r = GetRelations(self,direction_in)[1]
-            if r then return r:xor_from(self) end
+            if dir==direction_down then
+                local r = GetRelations(self,direction_down)[1] 
+                if r then 
+                    local r = r:xor_to(self) 
+                    if r then return r end 
+                end
+                local r = GetRelations(self,direction_up)[1]
+                if r then return r:xor_from(self) end
+            elseif dir==direction_up then
+                local r = GetRelations(self,direction_up)[1] 
+                if r then 
+                    local r = r:xor_to(self) 
+                    if r then return r end 
+                end
+                local r = GetRelations(self,direction_down)[1]
+                if r then return r:xor_from(self) end
+            elseif dir==direction_west then
+                for k,v in pairs(GetRelations(self,direction_west)) do 
+                    local r = r:xor_to(self) 
+                    if r then return r end 
+                end 
+                local r = GetRelations(self,direction_east)[1]
+                if r then return r:xor_from(self) end
+            elseif dir==direction_east then
+                local r = GetRelations(self,direction_east)[1] 
+                if r then 
+                    local r = r:xor_to(self) 
+                    if r then return r end 
+                end
+                local r = GetRelations(self,direction_west)[1]
+                if r then return r:xor_from(self) end
+            elseif dir==direction_south then
+                local r = GetRelations(self,direction_south)[1] 
+                if r then 
+                    local r = r:xor_to(self) 
+                    if r then return r end 
+                end
+                local r = GetRelations(self,direction_north)[1]
+                if r then return r:xor_from(self) end
+            elseif dir==direction_north then
+                local r = GetRelations(self,direction_north)[1] 
+                if r then 
+                    local r = r:xor_to(self) 
+                    if r then return r end 
+                end
+                local r = GetRelations(self,direction_south)[1]
+                if r then return r:xor_from(self) end
+            elseif dir==direction_in then
+                local r = GetRelations(self,direction_in)[1] 
+                if r then 
+                    local r = r:xor_to(self) 
+                    if r then return r end 
+                end
+                local r = GetRelations(self,direction_out)[1]
+                if r then return r:xor_from(self) end
+            elseif dir==direction_out then
+                local r = GetRelations(self,direction_out)[1] 
+                if r then 
+                    local r = r:xor_to(self) 
+                    if r then return r end 
+                end
+                local r = GetRelations(self,direction_in)[1]
+                if r then return r:xor_from(self) end
         end]]
     end,
     adjascent = function(self,as_string)
@@ -280,6 +280,16 @@ thing.parent_oftype = function(self,type,include_self)
     end,include_self)
 end
 
+thing.is_inside = function(self,target)
+    local inside=false
+    self:foreach_parent(function(x)
+        if x==target then
+            inside = true
+            return
+        end
+    end,false)
+    return inside
+end
 
 room.get_reachables = function(self, user, output)
     output = output or {}
@@ -294,6 +304,32 @@ room.get_reachables = function(self, user, output)
     return output
 end
 
+room.foreach_adjascent = function(self,callback,maxiterations)
+    maxiterations = maxiterations or 1
+    local open = {self}
+    local closed = {}
+    for i=1,maxiterations do
+        if #open==0 then 
+            break
+        else
+            local newopen = {}
+            for k,v in pairs(open) do
+                closed[v] = true 
+                local adj = v:adjascent(true)
+                for kk,vv in pairs(adj) do
+                    local visited = closed[vv]
+                    callback(kk,vv,v,visited)
+                    if not visited then
+                        newopen[#newopen+1] = vv
+                    end
+                end
+            end
+            open = newopen
+        end 
+    end 
+end
+
+
 room.examine = function(target, ex) 
     
     printout(target.name..', '..target.description)
@@ -307,7 +343,7 @@ room.examine = function(target, ex)
         if k~=player then
             if k:is(person) or k:is(soul) then
                 characters[#characters+1] = tostring(k)
-                images[k.id] = k.image 
+                images[k.id] = k--.image 
             else
                 things[#things+1] = tostring(k)
                 things_2[k.id] = tostring(k)
@@ -326,7 +362,7 @@ room.examine = function(target, ex)
     printout('$display:target;clear')
     printout('$display:line;clear')
     for k,v in pairs(images) do
-        printout('$display:line;'..k..';'..v)
+        printout('$display:line;'..k..';'..v.image..';'..v.image_style_css)
     end
 
     printout('$directions_clear')
@@ -334,10 +370,12 @@ room.examine = function(target, ex)
         printout(' '..k.." -> "..tostring(v))
         printout('$direction:'..k..";"..tostring(v))
     end 
-    printout('$things_clear')
-    for k,v in pairs(things_2) do 
-        printout('$thing:'..'x '..k..";"..v)
-    end 
+
+    send_things(target,ex)
+    --printout('$things_clear')
+    --for k,v in pairs(things_2) do 
+    --    printout('$thing:'..'x '..k..";"..v)
+    --end 
 
     local size = player:relative_textsize(target)
     if size~='normal' then
@@ -349,6 +387,25 @@ room.examine = function(target, ex)
 
 end
 
+function send_things(room,to)
+    to = to or room
+    printto(to,'$things_clear')
+    
+    --printout('$things_clear')
+    --for k,v in pairs(things_2) do 
+    --    printout('$thing:'..'x '..k..";"..v)
+    --end 
+    local dx = {}
+    room:foreach('contains',function(k,v) 
+        if k:is(person) or k:is(soul) or to==k then 
+        else 
+            dx[#dx+1] = '$thing:'..'x '..k.id..";"..tostring(k)
+        end 
+    end)
+    for k,v in SortedPairs(dx) do 
+        printto(to,v)
+    end
+end
 
 function send_directions(room)
     printout('$directions_clear')
@@ -372,4 +429,28 @@ function send_character_images(room)
     for k,v in pairs(images) do
         printout('$display:line;'..k..';'..v)
     end
+end
+
+function send_character_images_inroom(room)
+    local images = {}
+    local players = {}
+    room:foreach('contains',function(k,v)
+        
+        if k:is(person) then 
+            images[k.id] = k.image  
+        end
+        if k.player then
+            players[k.id] = k
+        end
+    end)
+
+    for kk,vv in pairs(players) do
+        printto(vv,'$display:line;clear')
+        for k,v in pairs(images) do
+            if kk~=k then
+                printto(vv,'$display:line;'..k..';'..v)
+            end
+        end
+    end
+
 end

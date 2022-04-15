@@ -1,17 +1,17 @@
 
 jade = Def('jade','witch_class space_aspect nerdy female person')
-jade.image = '/img/hs/characters/jade.png'  
-jade.view_style = [[ 
-    --bg1-color: #000000;
+jade.image = '/img/hs/characters/jade.png'   
+jade.view_style = { 
+    bg1 =  '#000000',
 
-    --bg2d-color: #1d1d1d;
-    --bg2l-color: #2f2f30;
+    bg2d = '#1d1d1d',
+    bg2l = '#2f2f30',
 
-    --bg3d-color: #1c6207;
-    --bg3l-color: #4ac925;
+    bg3d = '#1c6207',
+    bg3l = '#4ac925',
 
-    --text-color: #ffffff; 
-]]
+    text = '#ffffff', 
+}
 --[[ 
     --bg1-color: #000000;
 
@@ -38,18 +38,18 @@ jadebot.robotic = true
 MakeRelation(jadebot,jade,owner)
 
 rose = Def('rose','seer_class light_aspect female person')
-rose.image = '/img/hs/characters/rose.png'  
-rose.view_style = [[ 
-    --bg1-color: #321544;
+rose.image = '/img/hs/characters/rose.png'   
+rose.view_style = { 
+    bg1 =  '#321544',
 
-    --bg2d-color: #571a7d;
-    --bg2l-color: #935eb4;
+    bg2d = '#571a7d',
+    bg2l = '#935eb4',
 
-    --bg3d-color: #f0840c;
-    --bg3l-color: #f6fa4e;
+    bg3d = '#f0840c',
+    bg3l = '#f6fa4e',
 
-    --text-color: #ffd4f7; 
-]]
+    text = '#ffd4f7', 
+}
 rose:set_clothes('owned shirt','owned skirt','owned shoes')
 --rose:find('shirt').image = '/img/hs/items/jh_shirt.png'
 --rose:find('skirt').image = '/img/hs/items/jh_skirt.png'
@@ -59,17 +59,17 @@ rose:set_clothes('owned shirt','owned skirt','owned shoes')
 
 roxy = Def('roxy','rogue_class void_aspect female person')
 roxy.image = '/img/hs/characters/roxy.png'  
-roxy.view_style = [[ 
-    --bg1-color: #321544;
+roxy.view_style = { 
+    bg1 =  '#321544',
 
-    --bg2d-color: #4b3d5d;
-    --bg2l-color: #fe8bfd;
+    bg2d = '#4b3d5d',
+    bg2l = '#fe8bfd',
 
-    --bg3d-color: #03266a;
-    --bg3l-color: #104ea2;
+    bg3d = '#03266a',
+    bg3l = '#104ea2',
 
-    --text-color: #ffd4f7; 
-]]
+    text = '#ffd4f7', 
+}
 roxy:set_clothes('owned shirt','owned skirt','owned shoes')
 
 
@@ -79,32 +79,32 @@ roxy:set_clothes('owned shirt','owned skirt','owned shoes')
 
 john = Def('john','heir_class breath_aspect male person')
 john.image = '/img/hs/characters/john.png'  
-john.view_style = [[ 
-    --bg1-color: #000000;
+john.view_style = { 
+    bg1 =  '#000000',
 
-    --bg2d-color: #1b2573;
-    --bg2l-color: #5162e1;
+    bg2d = '#1b2573',
+    bg2l = '#5162e1',
 
-    --bg3d-color: #4379e6;
-    --bg3l-color: #47def9;
+    bg3d = '#4379e6',
+    bg3l = '#47def9',
 
-    --text-color: #ffffff; 
-]]
+    text = '#ffffff', 
+} 
 john:set_clothes('owned shirt','owned pants','owned shoes','owned glasses')
 
 dave = Def('dave','knight_class time_aspect male person')
-dave.image = '/img/hs/characters/dave.png'  
-dave.view_style = [[ 
-    --bg1-color: #000000;
+dave.image = '/img/hs/characters/dave.png'
+dave.view_style = { 
+    bg1 =  '#000000',
 
-    --bg2d-color: #400202;
-    --bg2l-color: #8e1516;
+    bg2d = '#400202',
+    bg2l = '#8e1516',
 
-    --bg3d-color: #9b0b0c;
-    --bg3l-color: #ff2106;
+    bg3d = '#9b0b0c',
+    bg3l = '#ff2106',
 
-    --text-color: #ffffff; 
-]]
+    text = '#ffffff', 
+}    
 dave:set_clothes('owned shirt','owned pants','owned shoes','owned glasses')
 
 
@@ -114,18 +114,19 @@ dave:set_clothes('owned shirt','owned pants','owned shoes','owned glasses')
 
 aradia = Def('aradia','witch_class time_aspect gothic female troll person')
 aradia.image = '/img/hs/characters/aradia.png'  
-aradia.view_style = [[ 
-    --bg1-color: #000000;
+aradia.view_style = { 
+    bg1 =  '#000000',
 
-    --bg2d-color: #252525;
-    --bg2l-color: #424242;
+    bg2d = '#252525',
+    bg2l = '#424242',
 
-    --bg3d-color: #9b0b0c;
-    --bg3l-color: #ff2106;
+    bg3d = '#9b0b0c',
+    bg3l = '#ff2106',
 
-    --text-color: #c7c7c7; 
-]]
+    text = '#c7c7c7', 
+}  
 aradia:set_clothes('owned black shirt','owned gray skirt')
+aradia:find('shirt').image = '/img/hs/items/ara_shirt.png'
 aradia.process_speech = function(self,text) 
     text = string.replace(text,".","")
     text = string.replace(text,",","")
@@ -140,34 +141,38 @@ aradiabot = Def('aradiabot','robot aradia')
 aradiabot.image = '/img/hs/characters/aradia_bot.png'  
 aradiabot:set_clothes()
 aradiabot.robotic = true
-aradiabot.view_style = [[ 
-    --bg1-color: #000000;
+aradiabot.view_style = { 
+    bg1 =  '#000000',
 
-    --bg2d-color: #494949;
-    --bg2l-color: #a6a6a6;
+    bg2d = '#494949',
+    bg2l = '#a6a6a6',
 
-    --bg3d-color: #9b0b0c;
-    --bg3l-color: #0021cb;
+    bg3d = '#9b0b0c',
+    bg3l = '#0021cb',
 
-    --text-color: #ffa29b; 
-]]
+    text = '#ffa29b', 
+}   
 
 
 
 terezi = Def('terezi','seer_class mind_aspect female troll person')
-terezi.image = '/img/hs/characters/terezi.png'  
-terezi.view_style = [[ 
-    --bg1-color: #000000;
+terezi.image = '/img/hs/characters/terezi.png'   
+terezi.view_style = { 
+    bg1 =  '#000000',
 
-    --bg2d-color: #0a4242;
-    --bg2l-color: #008282;
+    bg2d = '#0a4242',
+    bg2l = '#008282',
 
-    --bg3d-color: #00923d;
-    --bg3l-color: #06ffc9;
+    bg3d = '#00923d',
+    bg3l = '#06ffc9',
 
-    --text-color: #c7c7c7; 
-]]
+    text = '#c7c7c7', 
+}   
 terezi:set_clothes('owned black shirt','owned black pants','owned red glasses','owned red shoes')
+terezi:find('shirt').image = '/img/hs/items/tz_shirt.png'
+terezi:find('pants').image = '/img/hs/items/tz_pants.png'
+terezi:find('shoes').image = '/img/hs/items/tz_shoes.png'
+terezi:find('glasses').image = '/img/hs/items/tz_glasses.png'
 terezi.process_speech = function(self,text) 
     text = string.upper(text)
     text = string.replace(text,".","")
@@ -177,22 +182,25 @@ terezi.process_speech = function(self,text)
     text = string.replace(text,"E","3") 
     return text
 end
-
+terezi_cane = Def('terezi_cane',{name='Dragon cane'},'thing')
+terezi_cane.image = '/img/hs/items/tz_cane.png'
+terezi_cane.location = terezi
 
 kanaya = Def('kanaya','sylph_class space_aspect rainbow_drinker female troll person')
-kanaya.image = '/img/hs/characters/kanaya.png'  
-kanaya.view_style = [[ 
-    --bg1-color: #000000;
+kanaya.image = '/img/hs/characters/kanaya.png' 
+kanaya.view_style = { 
+    bg1 =  '#000000',
 
-    --bg2d-color: #1d1d1d;
-    --bg2l-color: #2f2f30;
+    bg2d = '#1d1d1d',
+    bg2l = '#2f2f30',
 
-    --bg3d-color: #025029;
-    --bg3l-color: #078446;
+    bg3d = '#025029',
+    bg3l = '#078446',
 
-    --text-color: #c7c7c7; 
-]]
+    text = '#c7c7c7', 
+}     
 kanaya:set_clothes('owned black shirt', 'owned red skirt', 'owned black shoes')
+kanaya:find('shirt').image = '/img/hs/items/kan_shirt.png'
 kanaya.process_speech = function(self,text) 
     text = string.replace(text,".","")
     text = string.replace(text,",","") 
@@ -206,17 +214,17 @@ end
 
 nepeta = Def('nepeta','rogue_class heart_aspect catlike female troll person')
 nepeta.image = '/img/hs/characters/nepeta.png'  
-nepeta.view_style = [[ 
-    --bg1-color: #000000;
+nepeta.view_style = { 
+    bg1 =  '#000000',
 
-    --bg2d-color: #2d4700;
-    --bg2l-color: #416600;
+    bg2d = '#2d4700',
+    bg2l = '#416600',
 
-    --bg3d-color: #55142a;
-    --bg3l-color: #bd1864;
+    bg3d = '#55142a',
+    bg3l = '#bd1864',
 
-    --text-color: #c7c7c7; 
-]]
+    text = '#c7c7c7', 
+}      
 nepeta:set_clothes('owned shirt','owned pants','owned coat')
 nepeta.process_speech = function(self,text) 
     text = string.lower(text)
@@ -237,7 +245,7 @@ nepeta.process_speech = function(self,text)
     text = " :33 < "..text 
     return text
 end
-nepeta:find('shirt').image = '/img/hs/items/nep_shirt.png'
+nepeta:find('shirt').image = '/img/hs/items/nep_shirt2.png'
 nepeta:find('pants').image = '/img/hs/items/nep_pants.png'
 nepeta:find('coat').image = '/img/hs/items/nep_coat.png'
 

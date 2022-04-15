@@ -3,7 +3,7 @@ owner = Def('owner','relation')
 owned = Def('owned',{},'adjective') 
 owned._get_nounname = function(s)
     local o = GetRelationOther(s,owner) or no_one 
-    if o == personality then
+    if player and player.identity:is(o) then
         return L"Your "..s.base.name
     else
         return L"[o]'s "..s.base.name

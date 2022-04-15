@@ -5,7 +5,7 @@
 function display_location(target) 
     local image = target.image 
     if image then
-        printout('$display:background;background;'..image)
+        printout('$display:background;background;'..image..';'..target.image_style_css)
     else
         printout('$display:background;clear')
     end
@@ -14,8 +14,12 @@ end
 EventAdd('examine','default',function(target)
     --printout(target.description)
     local interactions = {}
-    target:foreach('interactions',function(k,v) interactions[#interactions+1]=k end)
-    printout('$interactions:',table.concat(interactions, ';'))
+    target:foreach('interactions',function(k,v) interactions[k]=k end)
+    local i2 = {}
+    for k,v in SortedPairs(interactions) do
+        i2[#i2+1] = v
+    end
+    printout('$interactions:',table.concat(i2, ';'))
 end)
 
 
@@ -28,11 +32,10 @@ function examine(target)
     EventActCall("examine",target) 
 end
 
-
 thing.examine = function(self,usr) 
     local image = self.image
     if image then 
-        printout('$display:target;'..self.id..';'..image) 
+        printout('$display:target;'..self.id..';'..image..';'..self.image_style_css) 
     end 
 end
 
@@ -76,9 +79,9 @@ examine_action = Def('examine_action',{key='examine',restrictions = {"!asleep",'
     local is_player = self == player
     if is_player then
         local tl = {...}
-        local target = table.concat(tl,' ')
+        local target = table.concat(tl,' '):trim()
 
-        if #tl==0 or #target:trim()==0 then 
+        if #tl==0 or #target==0 then 
             self.look_target = self
             examine(player)
             return false -- no enturn
@@ -120,6 +123,7 @@ examine_action = Def('examine_action',{key='examine',restrictions = {"!asleep",'
             end
         end
     end
+    return false
 end,description='shorthand: x'},'action')
 DefComAlias('x','examine') 
 

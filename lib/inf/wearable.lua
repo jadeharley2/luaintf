@@ -10,13 +10,13 @@ wear_action = Def('wear_action',{key='wear',restrictions = {"!asleep"},callback 
         local something = LocalIdentify(target) or LocalIdentify(target,self)
         if something then
             if something:is("wearable") then --and something:call("can_wear",self)~=false then
-                if not HasRelationWith(something,self,worn_by) then
+                if not HasRelation(something,worn_by) then
 
                     something.location = self
-                    MakeRelation(something,self,worn_by)
 
                     describe_action(self,L'you wear [something]',tostring(self)..' wears '..tostring(something))  
                     
+                    MakeRelation(something,self,worn_by)
                     
                     return true
                 else
@@ -31,6 +31,7 @@ wear_action = Def('wear_action',{key='wear',restrictions = {"!asleep"},callback 
     else
         if is_player then printout('wear what?') end
     end
+    return false
 end},'action')
 
 
@@ -42,10 +43,10 @@ takeoff_action = Def('takeoff_action',{key='takeoff',restrictions = {"!asleep"},
             
             if HasRelationWith(something,self,worn_by) then
 
-                DestroyRelation(something,self,worn_by)
-
                 describe_action(self,L'you take off [something]',tostring(self)..' takes off '..tostring(something))  
                 
+                DestroyRelation(something,self,worn_by)
+
                 
                 return true
             else
@@ -57,6 +58,7 @@ takeoff_action = Def('takeoff_action',{key='takeoff',restrictions = {"!asleep"},
     else
         if is_player then printout('take off what?') end
     end
+    return false
 end},'action')
 
 
@@ -120,7 +122,15 @@ person.takeoff = function(self,...)
 end
 
 thing._get_is_worn = function(self)
-    return HasRelation(self,worn_by)
+    local wearer = GetRelationOther(self,worn_by)
+    if wearer then 
+        if self.location == wearer then
+            return true
+        else
+            DestroyRelation(self,wearer,worn_by)
+        end
+    end
+    return false
 end
 thing._get_wearer = function(self) 
     return GetRelationOther(self,worn_by)

@@ -18,7 +18,7 @@ be_action = Def('be_action',{key='be',callback = function(self,target)
                 printout('you are now',v)
                 send_style(v)
                 SETPLAYER(client)
-                send_actions() 
+                send_actions(v) 
                 examine(player.location)
                 
                 return true

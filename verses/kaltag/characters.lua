@@ -17,8 +17,7 @@ anthroid.this.buttons = {
         if self.personality ~= self then
             self:say('downloading personality core update from the tower...')
             self:say('download complete, restarting...')
-            self:adj_set('asleep')
-            self.personality = self
+            self:adj_set('asleep') 
             self.identity = self
             self:adj_unset('asleep')
         else
@@ -76,7 +75,7 @@ vst.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943220091
 vst.process_speech = function(self,text) 
     text = string.upper(text)
     --text = text:replace("I AM",'THIS UNIT IS'
-    if self.personality.robotic then
+    if self.identity.robotic then
         text = string.gsub(text,'CAN','MAY')
         text = string.gsub(text,'BEGIN','INITIATE')
 

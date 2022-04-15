@@ -50,16 +50,10 @@ function mind_transfer(srcperson,trgperson)
     players[srcperson] = ptrgp
     
     send_character_images(srcperson.location)
-    if trgperson==player then 
-        examine(srcperson) 
-        send_actions() 
-    end
-    if srcperson==player then 
-        examine(trgperson) 
-        send_actions() 
-    end
-    send_style(srcperson)
-    send_style(trgperson)
+    send_actions(srcperson) 
+    send_actions(trgperson) 
+    --send_style(srcperson)
+    --send_style(trgperson)
 end
 
 transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback = function(self,arg1,...) 
@@ -99,6 +93,18 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
                 if is_player then
                     printout('you are now',v) 
                 end 
+ 
+                ScenarioRun("mind_transformation",v.id..'_mtf',{
+                    source = self,
+                    target = v, 
+                    duration = 30,
+                },true) 
+                ScenarioRun("mind_transformation",self.id..'_mtf',{
+                    source = v,
+                    target = self, 
+                    duration = 30,
+                },true)  
+                
             --end 
             return true
         else
@@ -183,5 +189,67 @@ spell_book.on_read = function(self,user)
     end
     user:act_add(transfer_soul_action)
     user:act_add(matchclothes_action)
-    send_actions() 
+    send_actions(user) 
 end
+
+function only_once(cache,value)
+    if not cache[value] then
+        cache[value] = true
+        return value
+    end
+end
+
+Scenario("mind_transformation",{
+    process = function(data)
+        local d = data.duration or 30
+        local target = data.target
+        local memory = target.memory
+        local style_prev = memory.view_style or data.source.view_style
+        local style_next = target.view_style
+ 
+        local ids_start = target:get_identity_strength(target)
+        local switched = target.identity~=target
+
+        local ph_c = {}
+        for k=0,d do
+            local blend = blend_view_styles(style_prev,style_next,k/d) 
+            send_style(target,css_view_style(blend)) 
+            memory.view_style = blend 
+            cor.wait(1)
+            if switched then
+                if math.random()>0.9 then
+                    local phrase = only_once(ph_c,table.random({ 
+                        "something feels different",
+                        "something is different",
+                        "something is changing",
+                        "[target]'s personality overwhelms you",
+                        "you feel your mind changing",
+                        "you feel more like [target]",
+                        'you feel less like [target.identity]'}))
+                    if phrase then
+                        printto(target,L(phrase))
+                    end
+                end
+            else  
+                if math.random()>0.9 then
+                    local phrase = only_once(ph_c,table.random({ 
+                        "something feels different",
+                        "something is different",
+                        "something is changing",
+                        "your personality stabilizes", 
+                        "you feel more like yourself",
+                        'you feel less like [data.source]'})) 
+                    if phrase then
+                        printto(target,L(phrase))
+                    end
+                end
+            end
+            target:set_identity_strength(target,ids_start + (1 - ids_start) * (k/d))
+        end
+        send_style(target) 
+        if target.identity~=target then
+            target.identity = target   
+            printto(target,'you feel different')
+        end
+    end
+})

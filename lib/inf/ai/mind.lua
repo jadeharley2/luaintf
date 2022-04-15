@@ -24,6 +24,7 @@ person:event_add('on_init','mind',function(self)
         personality = self,--replace with parameters
         memory = {},
         task = false,
+        identities = { [self] = 1 }
     },meta_mind)
     rawset(self,'mind', mind) 
     mind.memory.name = self.name
@@ -51,12 +52,12 @@ end
 person._set_personality = function(self,value)
     rawget(self,'mind').personality = value
 end
-person._get_identity = function(self)
-    return rawget(self,'mind').identity
-end
-person._set_identity = function(self,value)
-    rawget(self,'mind').identity = value
-end
+--person._get_identity = function(self)
+--    return rawget(self,'mind').identity
+--end
+--person._set_identity = function(self,value)
+--    rawget(self,'mind').identity = value
+--end
 person._get_task = function(self)
     return rawget(self,'mind').task
 end
@@ -67,4 +68,70 @@ end
 person._get_memory = function(self)
     return rawget(self,'mind').memory or {}
 end 
+
+person.get_identity_strength = function(self,identity)
+    identity = identity or self
+    local mind = self.mind 
+    if mind then
+        local identities = mind.identities or {}
+
+        local val = identities[identity]
+        if val then
+            local total = 0 
+            for k,v in pairs(mind.identities or {}) do total = total + v end  
+            return val/total
+        end
+    end
+    return 0
+end
+person._get_identities = function(self)
+    identity = identity or self
+    local mind = self.mind 
+    if mind then
+        return mind.identities or {}  
+    end
+    return {}
+end
+--dominant identity
+person._get_identity = function(self) 
+    local mind = self.mind 
+    if mind then
+        local maxv = 0
+        local maxid
+        for k,v in pairs(mind.identities or {}) do
+            if maxv<v then
+                maxid = k
+                maxv = v
+            end
+        end
+        return maxid
+    end
+end
+person._set_identity = function(self,value)
+    identity = identity or self
+    local mind = self.mind 
+    if mind then
+        mind.identities = {[value] = 1}
+    end
+end
+person.set_identity_strength = function(self,identity,value)
+    identity = identity or self
+    local mind = self.mind 
+    if mind and mind.identities then
+        local id = mind.identities
+
+        value = math.clamp(value,0,1)
+        local identities = id
+        
+        local total = 0 
+        for k,v in pairs(id) do total = total + v end  
+        local sub = (total - value) /(total-1) 
+        
+        for k,v in pairs(id) do 
+            id[k] = v-sub
+        end  
+
+        id[identity] = value
+    end
+end
 

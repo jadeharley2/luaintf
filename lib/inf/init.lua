@@ -19,6 +19,8 @@ Include('ownership.lua')
 Include('wearable.lua')
 Include('scenario.lua')
 
+Include('visuals.lua')
+
 Include('actions/being.lua')
 Include('actions/item_handling.lua')
 Include('actions/looking.lua')

@@ -355,7 +355,13 @@ end)
 
 
 person.intent_tree = {
-    greet = "hi",
+    greet =  function(self,F,I,D,T)
+        if math.random()>0.5 then
+            self:intent_say('hi')  
+        else
+            self:intent_say(L'hi, [F]')  
+        end 
+    end,
     parting = "bye",
     own_name = "what do you need?",
     question = {

@@ -6,6 +6,8 @@ turn_kind_def = turn_kind_def or {}
 adjective = adjective or false
 adjective_def = adjective_def or {}
 
+instidcount = instidcount or 0
+
 function Def(id,data,kind)
 
     local old_data
@@ -91,6 +93,11 @@ function Def(id,data,kind)
     return data;
 end
 function Inst(kind,data) 
+    data = data or {}
+    local kindparts = kind:split(' ')
+    local nid = kindparts[#kindparts]..'_inst'..tostring(instidcount)
+    data.id = nid
+    instidcount = instidcount + 1
     return Def(nil,data,kind)
 end
 function Setup(data,a)
@@ -591,12 +598,19 @@ function LocalIdentify(id,location)
         if type(id) == 'string' then
             location = location or player.location
 
-            local c = location:first('contains',function(k,v)
+            local c = location:collect('contains',function(k,v)
                 if k:is(id) then
                     return k
                 end
             end) 
-            if c then return c end 
+            if #c>0 then 
+                for k,v in pairs(c) do
+                    if v.id==id then
+                        return v
+                    end
+                end
+                return c[1]
+            end 
 
             
             local candidates = {}

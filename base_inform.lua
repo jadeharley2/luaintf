@@ -1,6 +1,7 @@
 --[[pure lua]]
 
 dofile('lib/script.lua')
+Include("lib/math.lua")
 Include("lib/string.lua")
 Include("lib/table.lua")
 Include("lib/io.lua")
@@ -26,9 +27,9 @@ Include('lib/defines/space.lua')
 Include('lib/defines/misc.lua')
 Include('lib/defines/moving_cabin.lua')
 
-Include('lib/verses/homestuck/init.lua')
-Include('lib/verses/kaltag/init.lua')
-Include('lib/verses/mlp/init.lua')
+Include('verses/homestuck/init.lua')
+Include('verses/kaltag/init.lua')
+Include('verses/mlp/init.lua')
 --Include('parser.lua')
 warp_c = Def('warp_c',{name = "Subspace Central"},'room')
 warp_c.image = '/img/background/space_dark.png'
@@ -57,6 +58,12 @@ local p2 = Inst('portal') p2.location = hall_corridor
 MakeRelation(p1,p2,portal_link)
 
 
+
+Inst('spell_book').location = rose_room
+
+
+
+
 no_one:act_add(be_action)
 no_one.examine = function() 
     printout("use be *name* to become that character") 
@@ -75,11 +82,15 @@ no_one.examine = function()
         printout(L"  [k.name]")
         for kk,vv in ipairs(v) do
             printout(L"    >'be [vv.id]' [vv.name] at [vv.location]")
-            chars[#chars+1] = 'be '..vv.id
+            chars[vv.id] = 'be '..vv.id
         end
     end
+    local c2 = {}
+    for k,v in SortedPairs(chars) do
+        c2[#c2+1] = v
+    end
      
-    printout('$actions:',table.concat(chars, ';'))
+    printout('$actions:',table.concat(c2, ';'))
 end
 
 player = no_one

@@ -124,17 +124,21 @@ person.should_wear_clothes = true
 
 
 
-
-
+ 
 person.examine = function(target, ex)
     printout('$display:target;clear')
     
     if target == player then
+        
         if target.identity~= player then
-            if player.robotic then
-                printout(L"Your frame designation is [target]. Warning: Detected mismatched personality core: [target.personality].")
+            if target.costume then
+                printout(L"You are wearing [target] costume. You are still [target.identity] inside.")
             else
-                printout(L"You are inhabiting the body of [target]. You think you are still [target.personality], at least mentally.")
+                if player.robotic then
+                    printout(L"Your frame designation is [target]. Warning: Detected mismatched personality core: [target.identity].")
+                else
+                    printout(L"You are inhabiting the body of [target]. You think you are still [target.identity], at least mentally.")
+                end
             end
         else
             if player.robotic then
@@ -152,7 +156,7 @@ person.examine = function(target, ex)
         target:foreach('contains',function(k,v)
             if k~=player then
                 if k:is('person') then 
-
+               --     things[#things+1] = k
                 elseif k.is_worn then
                     worn[#worn+1] = k
                 elseif k:is('body_part') then 
@@ -189,12 +193,12 @@ person.examine = function(target, ex)
         printout('$display:clothes;clear')
         for k,v in pairs(worn) do
             if v.image then
-                printout('$display:clothes;'..tostring(k)..';'..v.image)
+                printout('$display:clothes;'..v.id..';'..v.image..';'..v.image_style_css)
             end
         end
         for k,v in pairs(things) do
             if v.image then
-                printout('$display:clothes;'..tostring(k)..';'..v.image)
+                printout('$display:clothes;'..v.id..';'..v.image..';'..v.image_style_css)
             end
         end
         
@@ -245,7 +249,7 @@ person.examine = function(target, ex)
         printout('$display:clothes;clear')
         for k,v in pairs(worn) do
             if v.image then
-                printout('$display:clothes;'..tostring(k)..';'..v.image)
+                printout('$display:clothes;'..v.id..';'..v.image..';'..v.image_style_css)
             end
         end
 
@@ -263,7 +267,7 @@ person.examine = function(target, ex)
 
         local image = target.image
         if image then 
-            printout('$display:target;'..target.id..';'..image) 
+            printout('$display:target;'..target.id..';'..image..';'..target.image_style_css) 
         end
     end
 end
@@ -280,16 +284,4 @@ person.get_reachables = function(self, user, output)
         end) 
     end 
 end
-
-
-person.view_style = [[ 
-    --bg1-color: #000000;
-
-    --bg2d-color: #000000;
-    --bg2l-color: #3b3b3b;
-
-    --bg3d-color: rgb(56, 56, 56);
-    --bg3l-color: #1f1f1f;
-
-    --text-color: #ffffff; 
-]]
+ 

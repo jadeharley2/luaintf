@@ -2,36 +2,36 @@
 
 celestia  = Def('celestia',{name='Celestia'},'female alicorn princess pony')
 celestia.image = '/img/mlp/characters/celestia.png'
-celestia.smell = 'sun' 
-celestia.view_style = [[ 
-    --bg1-color: #ffffff;
+celestia.smell = 'sun'  
+celestia.view_style = { 
+    bg1 =  '#ffffff',
 
-    --bg2d-color: #ebcfe2;
-    --bg2l-color: #fef6fb;
+    bg2d = '#ebcfe2',
+    bg2l = '#fef6fb',
 
-    --bg3d-color: #3ea5be;
-    --bg3l-color: #69c8da;
+    bg3d = '#3ea5be',
+    bg3l = '#69c8da',
 
-    --text-color: #000000; 
-]]
+    text = '#000000', 
+} 
 celestia:set_clothes('owned peytral','owned crown','owned shoes')
 
 
 
 luna  = Def('luna',{name='Luna'},'female alicorn princess pony')
 luna.image = '/img/mlp/characters/luna.png'
-luna.smell = 'starry night' 
-luna.view_style = [[ 
-    --bg1-color: #000000;
+luna.smell = 'starry night'  
+luna.view_style = { 
+    bg1 =  '#000000',
 
-    --bg2d-color: #141730;
-    --bg2l-color: #38407c;
+    bg2d = '#141730',
+    bg2l = '#38407c',
 
-    --bg3d-color: #8b52e3;
-    --bg3l-color: #1c4fc2;
+    bg3d = '#8b52e3',
+    bg3l = '#1c4fc2',
 
-    --text-color: #ffffff; 
-]]
+    text = '#ffffff', 
+} 
 
 luna:set_clothes('owned peytral','owned crown','owned shoes')
 

@@ -1,5 +1,5 @@
 
-players = {}
+players = players or {}
 
 
 client = false
@@ -44,6 +44,29 @@ function printout(a,...)
     end
 end
 
+function printto(target,a,a1,a2,a3,a4,a5,a6)
+    if target:is(room) then
+        target:foreach("contains",function(k,v)
+            if k.player then
+                printto(k,a,a1,a2,a3,a4,a5,a6)
+            end
+        end)
+    else
+        local client = target.player
+        if client then
+            local t = {'   ',a,a1,a2,a3,a4,a5,a6}
+            for k,v in pairs(t) do
+                t[k] = tostring(v)
+            end
+            t[#t+1] = '\n'
+            client:send(table.concat(t,' '))
+        end
+    end
+    if a:sub(1,1)~='$' then
+        print_c_msg('    '..a,a1,a2,a3,a4,a5,a6)
+    end
+end
+
 function describe_action(doer,desc_doer,desc_other,everywhere)
 
     if doer==player then
@@ -66,11 +89,11 @@ function describe_action(doer,desc_doer,desc_other,everywhere)
         end 
     end
 end
-function send_style(person)
+function send_style(person,override)
     local ply = person.player
-    local sty = person.view_style
+    local sty = override or person.view_style_css
     if ply and sty then 
-        ply:send('$style:'..string.replace(sty,'\n',' ')..'\n');
+        ply:send('$style:'..sty..'\n');
     end
 end
 

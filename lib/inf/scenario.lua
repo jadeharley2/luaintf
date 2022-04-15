@@ -32,8 +32,8 @@ function Scenario(id,data)
         scenarios_manual[id] = data
     end
 end
-function ScenarioRun(id,uid,data) 
-    if not scenarios_active[uid] then
+function ScenarioRun(id,uid,data, run_override) 
+    if not scenarios_active[uid] or run_override then
         local v = scenarios_manual[id]
         if v then
             local I = setmetatable(data,v)
@@ -110,14 +110,14 @@ function cor.wait(turns)
         end
     end
 end
-
+--[[
 Scenario("changing",{
     target = 'person',--person, world,
     condition = function(self,target)
-        if target:is('jade') then
-            self.turn = 'turn'
-            return true
-        end
+        --if target:is('jade') then
+        --    self.turn = 'turn'
+        --    return true
+        --end
     end,
     process = function(self,target) 
         target:say('one',self.turn)
@@ -128,4 +128,4 @@ Scenario("changing",{
         cor.wait(3)
         target:say("good")
     end,
-})
+})]]

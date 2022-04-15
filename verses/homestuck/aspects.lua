@@ -15,6 +15,10 @@ soul_rip = Def('soul_rip',{key='soulrip',callback = function(self,arg1,...)
             v:adj_set('asleep')
 
             local S = Inst('soul') 
+            S.image = v.image 
+            S.image_style = {
+                opacity = '20%'
+            }
             S.owner = v
             S.location = v.location 
             mind_transfer(v,S)
@@ -46,8 +50,7 @@ soul_adapt = Def('soul_adapt',{key='souladapt',callback = function(self,arg1,...
 
                 local old_identity = v.identity
                 describe_action(v,'you feel yourself changing... mentally') 
-                v.identity = v 
-                v.personality = v 
+                v.identity = v  
                 describe_action(v,'you feel different') 
                 describe_action(v,L'you are no longer consider yourself [old_identity]')  
                 

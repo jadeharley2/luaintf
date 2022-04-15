@@ -19,6 +19,9 @@ take_action = Def('take_action',{key='take',restrictions = {"!asleep"},callback 
                 if something.is_moveable~=false then
                     something.location = self
                     describe_action(self,L'[something] taken',L'[self] takes [something]')  
+ 
+                    send_things(self.location)
+
                     return true
                 else
                     if is_player then printout("you can't take "..item) end
@@ -30,6 +33,7 @@ take_action = Def('take_action',{key='take',restrictions = {"!asleep"},callback 
     else
         if is_player then printout('take what?') end
     end
+    return false
 end},'action')
 
 
@@ -55,6 +59,9 @@ drop_action = Def('drop_action',{key='drop',restrictions = {"!asleep"},callback 
 
                     something.location = self.location
                     describe_action(self,L'[something] dropped',L'[self] drops [something]')  
+
+                    send_things(something.location)
+
                     return true
                 else
                     if is_player then printout("you can't drop "..item) end
@@ -66,6 +73,7 @@ drop_action = Def('drop_action',{key='drop',restrictions = {"!asleep"},callback 
     else
         if is_player then printout('drop what?') end
     end
+    return false
 end},'action')
  
 give_action = Def('give_action',{key='give',restrictions = {"!asleep"},callback = function(self,item,target) 
@@ -97,6 +105,7 @@ give_action = Def('give_action',{key='give',restrictions = {"!asleep"},callback 
     else
         if is_player then printout('give what?') end
     end
+    return false
 end},'action')
 DefComAlias('put','give') 
 

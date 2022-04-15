@@ -132,12 +132,18 @@ function interaction:is_restricted(actor,user)
 end
 
 InheritableSet(thing,'interactions')
-thing.interact = function(self,user,key,...)
-    local v = self.interactions[key]
-    if v then
-        if v:is_restricted(self,user) then return end
-        return v.callback(self,user,...)
-    end
+thing.interact = function(self,user,key,a,b,c,d,e,f)
+    --local v = self.interactions[key]
+    --if v then
+    --    if v:is_restricted(self,user) then return end
+    --    return v.callback(self,user,...)
+    --end
+
+    return self:first('interactions',function(k,v) 
+        if k==key and not v:is_restricted(self) then 
+            return v.callback(self,user,a,b,c,d,e,f)
+        end 
+    end) 
 end 
 thing.interact_list = function(self,k)
     local r = {}
@@ -212,8 +218,8 @@ end
 
 
 
-function send_actions() 
-    local actions = {}
+function send_actions(target) 
+    local actions = {"x self"}
     player:foreach('actions',function(k,v) actions[#actions+1]=k end)
-    printout('$actions:',table.concat(actions, ';'))
+    printto(target,'$actions:',table.concat(actions, ';'))
 end

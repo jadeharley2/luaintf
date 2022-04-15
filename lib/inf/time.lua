@@ -68,29 +68,3 @@ function CallTime(min,hour)
         end 
     end 
 end
-
---[[
---:say('ok!')
-for k=1,10 do 
-    At(k,12,'test1',function()
-        nepeta.task = Task('moveto',jade_room)
-    end)
-    At(k,22,'test1',function()
-        nepeta.task = Task('moveto',garden_e)
-    end)
-    At(k,32,'test1',function()
-        nepeta.task = Task('moveto',aradia_room)
-    end)
-
-    
-    At(k,42,'test1',function()
-        nepeta.task = Task('moveto',jade_room)
-    end)
-    At(k,50,'test1',function()
-        nepeta.task = Task('moveto',garden_e)
-    end)
-    At(k,58,'test1',function()
-        nepeta.task = Task('moveto',aradia_room)
-    end)
-end
-]]
