@@ -202,6 +202,11 @@ person.examine = function(target, ex)
             end
         end
         
+        local chair = GetRelationOther(target,sits_on) 
+        if chair then
+            printout(L'you are [target.pose] on [chair]')  
+        end
+
         printout('$display:target;'..target.id..';/null.png') 
     else
         local sw = ex.memory['mind_'..target.id]
@@ -245,6 +250,12 @@ person.examine = function(target, ex)
         elseif target.should_wear_clothes then
             printout(L'[target.they] [target.are] wearing nothing ') 
         end
+
+        local chair = GetRelationOther(target,sits_on) 
+        if chair then
+            printout(L'[target.they] [target.are] [target.pose] on [chair]')  
+        end
+
 
         printout('$display:clothes;clear')
         for k,v in pairs(worn) do

@@ -112,8 +112,9 @@ end
 
 
 
-function send_map(target, origin_override)
+function send_map(target, origin_override,known_filter)
     if not target then return end
+    
 
     local loc = origin_override or target.location
     local placecount = 1
@@ -121,20 +122,41 @@ function send_map(target, origin_override)
     local placenames = {tostring(loc)}
     local links = {} 
 
+    local mind = target.mind
     --print(L'center (1)[loc]')
     loc:foreach_adjascent(function(dir,room,prevroom,visited)
+        local room_known
+        if known_filter then
+            room_known = mind:is_known(room)
+            local prevroom_known = mind:is_known(prevroom)
+ 
+            if not room_known and not prevroom_known then
+                return
+            end
+        end
+
         local roomid = places[room]
         if not roomid then
             placecount = placecount + 1
             places[room] = placecount
-            placenames[placecount] = tostring(room)
+            if known_filter then
+                if not room_known then
+                    placenames[placecount] = '???'
+                else
+                    placenames[placecount] = tostring(room)
+                end
+            else
+                placenames[placecount] = tostring(room)
+            end
             roomid = placecount
         end
 
         local roomid2 = places[prevroom] --should have set already
 
 
-        links[#links+1] = roomid..'-'..roomid2 
+        if roomid>roomid2 then
+            links[#links+1] = roomid..'-'..roomid2 
+        end
 
         --print(L"([roomid])[prevroom] -[dir]-> ([roomid2])[room])") 
     end,100)
@@ -145,7 +167,7 @@ end
 
 
 showmap_action = Def('showmap_action',{key='map',restrictions = {"!asleep",'!blind'},callback = function(self)    
-    send_map(self)
+    send_map(self,nil,true)
     return false -- no enturn
 end,description='shorthand: l'},'action')
 person:act_add(showmap_action)

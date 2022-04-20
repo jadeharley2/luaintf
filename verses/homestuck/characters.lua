@@ -108,6 +108,9 @@ dave.view_style = {
 dave:set_clothes('owned shirt','owned pants','owned shoes','owned glasses')
 
 
+jake = Def('jake','page_class hope_aspect male person')
+jake.image = '/img/hs/characters/jake.png'    
+jake:set_clothes('owned shirt','owned pants','owned shoes','owned glasses')
 --[[      ======================================      ]]
 
 

@@ -58,9 +58,17 @@ end
 
 transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback = function(self,arg1,...) 
     local is_player = self == player  
+    if self.block_mind_transfer then
+        if is_player then printout('transfer blocked ') end
+        return false
+    end
     if arg1 then
         local v = LocalIdentify(arg1)
         if v and v:is(person) then
+            if v.block_mind_transfer then
+                if is_player then printout('transfer blocked ') end
+                return false
+            else
 
             --if players[v] then 
             --    printout('this character is occupied')
@@ -70,6 +78,9 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
                 describe_action(self,'you blackout',tostring(self)..' falls on the floor')  
                 local srcperson = self
                 local trgperson = v 
+                
+                local srctask = srcperson.task 
+                local trgtask = trgperson.task
                 
                 if not v:act_get(transfer_soul_action) then
                     self:act_rem(transfer_soul_action)
@@ -95,18 +106,21 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
                 end 
  
                 ScenarioRun("mind_transformation",v.id..'_mtf',{
-                    source = self,
-                    target = v, 
-                    duration = 30,
+                    source = srcperson,
+                    target = trgperson, 
+                    duration = 60,
+                    task = trgtask,
                 },true) 
                 ScenarioRun("mind_transformation",self.id..'_mtf',{
-                    source = v,
-                    target = self, 
-                    duration = 30,
+                    source = trgperson,
+                    target = srcperson, 
+                    duration = 60,
+                    task = srctask,
                 },true)  
                 
             --end 
-            return true
+                return true
+            end
         else
             if is_player then printout('there is no '..arg1) end
         end 
@@ -210,6 +224,9 @@ Scenario("mind_transformation",{
         local ids_start = target:get_identity_strength(target)
         local switched = target.identity~=target
 
+
+        target.block_mind_transfer = true
+
         local ph_c = {}
         for k=0,d do
             local blend = blend_view_styles(style_prev,style_next,k/d) 
@@ -244,12 +261,17 @@ Scenario("mind_transformation",{
                     end
                 end
             end
-            target:set_identity_strength(target,ids_start + (1 - ids_start) * (k/d))
+            local nid = ids_start + (1 - ids_start) * (k/d)
+           
+            target:set_identity_strength( data.source,1-nid)
+            target:set_identity_strength(target,nid)
         end
         send_style(target) 
-        if target.identity~=target then
-            target.identity = target   
+        --if target.identity~=target then
+            target.identity = target  
+            target.task = data.task  
             printto(target,'you feel different')
-        end
+            target.block_mind_transfer = nil
+        --end
     end
 })

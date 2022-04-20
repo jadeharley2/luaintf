@@ -85,8 +85,10 @@ end
 thing.act_list = function(self,k)
     local r = {}
     self:collect('actions',function(k,v) 
-        if v:is_restricted(self) then return end
-        r[k] = v
+        if v then 
+            if v:is_restricted(self) then return end
+            r[k] = v
+        end
     end)
     return r --self.actions:getall()
 end
@@ -220,6 +222,6 @@ end
 
 function send_actions(target) 
     local actions = {"x self"}
-    player:foreach('actions',function(k,v) actions[#actions+1]=k end)
+    target:foreach('actions',function(k,v) if v then actions[#actions+1]=k end end)
     printto(target,'$actions:',table.concat(actions, ';'))
 end

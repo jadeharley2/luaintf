@@ -167,3 +167,22 @@ function table.permutations(A,B,C,D)
 	end
 	return perm 
 end
+
+
+
+
+
+
+
+
+local each_meta = {}
+each_meta.__newindex = function(t,key,value)
+    for k,v in ipairs(t) do
+        v[key] = value
+    end
+end
+each_meta.__index = each_meta
+
+function every(t)
+    return setmetatable(t,each_meta)
+end

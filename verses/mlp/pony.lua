@@ -56,4 +56,8 @@ pony.build = function(self)
     hoof_br.location = self 
     tail.location = self
 
+    --every{body_f,body_b,neck,head,
+    --    leg_fl,leg_fr,leg_bl,leg_br,
+    --    hoof_fl,hoof_fr,hoof_bl,hoof_br,
+    --    tail}.location = self
 end

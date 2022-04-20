@@ -5,28 +5,38 @@ move_action = Def('move_action',{key='move',restrictions = {"!asleep"},callback 
     if loc:is(room) then
         local next = loc:dir(direction)
         if next then  
-            describe_action(self,nil,tostring(self)..' leaves to '..tostring(next))  
-            others_action(self,function(ply)
-                printout('$display:line;'..self.id..';')
-                printout('$display:target;'..self.id..';')
-            end)
 
-            self.location = next
-
-            describe_action(self,nil,tostring(self)..' arrives from '..tostring(loc))
-
-            others_action(self,function(ply) 
-                printout('$display:line;'..self.id..';'..(self.image or ''))
-            end)
-
-            if is_player then
-                printout('$display:target;clear')
-                printout('$display:line;clear')
-                examine(next) 
+            if self:is('bound') then
+                self:act('standup') -- try to stand up
             end
 
+            if not self:is('bound') then
 
-            return true
+                describe_action(self,nil,tostring(self)..' leaves to '..tostring(next))  
+                others_action(self,function(ply)
+                    printout('$display:line;'..self.id..';')
+                    printout('$display:target;'..self.id..';')
+                end)
+
+                self.location = next
+
+                describe_action(self,nil,tostring(self)..' arrives from '..tostring(loc))
+
+                others_action(self,function(ply) 
+                    printout('$display:line;'..self.id..';'..(self.image or ''))
+                end)
+
+                if is_player then
+                    printout('$display:target;clear')
+                    printout('$display:line;clear')
+                    examine(next) 
+                end
+
+
+                return true
+            else
+                if is_player then printout("you can't move") end
+            end
         else
             if is_player then printout("you can't go that way") end
         end
@@ -129,13 +139,13 @@ function thing:step_out(user)
 end
 step_in_interaction = Def('step_in_interaction',{key='step_in',
     restrictions = {"opened"},
-    user_restrictions = {"!asleep",'!blind'},
+    user_restrictions = {"!asleep",'!bound'},
     callback = function(self,user)  
         return self:call('step_in',user) 
 end},'interaction')
 step_out_interaction = Def('step_out_interaction',{key='step_out',
     restrictions = {"opened"},
-    user_restrictions = {"!asleep",'!blind'},
+    user_restrictions = {"!asleep",'!bound'},
     callback = function(self,user)  
         return self:call('step_out',user) 
 end},'interaction')

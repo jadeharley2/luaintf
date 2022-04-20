@@ -1,9 +1,230 @@
-nepeta.schedule = {
-    { at = "monday 9:00", task = Task('moveto',jade_room)},
-    { at = "monday 9:30", task = Task('moveto',garden_e)},
-    { at = "monday 10:00", task = Task('moveto',aradia_room)},
-}
 
+ 
+nepeta.task = Task('doschedule', {
+
+    goto_sleep = {
+        schedule = {
+            { task = Task('moveto',aradia_room),
+                oncomplete = {
+                    { delay = 2, task = Task('act','lay','bed'),
+                        oncomplete = {
+                            { delay = 2, task = Task('act','sleep')},
+                        },
+                        onfailed = {
+                            { task = Task('act','say','damn')},
+                            { delay = 1, task = Task('act','say','that')},
+                            { delay = 2, task = Task('act','say','f')},
+                        }
+                    },
+                }
+            },
+        }
+    },
+
+    normal_day = {
+        days = 'monday-friday',
+        schedule = {
+            { at = "9:00", task = Task('act','wakeup')},
+            { at = "9:10", task = Task('moveto',jade_room)},
+            { at = "9:30", task = Task('moveto',garden)},
+            { at = "10:00", task = Task('moveto',aradia_room)},
+            { at = "10:10", task = Task('moveto',jade_room)},
+            { at = "11:32", task = Task('moveto',aradia_room)},
+            { at = "20:00", schedule = 'goto_sleep'},
+        }
+    },
+    weekend = {
+        days = 'saturday,sunday',
+        schedule = {
+            { at = "9:00", task = Task('act','wakeup')},
+            
+            { at = "20:00", schedule = 'goto_sleep'},
+        }
+    }
+})
+
+
+
+
+
+
+
+
+
+
+jade.task = Task('doschedule', {
+
+    goto_sleep = {
+        schedule = {
+            { task = Task('moveto',jade_room),
+                oncomplete = {
+                    { delay = 2, task = Task('act','lay','bed')},
+                    { delay = 4, task = Task('act','sleep')},
+                }
+            },
+        }
+    },
+
+    normal_day = {
+        days = 'monday-sunday',
+        schedule = {
+            { at = "9:00", task = Task('act','wakeup')}, 
+            { at = "9:30", task = Task('moveto',garden)},
+            { at = "10:00", task = Task('moveto',aradia_room)},
+            { at = "10:10", task = Task('moveto',jade_room)},
+            { at = "11:32", task = Task('moveto',local_corner)},
+            { at = "12:10", task = Task('moveto',jade_room)},
+            { at = "14:30", task = Task('moveto',garden)},
+            { at = "17:30", task = Task('moveto',rose_forest)},
+            { at = "19:00", task = Task('moveto',jade_room)},
+            { at = "20:00", schedule = 'goto_sleep'},
+        }
+    }
+})
+
+rose.task = Task('doschedule', {
+
+    goto_sleep = {
+        schedule = {
+            { task = Task('moveto',rose_room),
+                oncomplete = {
+                    { delay = 2, task = Task('act','lay','bed')},
+                    { delay = 4, task = Task('act','sleep')},
+                }
+            },
+        }
+    },
+
+    normal_day = {
+        days = 'monday-sunday',
+        schedule = {
+            { at = "9:00", task = Task('act','wakeup')}, 
+            { at = "9:30", task = Task('moveto',rose_livingroom)},
+            { at = "10:00", task = Task('moveto',rose_forest)},
+            { at = "11:00", task = Task('moveto',rose_laundry)},
+            { at = "12:30", task = Task('moveto',rose_livingroom)},
+            { at = "14:10", task = Task('moveto',rose_room)}, 
+            { at = "17:30", task = Task('moveto',rose_forest)},
+            { at = "19:40", task = Task('moveto',rose_room)},
+            { at = "21:00", schedule = 'goto_sleep'},
+        }
+    }
+})
+
+roxy.task = Task('doschedule', {
+
+    goto_sleep = {
+        schedule = {
+            { task = Task('moveto',roxy_room),
+                oncomplete = {
+                    { delay = 2, task = Task('act','lay','bed')},
+                    { delay = 4, task = Task('act','sleep')},
+                }
+            },
+        }
+    },
+
+    normal_day = {
+        days = 'monday-sunday',
+        schedule = {
+            { at = "10:00", task = Task('act','wakeup')}, 
+            { at = "11:30", task = Task('moveto',rose_livingroom)}, 
+            { at = "12:00", task = Task('moveto',rose_laundry)},
+            { at = "12:30", task = Task('moveto',rose_livingroom)}, 
+            { at = "14:40", task = Task('moveto',roxy_room)},
+            { at = "21:00", schedule = 'goto_sleep'},
+        }
+    }
+})
+
+
+dave.task = Task('doschedule', {
+
+    goto_sleep = {
+        schedule = {
+            { task = Task('moveto',dave_room),
+                oncomplete = {
+                    { delay = 2, task = Task('act','lay','bed')},
+                    { delay = 4, task = Task('act','sleep')},
+                }
+            },
+        }
+    },
+
+    normal_day = {
+        days = 'monday-sunday',
+        schedule = {
+            { at = "8:00", task = Task('act','wakeup')}, 
+            { at = "11:10", task = Task('moveto',dave_livingroom)}, 
+            { at = "14:00", task = Task('moveto',dave_roof)},
+            { at = "17:30", task = Task('moveto',dave_livingroom)}, 
+            { at = "18:40", task = Task('moveto',dave_room)},
+            { at = "21:00", schedule = 'goto_sleep'},
+        }
+    }
+})
+
+john.task = Task('doschedule', {
+
+    goto_sleep = {
+        schedule = {
+            { task = Task('moveto',john_room),
+                oncomplete = {
+                    { delay = 2, task = Task('act','lay','bed')},
+                    { delay = 4, task = Task('act','sleep')},
+                }
+            },
+        }
+    },
+
+    normal_day = {
+        days = 'monday-sunday',
+        schedule = {
+            { at = "9:20", task = Task('act','wakeup')}, 
+            { at = "9:50", task = Task('moveto',john_bathroom)}, 
+            { at = "10:00", task = Task('moveto',john_kitchen)},
+            { at = "11:30", task = Task('moveto',john_study)}, 
+            { at = "12:40", task = Task('moveto',john_backyard)},
+            { at = "14:10", task = Task('moveto',john_frontyard)},
+            { at = "16:00", task = Task('moveto',john_room)},
+            { at = "18:00", task = Task('moveto',john_livingroom)},
+            { at = "19:40", task = Task('moveto',john_kitchen)},
+            { at = "20:00", task = Task('moveto',john_room)},
+            { at = "21:00", schedule = 'goto_sleep'},
+        }
+    }
+})
+
+
+
+
+aradia.task = Task('doschedule', {
+
+    goto_sleep = {
+        schedule = {
+            { task = Task('moveto',aradia_room),
+                oncomplete = {
+                    { delay = 2, task = Task('act','lay','bed')},
+                    { delay = 4, task = Task('act','sleep')},
+                }
+            },
+        }
+    },
+
+    normal_day = {
+        days = 'monday-sunday',
+        schedule = {
+            { at = "8:00", task = Task('act','wakeup')}, 
+            { at = "11:20", task = Task('moveto',local_corner)}, 
+            { at = "14:10", task = Task('moveto',garden)},
+            { at = "17:20", task = Task('moveto',local_corner)}, 
+            { at = "18:10", task = Task('moveto',aradia_room)},
+            { at = "21:00", schedule = 'goto_sleep'},
+        }
+    }
+})
+--hour = 19
+--minute = 50
 --[[
 --:say('ok!')
 for k=1,10 do 

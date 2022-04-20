@@ -24,8 +24,10 @@ Include('lib/win.lua')
 Include('lib/inf/init.lua')
 
 Include('lib/defines/space.lua')
-Include('lib/defines/misc.lua')
 Include('lib/defines/moving_cabin.lua')
+Include('lib/defines/costume.lua')
+Include('lib/defines/furniture.lua')
+Include('lib/defines/misc.lua')
 
 Include('verses/homestuck/init.lua')
 Include('verses/kaltag/init.lua')

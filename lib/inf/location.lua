@@ -232,11 +232,52 @@ room.image = '/img/background/emptyroom.png'
 
 
 nowhere = Def('nowhere',{name = 'Nowhere', description = '???'},'room')
+local function foreach_contains(self,callback,recursive) 
+    local t = rawget(self,'contains')
+    if t then
+        for k,v in pairs(t) do
+            callback(k)
+        end
+        if recursive then
+            for k,v in pairs(t) do
+                foreach_contains(k,callback,true)
+            end
+        end
+    end
+end
+local function foreach_parent(self,callback,include_self)
+    local c 
+    if include_self then 
+        c = self
+    else
+        c = rawget(self,'_loc')
+    end
+    while c and c~=nowhere do
+        local r = callback(c)
+        if r then return r end
+        c = rawget(c,'_loc')
+    end
+end
 thing._get_location = function(self)
     return rawget(self,'_loc') or nowhere
 end
 thing._set_location = function(self,v)
     
+    if self == v then
+        error('recursive location setup detected!')
+    end
+
+    local is_error=false
+    
+    foreach_parent(v,function(x)
+        if x == self then
+            is_error = true
+        end
+    end,false)
+    if is_error then
+        error('recursive location setup detected!')
+    end
+
     if v and v:call("on_enter",self)==false then
         return 
     end  
@@ -259,19 +300,8 @@ thing._set_location = function(self,v)
         t[self] = true
     end
 end
-thing.foreach_parent = function(self,callback,include_self)
-    local c 
-    if include_self then 
-        c = self
-    else
-        c = self.location
-    end
-    while c and c~=nowhere do
-        local r = callback(c)
-        if r then return r end
-        c = c.location
-    end
-end
+thing.foreach_contains = foreach_contains
+thing.foreach_parent = foreach_parent
 thing.parent_oftype = function(self,type,include_self)
     return self:foreach_parent(function(s)
         if s:is(type) then

@@ -14,6 +14,38 @@ function meta_mind:swap_memory(key1,key2,targ)
         self.memory[key2] = val1 
     end
 end
+function meta_mind:make_known(t)
+    local known = self.memory.known_things or {}
+    self.memory.known_things = known 
+    known[t] = true
+end
+function meta_mind:make_fully_known(t)
+    local known = self.memory.known_things or {}
+    self.memory.known_things = known 
+    --known[t] = 'fully'
+    known[t] = true 
+    t:foreach_contains(function(v)
+        known[v] = true  
+    end,true)
+end
+function meta_mind:forget(t)
+    local known = self.memory.known_things or {}
+    self.memory.known_things = known 
+    known[t] = nil
+end
+function meta_mind:fully_forget(t)
+    local known = self.memory.known_things or {}
+    self.memory.known_things = known 
+    known[t] = nil
+    t:foreach_contains(function(v)
+        known[v] = nil  
+    end,true)
+end
+function meta_mind:is_known(t)
+    local known = self.memory.known_things or {} 
+    local v = known[t]
+    return known[t] 
+end
 
 meta_mind.__index = meta_mind
 
@@ -31,7 +63,7 @@ person:event_add('on_init','mind',function(self)
 end)
 person:event_add('on_turn_end','mind',function(self)
     local mind = rawget(self,'mind')
-    if mind and not self.player then 
+    if mind and (not self.player or self.ai_override) then 
         local t = mind.task 
         if t then 
             if not t.is_started then
@@ -43,6 +75,9 @@ person:event_add('on_turn_end','mind',function(self)
                 mind.task = false
             end
         end
+    end
+    if mind then
+        mind:make_known(self.location)
     end
 end)
 
@@ -121,15 +156,15 @@ person.set_identity_strength = function(self,identity,value)
         local id = mind.identities
 
         value = math.clamp(value,0,1)
-        local identities = id
-        
-        local total = 0 
-        for k,v in pairs(id) do total = total + v end  
-        local sub = (total - value) /(total-1) 
-        
-        for k,v in pairs(id) do 
-            id[k] = v-sub
-        end  
+       -- local identities = id
+       -- 
+       -- local total = 0 
+       -- for k,v in pairs(id) do total = total + v end  
+       -- local sub = (total - value) /(total-1) 
+       -- 
+       -- for k,v in pairs(id) do 
+       --     id[k] = v-sub
+       -- end  
 
         id[identity] = value
     end

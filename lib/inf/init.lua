@@ -27,6 +27,8 @@ Include('actions/looking.lua')
 Include('actions/movement.lua')
 Include('actions/talking.lua')
 Include('actions/taste.lua')
+Include('actions/sitting.lua')
+Include('actions/sleeping.lua')
 
 
 

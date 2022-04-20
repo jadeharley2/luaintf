@@ -22,32 +22,18 @@ john_house.owner = john
 
 
 
+
+--[[JADE & JAKE]]
+
 jade_room = Def('jade_room',{},'owned room') 
 jade_room.owner = jade
 jade_room.location = tower
 jade_room.image = '/img/hs/background/r_jade_bedroom.png' 
 
-
-
-
-
-
-aradia_room = Def('aradia_room',{},'owned room')
-aradia_room.owner = aradia
-aradia_room.location = tower
-Inst("mirror").location = aradia_room
-
-
-
-
-
-
-
-
-
-change_action = Def('change_action',{key='change',restrictions = {"!asleep"},callback = function(self,arg) 
-    self:change(arg)
-end},'action') 
+jade_bed = Def('jade_bed',{},'owned bed')
+jade_bed.owner = jade
+jade_bed.location = jade_room
+jade_bed.image = '/img/hs/items/jade_bed.png' 
 
 
 
@@ -60,70 +46,6 @@ keytar.image = '/img/items/keytar.png'
 keytar.location = jade_room
 
 
-
-roxanne = Def('roxanne',{name='Roxanne'},'female canine anthro person')
-roxanne._get_image =function(s) 
-    if s:is('animatronic') then
-        if keytar.location == s then
-            return '/img/characters/roxanne2_keytar.png'
-        else
-            return '/img/characters/roxanne2.png'
-        end
-    else
-        return '/img/characters/roxanne.png'
-    end
-end
-function roxanne:change()
-    if self:is('animatronic') then
-        self:adj_unset('animatronic')
-    else
-        self:adj_set('animatronic')
-    end
-end
-roxanne:act_add(change_action)
-
-
-roxy_costume = Def('roxy_costume',{
-	  name = "Roxanne costume", 
-   morph = roxanne,
-},'morph_costume')
-roxy_costume.image = '/img/characters/roxanne.png'
-
-
-renamon = Def('renamon',{name='Renamon'},'female fox anthro person')
-renamon.image = '/img/characters/renamon.png'
-renamon.view_style = { 
-    bg1 =  '#000000',
-
-    bg2d = '#b25c1f',
-    bg2l = '#fad36e',
-
-    bg3d = '#65477b',
-    bg3l = '#8f6ea7',
-
-    text = '#ffffff', 
-}      
-
-renamon_costume = Def('renamon_costume',{
-	  name = "Renamon costume", 
-   morph = renamon,
-},'morph_costume')
-renamon_costume.view_style = { 
-    bg1 =  '#000000',
-
-    bg2d = '#1d1d1d',
-    bg2l = '#2f2f30',
-
-    bg3d = '#1c6207',
-    bg3l = '#4ac925',
-
-    text = '#ffffff', 
-}
-renamon_costume.image = '/img/items/renamon_costume.png'
-
-renamon_gloves = Def('renamon_gloves',{},'owned purple gloves')
-renamon_gloves.image = '/img/items/renamon_glove.png'
-renamon_gloves.owner = renamon
 
 jade_wardrobifier_key = Def('jade_wardrobifier_key','thing')
 jade_wardrobifier_key.image = '/img/items/key.png'
@@ -143,43 +65,46 @@ local lz = Def("jade_lz",{},"m_zipper")
 lz.location = jade_cabinet
 
 
+jake_room = Def('jake_room',{},'owned room') 
+jake_room.owner = jake
+jake_room.location = tower
+jake_room.image = '/img/hs/background/jake_room.png' 
 
+jake_bed = Def('jake_bed',{},'owned bed')
+jake_bed.owner = jake
+jake_bed.location = jake_room 
 
 chamber = Def('chamber',{name = "Chamber"},'room')
-chamber.on_enter = function(s,t) print('welcome',t) end
-chamber.location = tower
+chamber.on_enter = function(s,t) print('welcome',t) end 
 MakeRelation(jade_room,chamber,direction_down)
 
-upper_hall = Def('upper_hall',{name = "Upper hall"},'room')
-upper_hall.location = tower
+upper_hall = Def('upper_hall',{name = "Upper hall"},'room') 
 MakeRelation(upper_hall,chamber,direction_east)
-MakeRelation(upper_hall,aradia_room,direction_north)
+MakeRelation(upper_hall,jake_room,direction_up)
 
-garden_c = Def('garden_c',{name = "Central garden atrium"},'room')
-garden_w = Def('garden_w',{name = "West garden atrium"},'room')
-garden_s = Def('garden_s',{name = "South garden atrium"},'room')
-garden_n = Def('garden_n',{name = "North garden atrium"},'room')
-garden_e = Def('garden_e',{name = "East garden atrium"},'room')
-MakeRelation(garden_c,upper_hall,direction_up)
-MakeRelation(garden_c,garden_w,direction_west)
-MakeRelation(garden_c,garden_e,direction_east)
-MakeRelation(garden_c,garden_n,direction_north)
-MakeRelation(garden_c,garden_s,direction_south)
-garden_c.location = tower
-garden_w.location = tower
-garden_s.location = tower
-garden_n.location = tower
-garden_e.location = tower
-garden_c.image = '/img/hs/background/r_jade_atrium.png' 
-garden_w.image = '/img/hs/background/r_jade_atrium.png' 
-garden_s.image = '/img/hs/background/r_jade_atrium.png' 
-garden_n.image = '/img/hs/background/r_jade_atrium.png' 
-garden_e.image = '/img/hs/background/r_jade_atrium.png' 
+garden = Def('garden',{name = "atrium"},'room')
+MakeRelation(garden,upper_hall,direction_up) 
+garden.image = '/img/hs/background/r_jade_atrium.png' 
+
+
+
+flower_pots = Def('flower_pots',{name = "flowers"},'thing')
+flower_pots.location = garden 
+
+
+
+
+
 
 central_hall = Def('central_hall',{name = "Central hall"},'room')
 foyer = Def('foyer',{name = "Foyer"},'room')
 
-MakeRelation(central_hall,garden_c,direction_up)
+
+every{chamber,upper_hall,garden,central_hall,foyer}.location = tower
+
+
+
+MakeRelation(central_hall,garden,direction_up)
 MakeRelation(central_hall,foyer,direction_east)
 
 local_corner = Def('local_corner',{name = "Local corner"},'room')
@@ -187,6 +112,7 @@ local_corner.image = '/img/hs/background/rose_bg_outside_daytime.png'
 MakeRelation(foyer,local_corner,direction_east)
 
 
+--[[ROSE & ROXY]]
 
 
 rose_room = Def('rose_room',{},'owned room')
@@ -194,12 +120,20 @@ rose_room.owner = rose
 rose_room.location = rose_house
 rose_room.image = '/img/hs/background/rose_bg_bedroom.png' 
 
+rose_bed = Def('rose_bed',{},'owned bed')
+rose_bed.owner = rose
+rose_bed.location = rose_room 
+
 Inst("mirror").location = rose_room
 
 roxy_room = Def('roxy_room',{},'owned room')
 roxy_room.owner = roxy
 roxy_room.location = rose_house
 roxy_room.image = '/img/hs/background/rose_bg_moms_room.png' 
+
+roxy_bed = Def('roxy_bed',{},'owned bed')
+roxy_bed.owner = roxy
+roxy_bed.location = roxy_room 
 
 Inst("mirror").location = roxy_room
 
@@ -221,7 +155,7 @@ rose_outside.image = '/img/hs/background/roxy_bg_alpharose_frontdoor.png'
 
 rose_forest = Def('rose_forest',{name='Pine forest clearing'},'room')
 rose_forest.location = local_town
-rose_forest.image = '/img/hs/background/rose_bg_outside_daytime.png' 
+rose_forest.image = '/img/hs/background/rose_bg_outside_home.png' 
 
 MakeRelation(rose_room,rose_hallway,direction_east)
 MakeRelation(roxy_room,rose_hallway,direction_south)
@@ -233,11 +167,16 @@ MakeRelation(rose_outside,rose_forest,direction_west)
 MakeRelation(rose_forest,local_corner,direction_west)
 
 
+--[[DAVE & DIRK]]
 
 dave_room = Def('dave_room',{},'owned room')
 dave_room.owner = dave
 dave_room.location = dave_house
 dave_room.image = '/img/hs/background/dave_room.png' 
+
+dave_bed = Def('dave_bed',{},'owned bed')
+dave_bed.owner = dave
+dave_bed.location = dave_room 
 
 dave_kitchen = Def('dave_kitchen',{name='Kitchen'},'room')
 dave_kitchen.location = dave_house
@@ -273,11 +212,18 @@ MakeRelation(dave_staircase,dave_outside,direction_down)
 MakeRelation(dave_outside,local_corner,direction_south)
 
 
+--[[JOHN]]
+
+
 
 john_room = Def('john_room',{},'owned room')
 john_room.owner = john
 john_room.location = john_house
 john_room.image = '/img/hs/background/john_room.png' 
+
+john_bed = Def('john_bed',{},'owned bed')
+john_bed.owner = john
+john_bed.location = john_room 
 
 john_hallway = Def('john_hallway',{name = 'Hallway'},'room') 
 john_hallway.location = john_house 
@@ -326,3 +272,20 @@ MakeRelation(john_laundry,john_backyard,direction_east)
 MakeRelation(john_backyard,john_frontyard,direction_north)
 
 MakeRelation(john_backyard,local_corner,direction_north)
+
+
+
+--[TROLLS]
+
+
+
+aradia_room = Def('aradia_room',{},'owned room')
+aradia_room.owner = aradia
+aradia_room.location = tower
+Inst("mirror").location = aradia_room
+
+aradia_bed = Def('aradia_bed',{},'owned bed')
+aradia_bed.owner = aradia
+aradia_bed.location = aradia_room 
+
+MakeRelation(aradia_room,local_corner,direction_up)
