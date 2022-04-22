@@ -301,6 +301,8 @@ person.intent_respond = function(self,from,about)
         local dialogue = self.dialogue or {}
         self.dialogue = dialogue
 
+        local mind = self.mind
+
         dialogue.c3 = dialogue.c2
         dialogue.c2 = dialogue.c1
         dialogue.c1 = dialogue.c0
@@ -324,7 +326,7 @@ person.intent_respond = function(self,from,about)
                     end
                 end
                 if match then
-                    local r = v.callback(self,from,intents,dialogue,about)
+                    local r = v.callback(self,from,intents,dialogue,about,mind)
                     if r~=nil then
                         if r==true then
                             --H[k] = nil
@@ -360,9 +362,23 @@ person.intent_respond = function(self,from,about)
                         self:intent_say(v)
                         return true
                     elseif t=='function' then
-                        local result = v(self,from,intents,dialogue,about)
+                        local result = v(self,from,intents,dialogue,about,mind)
                         return result
                     end
+                end
+            end
+            local v = node._else 
+            if v then 
+                local t= type(v)
+                if t=='table' then
+                    local r = treerun(v)
+                    if r then return r end 
+                elseif t=='string' then
+                    self:intent_say(v)
+                    return true
+                elseif t=='function' then
+                    local result = v(self,from,intents,dialogue,about,mind)
+                    return result
                 end
             end
         end
@@ -423,6 +439,7 @@ DefineDefaultIntent('future',false)
 DefineDefaultIntent('robotic',false)
 DefineDefaultIntent('misspelling',false)
 DefineDefaultIntent('formal',false)
+DefineDefaultIntent('too',false)
 
 DefineIntents("who i am",{"question","identity","own"})
 DefineIntents("who am i",{"question","identity","own"})
@@ -440,9 +457,11 @@ DefineIntents("where is it?",{"question","location","thing"})
 DefineIntents("where?",{"question","location"}) 
 
 DefineIntents("i am {name}",{"statement","identity","own"})
+DefineIntents("i am {name} too",{"statement","identity","own","too"})
 DefineIntents("i was {name}",{"statement","identity","own","past"})
 DefineIntents("you are {name}",{"statement","identity","subject"})
 DefineIntents("my name is {name}",{"statement","identity","own"})
+DefineIntents("my name is {name} too",{"statement","identity","own","too"})
 DefineIntents("this unit|copy designation is {name}",{"statement","identity","own","robotic"})
 DefineIntents("statement. this unit|copy designation is {name}",{"statement","identity","own","robotic"})
 

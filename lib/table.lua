@@ -126,6 +126,36 @@ function table.copy(t)
 	return n
 end
 
+function table.select(t,key)
+	if type(key)=='string' then
+		local n = {}
+		for k,v in pairs(t) do n[k] = v[key] end 
+		return n
+	else --function
+		local n = {}
+		for k,v in pairs(t) do n[k] = key(k,v) end 
+		return n
+	end
+end
+function table.selectmany(t,key)
+	local n = {}
+	for k,v in pairs(t) do 
+		for kk,vv in pairs(v[key]) do 
+			n[#n+1] = vv
+		end 
+	end
+	return n
+end
+function table.where(t,callback)
+	local n = {}
+	for k,v in pairs(t) do
+		if callback(k,v) then
+			n[#n+1] = v
+		end
+	end 
+	return n
+end
+
 local deepcopy
 
 deepcopy = function(t)

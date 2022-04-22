@@ -271,7 +271,7 @@ MakeRelation(john_laundry,john_backyard,direction_east)
 
 MakeRelation(john_backyard,john_frontyard,direction_north)
 
-MakeRelation(john_backyard,local_corner,direction_north)
+MakeRelation(john_backyard,local_corner,direction_northeast)
 
 
 

@@ -1,4 +1,6 @@
-local meta_mind = {}
+meta_mind = meta_mind or {}
+
+own_self = {} -- memory key
 
 function meta_mind:swap_memory(key1,key2,targ)
     key2 = key2 or key1
@@ -14,39 +16,124 @@ function meta_mind:swap_memory(key1,key2,targ)
         self.memory[key2] = val1 
     end
 end
+function meta_mind:context(f)
+    local memory = self.memory
+    local ENV = {}
+    ENV.__index = function(t,k)
+        return memory[k]
+    end
+    ENV.__newindex = function(t,k,v)
+        memory[k] = v
+    end
+     
+    debug.setupvalue(f,1,ENV)
+    f(self)
+end
+function meta_mind:set_known_prop(target,key,value) 
+    local t = self:make_known(target)
+    t[key] = value
+end
+function meta_mind:get_known_prop(target,key) 
+    local t = self:get_known(target)
+    if t then
+        return t[key]
+    end
+end
+
+function meta_mind:find(key,value)
+    local t ={}
+    for k,v in pairs(self.memory) do
+        if type(v)=='table' then
+            if v[key]==value then
+                t[k]=v
+            end
+        end
+    end
+    return t
+end
+function meta_mind:first(key,value) 
+    for k,v in pairs(self.memory) do
+        if type(v)=='table' then
+            if v[key]==value then
+                return v,k
+            end
+        end
+    end 
+end
+
+function meta_mind:get_known(t,key)
+    local known = self.memory--.known_things or {}
+    --self.memory.known_things = known 
+    local v = known[t]
+    if key then
+        if v then
+            return v[key]
+        end
+    else
+        return v
+    end
+end
+function meta_mind:set_known(t,key,value)
+    local known = self.memory--.known_things or {}
+    --self.memory.known_things = known 
+    local v = known[t] or {}
+    known[t] = v
+    if key then
+        v[key] = value
+    end
+    return v
+end
 function meta_mind:make_known(t)
-    local known = self.memory.known_things or {}
-    self.memory.known_things = known 
-    known[t] = true
+    local known = self.memory--.known_things or {}
+    --self.memory.known_things = known 
+    local v = known[t] or {}
+    known[t] = v
+    return v
 end
 function meta_mind:make_fully_known(t)
-    local known = self.memory.known_things or {}
-    self.memory.known_things = known 
+    local known = self.memory--.known_things or {}
+    --self.memory.known_things = known 
     --known[t] = 'fully'
-    known[t] = true 
+    known[t] = known[t] or {} 
     t:foreach_contains(function(v)
-        known[v] = true  
+        known[v] = known[v] or {}  
     end,true)
 end
+
 function meta_mind:forget(t)
-    local known = self.memory.known_things or {}
-    self.memory.known_things = known 
+    local known = self.memory--.known_things or {}
+    --self.memory.known_things = known 
     known[t] = nil
 end
 function meta_mind:fully_forget(t)
-    local known = self.memory.known_things or {}
-    self.memory.known_things = known 
+    local known = self.memory--.known_things or {}
+    --self.memory.known_things = known 
     known[t] = nil
     t:foreach_contains(function(v)
         known[v] = nil  
     end,true)
 end
-function meta_mind:is_known(t)
-    local known = self.memory.known_things or {} 
+function meta_mind:is_known(t,key)
+    local known = self.memory--.known_things or {} 
     local v = known[t]
-    return known[t] 
+    if key then
+        if v then
+            return v[key]
+        end
+    else
+        return v
+    end
 end
+function meta_mind:visuals_changed(target,changes)
 
+end
+meta_mind.__call = function(self,target,key,value)
+    if value~=nil then
+        self:set_known(target,key,value)
+    else
+        return self:get_known(target,key)
+    end
+end 
 meta_mind.__index = meta_mind
 
 
@@ -59,6 +146,9 @@ person:event_add('on_init','mind',function(self)
         identities = { [self] = 1 }
     },meta_mind)
     rawset(self,'mind', mind) 
+ 
+    mind.memory[self] = {name = self.name}
+    mind.memory[own_self] = mind.memory[self]
     mind.memory.name = self.name
 end)
 person:event_add('on_turn_end','mind',function(self)
@@ -76,10 +166,19 @@ person:event_add('on_turn_end','mind',function(self)
             end
         end
     end
-    if mind then
-        mind:make_known(self.location)
+    if mind and mind.memory then
+        if self.can_see then
+            sense_sight.perceive(self,mind)
+        end
+        --mind:make_known(self.location)
     end
 end)
+
+person._get_can_see = function(self)
+    if self:is('blind') then return false end 
+    if self:is('sleeping') then return false end
+    return true 
+end
 
 person._get_personality = function(self)
     return rawget(self,'mind').personality
@@ -169,4 +268,7 @@ person.set_identity_strength = function(self,identity,value)
         id[identity] = value
     end
 end
+
+
+Include('sight.lua')
 

@@ -23,6 +23,8 @@ Include('lib/win.lua')
 ]]
 Include('lib/inf/init.lua')
 
+Include("testyarn.lua")
+
 Include('lib/defines/space.lua')
 Include('lib/defines/moving_cabin.lua')
 Include('lib/defines/costume.lua')
@@ -74,9 +76,11 @@ no_one.examine = function()
     for k,v in pairs(defines) do
         if v:is(person) and v.location ~= nowhere and not players[v] then
             local u = v.universe
-            local lu = loc_u[u] or {} 
-            lu[#lu+1] = v
-            loc_u[u] = lu
+            if u then
+                local lu = loc_u[u] or {} 
+                lu[#lu+1] = v
+                loc_u[u] = lu
+            end
         end
     end
     local chars = {}

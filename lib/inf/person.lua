@@ -8,6 +8,18 @@ local function cleanup_topics(self)
     end
 end
 
+local function display_speech(self,source,text,cli)
+    --local xnm = source.name 
+    --local src = self.memory['mind_'..source.id]
+    --if src and src~=source then xnm = xnm..'('..src.name..')' end
+
+    local name = self.mind:get_known(source,'name') -- self.memory['mind_'..source.id]
+    --if src and src~=source then xnm = xnm..'('..src.name..')' end
+    local xnm = name or "???"
+
+    return '    $gk'..xnm..'$wk: %2'..text..'\n'
+end
+
 person = Def('person',{
     name = "Someone",
     --_get_name = function(s) return s.id end,
@@ -49,10 +61,8 @@ person = Def('person',{
                     if mode == 'ambient' then
                         cli:send('    '..text..'\n')
                     else -- speech
-                        local xnm = source.name 
-                        local src = self.memory['mind_'..source.id]
-                        if src and src~=source then xnm = xnm..'('..src.name..')' end
-                        cli:send('    $gk'..xnm..'$wk: %2'..text..'\n')
+                         
+                        cli:send(display_speech(self,source,text))
                     end
                 end
                 --printout('    '..source.name..': '..text)
@@ -60,19 +70,13 @@ person = Def('person',{
                 if player == self then
                     if mode == 'ambient' then
                         printout('    '..text)
-                    else -- speech
-                        local xnm = source.name 
-                        local src = self.memory['mind_'..source.id]
-                        if src and src~=source then xnm = xnm..'('..src.name..')' end
-                        printout('    $gk'..xnm..'$wk: %2'..text)
+                    else -- speech 
+                        printout(display_speech(self,source,text))
                     end
                 else
                     local p = self.player
-                    if p then
-                        local xnm = source.name 
-                        local src = self.memory['mind_'..source.id]
-                        if src and src~=source then xnm = xnm..'('..src.name..')' end
-                        p:send('    $gk'..xnm..'$wk: %2'..text..'\n')
+                    if p then 
+                        p:send(display_speech(self,source,text))
                     end
                     
                 end 

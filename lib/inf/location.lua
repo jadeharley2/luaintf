@@ -268,12 +268,13 @@ thing._set_location = function(self,v)
     end
 
     local is_error=false
-    
-    foreach_parent(v,function(x)
-        if x == self then
-            is_error = true
-        end
-    end,false)
+    if v~=nil then
+        foreach_parent(v,function(x)
+            if x == self then
+                is_error = true
+            end
+        end,false)
+    end
     if is_error then
         error('recursive location setup detected!')
     end

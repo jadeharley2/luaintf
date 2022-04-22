@@ -355,12 +355,19 @@ end)
 
 
 person.intent_tree = {
-    greet =  function(self,F,I,D,T)
-        if math.random()>0.5 then
-            self:intent_say('hi')  
+    greet =  function(self,F,I,D,T,M)
+        local n = M(F,'name')
+        if not n then
+            self:intent_say('hi') 
+            self:intent_say('who are you?')  
+            D.topic = 'ask_your_name'
         else
-            self:intent_say(L'hi, [F]')  
-        end 
+            if math.random()>0.5 then
+                self:intent_say('hi')  
+            else
+                self:intent_say(L'hi, [n]')  
+            end 
+        end
     end,
     parting = "bye",
     own_name = "what do you need?",
@@ -393,6 +400,7 @@ person.intent_tree = {
                 else 
                     local real_id = LocalIdentify(self.memory.name) 
                     F.memory['mind_'..self.id] = real_id
+                    F.mind:set_known(self,'name',self.memory.name)
                     self:intent_say({
                         statement = true,
                         identity = true,
@@ -409,20 +417,25 @@ person.intent_tree = {
                 end)
             end,
             
-            own = function(self,F,I,D,T) -- who am i?
-                self:intent_say({
-                    statement = true,
-                    identity = true,
-                    subject = true,
-                    name = self:recall_name(F),
-                }) 
-                self:intent_hook({"answer"},function(S,F,I,D,T)
-                    if I.negative then
-                        self:intent_say('why?') 
-                        D.topic = "own_name"
-                    end 
-                    return true
-                end) 
+            own = function(self,F,I,D,T,M) -- who am i?
+                local name = M:get_known(F,'name')
+                if name then 
+                    self:intent_say({
+                        statement = true,
+                        identity = true,
+                        subject = true,
+                        name = name,--self:recall_name(F),
+                    }) 
+                    self:intent_hook({"answer"},function(S,F,I,D,T)
+                        if I.negative then
+                            self:intent_say('why?') 
+                            D.topic = "own_name"
+                        end 
+                        return true
+                    end)
+                else
+                    self:intent_say("i don't know")
+                end 
             end,
         },
 
@@ -798,6 +811,38 @@ person.intent_tree = {
                 end
             }
         },
+    },
+    topic_ask_your_name = {
+        statement = {
+            identity = {
+                own = function(self,from,intent,dialogue,text,mind)
+                    local name = intent.name
+
+                    local other_same = mind:first('name',name)
+                    mind(from,'name',name)
+                    if other_same then
+                        self:say(L'really? [name]?')
+                        self:say('well... ok')
+                    else
+                        self:intent_say('good to see you')
+                    end
+ 
+                    from.mind(self,'name',self.memory.name)
+                    self:intent_say({
+                        statement = true,
+                        identity = true,
+                        own = true,
+                        name = self.memory.name,
+                        too = self.memory.name == name,
+                    }) 
+                    dialogue.topic = false
+                    return true
+                end,
+            }
+        },
+        _else = function(S,F,I,D,T,M)
+            S:say('please say who you are')
+        end,
     },
 
 }

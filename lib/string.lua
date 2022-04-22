@@ -179,3 +179,34 @@ function string.levenshtein(str1, str2)
         -- return the last value - this is the Levenshtein distance
 	return matrix[len1][len2]
 end
+
+
+local sbyte = string.byte
+local schar = string.char
+local ssub = string.sub
+hash = hash or {}
+function hash.sum(values)
+	local t = {}
+	for k,v in ipairs(values) do 
+		for i=1,#v do
+			t[i] = (t[i] or 0) + sbyte(v,i)
+		end
+	end
+	for k,v in ipairs(t) do
+		t[k] = t[k]%256
+	end
+	return schar(unpack(t))
+end
+function hash.mul(values)
+	local t = {}
+	for k,v in ipairs(values) do
+		local bytes = sbyte(v)
+		for i=1,#v do
+			t[i] = (t[i] or 1) * bytes[i]/255
+		end
+	end
+	for k,v in ipairs(t) do
+		t[k] = t[k]*255
+	end
+	return schar(t)
+end

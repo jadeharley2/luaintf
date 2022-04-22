@@ -1,0 +1,29 @@
+title: lel
+tags: 
+position: 542.9999847412109,613
+colorID: 2
+---
+local hleb = 220
+print(hleb)
+
+go[[fir]]
+===
+title: test0
+tags: heh test
+position: 548.4754333496094,398.3719482421875
+colorID: 8
+---
+local e = 0
+e = e + 2
+f = 0 
+
+if f then go[[lel]] end
+
+f = 0
+===
+title: fir
+tags: 
+position: 550.5770225524902,829.1744166612625
+---
+errorka()
+===
