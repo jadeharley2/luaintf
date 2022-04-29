@@ -24,6 +24,20 @@ person = Def('person',{
     name = "Someone",
     --_get_name = function(s) return s.id end,
     --_get_description = LF'You see nothing special about [self.name].',
+    _get_perceived_name = function(self)
+        if player then
+            return player.mind:get_known(self,'name') or "unknown"
+        else
+            return self.name
+        end
+    end, 
+    __tostring = function(self)
+        if player then
+            return player.mind:get_known(self,'name') or self.unknown_name or "unknown"
+        else
+            return self.name
+        end
+    end,
     topics = {},
     response = function(self,about,event,del)
         self.topics = rawget(self,'topics') or {}
@@ -132,6 +146,7 @@ person.should_wear_clothes = true
 person.examine = function(target, ex)
     printout('$display:target;clear')
     
+
     if target == player then
         
         if target.identity~= player then
@@ -212,7 +227,7 @@ person.examine = function(target, ex)
         end
 
         printout('$display:target;'..target.id..';/null.png') 
-    else
+    else 
         local sw = ex.memory['mind_'..target.id]
         if ex.identity==target then --sw then
             if player.robotic then

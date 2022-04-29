@@ -7,7 +7,7 @@ Include('aspects.lua')
 Include('soul.lua')
 Include('characters.lua')
 Include('world.lua')
-Include('schedules.lua')
+Include('memory.lua')
 
 
  

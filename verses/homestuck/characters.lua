@@ -154,7 +154,7 @@ aradiabot.view_style = {
     bg3l = '#0021cb',
 
     text = '#ffa29b', 
-}   
+}    
 
 
 

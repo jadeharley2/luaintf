@@ -69,7 +69,7 @@ function Def(id,data,kind)
         
         rawset(data,'__index',rawget(parent,'__index'))
         rawset(data,'__newindex',rawget(parent,'__newindex'))
-        rawset(data,'__tostring',rawget(parent,'__tostring'))
+        rawset(data,'__tostring',rawget(data,'__tostring') or rawget(parent,'__tostring'))
         
         setmetatable(data,parent)
     end
@@ -116,7 +116,7 @@ function Setup(data,a)
                 data.base = parent 
                 data.__index = parent.__index
                 data.__newindex = parent.__newindex
-                data.__tostring = parent.__tostring
+                data.__tostring = data.__tostring or parent.__tostring
         
                 setmetatable(data,parent)
             else
@@ -230,7 +230,7 @@ end
 thing = Def('thing',{
     --name = "A thing",
     --_get_name = function(s) return s.id end,
-    _get_description = LF"You see nothing special about [self.name].", 
+    _get_description = LF"You see nothing special about [self].", 
     foreach = function(self,key,callback,thisonly)
         local s = self
         while s do
@@ -539,7 +539,7 @@ thing = Def('thing',{
             base = base.base
         end
         return false
-    end,
+    end, 
     set_updating = function(self,enabled)
         if enabled then
             turn_kind_def[self] = true

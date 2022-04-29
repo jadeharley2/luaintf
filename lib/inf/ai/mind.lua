@@ -39,6 +39,33 @@ function meta_mind:get_known_prop(target,key)
         return t[key]
     end
 end
+--knows({rose,dave,john},"name")
+--knows({rose,dave,john},{"name","age"})
+--knows({rose,dave,john},{"name",age="age_num"})
+--knows({rose,dave,john},{"name",age=function(x) return x.age+30 end})
+function meta_mind:knows(target_list,mem_key,target_key) 
+    target_key = target_key or mem_key
+    for k,v in pairs(target_list) do 
+        if type(mem_key)=='table' then
+            for k2,v2 in pairs(mem_key) do
+                local val
+                if type(v2)=='function' then
+                    val = v2(v)
+                else
+                    val = v[v2]
+                end
+
+                if type(k2)=='number' then
+                    self(v,v2,val)
+                else
+                    self(v,k2,val)
+                end
+            end
+        else
+            self(v,mem_key,v[target_key])
+        end
+    end
+end
 
 function meta_mind:find(key,value)
     local t ={}

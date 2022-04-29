@@ -1,5 +1,16 @@
 
  
+jade.mind:knows({rose,dave,john,aradia,nepeta,terezi},{"name","location"})
+rose.mind:knows({jade,dave,john,aradia,nepeta,terezi},"name")
+dave.mind:knows({jade,rose,john,aradia,nepeta,terezi},"name")
+john.mind:knows({jade,rose,dave,aradia,nepeta,terezi},"name")
+
+aradia.mind:knows({jade,rose,dave,john,nepeta,terezi},"name")
+nepeta.mind:knows({jade,rose,dave,aradia,john,terezi},"name")
+terezi.mind:knows({jade,rose,dave,aradia,nepeta,john},"name")
+
+
+
 nepeta.task = Task('doschedule', {
 
     goto_sleep = {
@@ -42,8 +53,6 @@ nepeta.task = Task('doschedule', {
         }
     }
 })
-
-
 
 
 

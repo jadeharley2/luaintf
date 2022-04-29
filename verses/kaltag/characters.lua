@@ -29,8 +29,21 @@ anthroid.this.buttons = {
     --end,
 }
 
+person._get_species = function(x)
+    return x:collect('adjectives',function(v) 
+        local def = adjective_def[v]
+        if def and def:is('species') then
+            return def 
+        end
+    end)
+end
+person._get_unknown_name = function(x)
+    return table.concat({x.color, x.species}," ")
+end
 
-
+--ara.unknown_name = "red anthroid feline"
+--srk.unknown_name = "short anthroid feline"
+--zta.unknown_name = "white anthroid kleika"
 
 
 ara = Def('ara',{name='ARA', code = '0-1-1'},'female feline anthroid person') 
@@ -43,7 +56,6 @@ ara:find('anthroid_long_gloves').image = '/img/items/ara_arms.png'
 ara:find('anthroid_stocking').image = '/img/items/ara_legs.png'
 ara:find('anthroid_collar').image = '/img/items/ara_collar.png'
 ara:find('anthroid_visor').image = '/img/items/ara_visor.png'
-
 
 srk = Def('srk',{name='Warning', code ='07-4-31'},'female feline anthroid person') 
 srk.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943209342293905478/srk.png'

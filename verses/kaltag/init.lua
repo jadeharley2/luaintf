@@ -20,6 +20,8 @@ Include('flagship.lua')
 
 Include('spellbook.lua')
 
+Include('memory.lua')
+
 
 
 
