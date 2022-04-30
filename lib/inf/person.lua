@@ -33,7 +33,7 @@ person = Def('person',{
     end, 
     __tostring = function(self)
         if player then
-            return player.mind:get_known(self,'name') or self.unknown_name or "unknown"
+            return player.mind:get_known(self,'name') or "unkn:"..tostring(self.numid) --self.unknown_name or "unknown"
         else
             return self.name
         end
@@ -108,7 +108,7 @@ person = Def('person',{
                 text = self:process_speech(L(text))
                 s = ts
 
-                print(self,text)
+                --print(self,text)
                 self.location:foreach('contains',function(k,v)
                     local hear = k.hear 
                     if hear then
@@ -189,11 +189,13 @@ person.examine = function(target, ex)
         end,true)
 
         if #worn>0 then
+            plain_owner = target
             if player.robotic then
                 printout('equipped items: '..table.concat(worn,', ')) 
             else
                 printout('you are wearing: '..table.concat(worn,', ')) 
             end
+            plain_owner = false
         end
         if #things>0 then
             if player.robotic then
@@ -265,7 +267,9 @@ person.examine = function(target, ex)
 
         local worn = target.clothes
         if #worn>0 then
+            plain_owner = target
             printout(L'[target.they] [target.are] wearing: '..table.concat(worn,', ')) 
+            plain_owner = false
         elseif target.should_wear_clothes then
             printout(L'[target.they] [target.are] wearing nothing ') 
         end

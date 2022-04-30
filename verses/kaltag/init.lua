@@ -20,8 +20,6 @@ Include('flagship.lua')
 
 Include('spellbook.lua')
 
-Include('memory.lua')
-
 
 
 
@@ -88,3 +86,7 @@ print(L"This is mute[!nytro;] example: [their] gender is [gender]. But[!ayn;] [t
 
 
 zta.task = Task('follow',ara)
+
+
+
+Include('memory.lua')

@@ -1,3 +1,3 @@
 {
-    "lua.debug.variables.showIntegerAsHex": true
+    "lua.debug.variables.showIntegerAsHex": false
 }

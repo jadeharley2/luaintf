@@ -232,6 +232,8 @@ room.image = '/img/background/emptyroom.png'
 
 
 nowhere = Def('nowhere',{name = 'Nowhere', description = '???'},'room')
+nowhere.image = '/null.png'
+
 local function foreach_contains(self,callback,recursive) 
     local t = rawget(self,'contains')
     if t then
@@ -374,7 +376,11 @@ room.examine = function(target, ex)
         if k~=player then
             if k:is(person) or k:is(soul) then
                 characters[#characters+1] = tostring(k)
-                images[k.id] = k--.image 
+                if player and player.mind(k,'name') then
+                    images[k.id] = k--.image 
+                else
+                    images[k.numid] = k--.image 
+                end
             else
                 things[#things+1] = tostring(k)
                 things_2[k.id] = tostring(k)

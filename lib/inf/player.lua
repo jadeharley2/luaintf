@@ -7,15 +7,15 @@ player = false
 personality = false
 
 
-function SETPLAYER(C)
+function SETPLAYER(C,per)
     if C then
         client = C 
         player = C.person or no_one
         personality = player.personality or player
     else
         client = false
-        player = false
-        personality = false
+        player = per
+        personality = false 
     end
 end
 function SETPERSON(P)

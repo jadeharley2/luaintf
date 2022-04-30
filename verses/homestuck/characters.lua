@@ -1,6 +1,7 @@
 
 jade = Def('jade','witch_class space_aspect nerdy female person')
 jade.image = '/img/hs/characters/jade.png'   
+jade.age = 21
 jade.view_style = { 
     bg1 =  '#000000',
 
@@ -38,7 +39,8 @@ jadebot.robotic = true
 MakeRelation(jadebot,jade,owner)
 
 rose = Def('rose','seer_class light_aspect female person')
-rose.image = '/img/hs/characters/rose.png'   
+rose.image = '/img/hs/characters/rose.png'  
+rose.age = 22 
 rose.view_style = { 
     bg1 =  '#321544',
 
@@ -59,6 +61,7 @@ rose:set_clothes('owned shirt','owned skirt','owned shoes')
 
 roxy = Def('roxy','rogue_class void_aspect female person')
 roxy.image = '/img/hs/characters/roxy.png'  
+rose.age = 27 
 roxy.view_style = { 
     bg1 =  '#321544',
 
@@ -79,6 +82,7 @@ roxy:set_clothes('owned shirt','owned skirt','owned shoes')
 
 john = Def('john','heir_class breath_aspect male person')
 john.image = '/img/hs/characters/john.png'  
+john.age = 20 
 john.view_style = { 
     bg1 =  '#000000',
 
@@ -94,6 +98,7 @@ john:set_clothes('owned shirt','owned pants','owned shoes','owned glasses')
 
 dave = Def('dave','knight_class time_aspect male person')
 dave.image = '/img/hs/characters/dave.png'
+dave.age = 23 
 dave.view_style = { 
     bg1 =  '#000000',
 
@@ -110,6 +115,7 @@ dave:set_clothes('owned shirt','owned pants','owned shoes','owned glasses')
 
 jake = Def('jake','page_class hope_aspect male person')
 jake.image = '/img/hs/characters/jake.png'    
+jake.age = 28 
 jake:set_clothes('owned shirt','owned pants','owned shoes','owned glasses')
 --[[      ======================================      ]]
 
@@ -117,6 +123,7 @@ jake:set_clothes('owned shirt','owned pants','owned shoes','owned glasses')
 
 aradia = Def('aradia','witch_class time_aspect gothic female troll person')
 aradia.image = '/img/hs/characters/aradia.png'  
+aradia.age = 25 
 aradia.view_style = { 
     bg1 =  '#000000',
 
@@ -160,6 +167,7 @@ aradiabot.view_style = {
 
 terezi = Def('terezi','seer_class mind_aspect female troll person')
 terezi.image = '/img/hs/characters/terezi.png'   
+terezi.age = 24 
 terezi.view_style = { 
     bg1 =  '#000000',
 
@@ -190,7 +198,8 @@ terezi_cane.image = '/img/hs/items/tz_cane.png'
 terezi_cane.location = terezi
 
 kanaya = Def('kanaya','sylph_class space_aspect rainbow_drinker female troll person')
-kanaya.image = '/img/hs/characters/kanaya.png' 
+kanaya.image = '/img/hs/characters/kanaya.png'  
+kanaya.age = 26 
 kanaya.view_style = { 
     bg1 =  '#000000',
 
@@ -217,6 +226,7 @@ end
 
 nepeta = Def('nepeta','rogue_class heart_aspect catlike female troll person')
 nepeta.image = '/img/hs/characters/nepeta.png'  
+nepeta.age = 23 
 nepeta.view_style = { 
     bg1 =  '#000000',
 

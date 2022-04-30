@@ -7,18 +7,17 @@ Include('aspects.lua')
 Include('soul.lua')
 Include('characters.lua')
 Include('world.lua')
-Include('memory.lua')
 
 
  
 MakeRelation(jade,aradia,likes) 
 
 
-jade.location = jade_room jade.mind:make_fully_known(tower)
-rose.location = rose_room rose.mind:make_fully_known(rose_house)
-roxy.location = roxy_room roxy.mind:make_fully_known(rose_house)
-dave.location = dave_room dave.mind:make_fully_known(dave_house)
-john.location = john_room john.mind:make_fully_known(john_house)
+jade.location = jade_room 
+rose.location = rose_room 
+roxy.location = roxy_room 
+dave.location = dave_room 
+john.location = john_room 
 
 jadebot.location = chamber
 
@@ -44,3 +43,4 @@ print('jade location - ',jade.location)
 
 
  
+Include('memory.lua')

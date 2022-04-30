@@ -23,13 +23,21 @@ EventAdd('examine','default',function(target)
 end)
 
 
-function examine(target)  
+function examine(target,to)  
+    local temp_ply = player
+    if to then
+        player = to 
+    end
     printout('$display:target;clear')
     if target.examine then
         target:examine(player)
     else
     end
     EventActCall("examine",target) 
+    
+    if to then
+        player = temp_ply
+    end
 end
 
 thing.examine = function(self,usr) 

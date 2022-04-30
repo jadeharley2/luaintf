@@ -1,6 +1,6 @@
 meta_mind = meta_mind or {}
 
-own_self = {} -- memory key
+own_self = Def("own_self",'thing') -- memory key
 
 function meta_mind:swap_memory(key1,key2,targ)
     key2 = key2 or key1
@@ -16,6 +16,24 @@ function meta_mind:swap_memory(key1,key2,targ)
         self.memory[key2] = val1 
     end
 end
+function meta_mind:swap_random_memory(targ,used_keys,tries)
+    local src = table.random({self,targ})
+    local dst = IF(src==targ,self,targ)
+    src = src.memory
+    dst = dst.memory
+    for k=1,(tries or 1000) do 
+        local key = table.randomkey(src)
+        if not used_keys or not used_keys[key] then
+            local srcvalue = src[key]
+            local dstvalue = dst[key]
+            src[key] = dstvalue
+            dst[key] = srcvalue
+            used_keys[key] = true
+            return true, key
+        end
+    end
+    return false
+end
 function meta_mind:context(f)
     local memory = self.memory
     local ENV = {}
@@ -29,16 +47,16 @@ function meta_mind:context(f)
     debug.setupvalue(f,1,ENV)
     f(self)
 end
-function meta_mind:set_known_prop(target,key,value) 
-    local t = self:make_known(target)
-    t[key] = value
-end
-function meta_mind:get_known_prop(target,key) 
-    local t = self:get_known(target)
-    if t then
-        return t[key]
-    end
-end
+--function meta_mind:set_known_prop(target,key,value) 
+--    local t = self:make_known(target)
+--    t[key] = value
+--end
+--function meta_mind:get_known_prop(target,key) 
+--    local t = self:get_known(target)
+--    if t then
+--        return t[key]
+--    end
+--end
 --knows({rose,dave,john},"name")
 --knows({rose,dave,john},{"name","age"})
 --knows({rose,dave,john},{"name",age="age_num"})
@@ -151,6 +169,40 @@ function meta_mind:is_known(t,key)
         return v
     end
 end
+function meta_mind:memory_tostring()
+
+    local keyed = {}
+    for k,v in pairs(self.memory) do
+        if type(k)=='table' then
+            keyed[k.id or "?"] = v
+        else
+            keyed[k] = v
+        end
+    end
+
+    local lines = {}
+    for k,v in SortedPairs(keyed) do 
+        if type(v)=='table' then
+            local sublines = {}
+            for kk,vv in SortedPairs(v) do
+                sublines[#sublines+1] = "  "..kk.." = "..tostring(vv)
+            end
+            if #sublines>0 then
+                lines[#lines+1] = "{"..k.."}".." = {"
+                for kk,vv in ipairs(sublines) do
+                    lines[#lines+1] = "  "..vv
+                end
+                lines[#lines+1] = "}"
+            else
+                lines[#lines+1] = "{"..k.."}"
+            end
+        else
+            lines[#lines+1] = k .. ' = ' .. tostring(v)
+        end
+    end
+    return lines
+end
+
 function meta_mind:visuals_changed(target,changes)
 
 end
@@ -180,7 +232,7 @@ person:event_add('on_init','mind',function(self)
 end)
 person:event_add('on_turn_end','mind',function(self)
     local mind = rawget(self,'mind')
-    if mind and (not self.player or self.ai_override) then 
+    if mind then --and (not self.player or self.ai_override) then 
         local t = mind.task 
         if t then 
             if not t.is_started then

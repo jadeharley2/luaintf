@@ -99,7 +99,7 @@ end
 local function RunNodeInner(self,v,npc,mind,memory)
     if v.task then 
         self.task = v
-        v.task:Start(npc,mind,memory)
+        v.task:Start(npc,mind,memory) 
     elseif v.schedule then
         local sched_node = self.schedule[v.schedule]
         self.taskpool = TaskPool(sched_node.schedule)

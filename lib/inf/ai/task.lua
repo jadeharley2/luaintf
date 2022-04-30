@@ -38,6 +38,7 @@ function task_meta:End()
             self.npc.task = self.next_on_failed
         end
     end
+    EventCall("task_end",self,self.npc,self.is_complete)
 end
 
 function task_meta:OnInit() end

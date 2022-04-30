@@ -39,11 +39,11 @@ function SortedPairs (t, f)
 end
 function AscendingPairs (t, f) 
     f = f or stdcomp
-	return SortedPairs(t,function(a,b) return f(a) < f(b) end)
+	return SortedPairs(t,function(a,b) return f(a,b) end)
 end
 function DescendingPairs (t, f) 
     f = f or stdcomp
-	return SortedPairs(t,function(a,b) return f(a) > f(b) end)
+	return SortedPairs(t,function(a,b) return not f(a,b) end)
 end
 local function reversedipairsiter(t, i)
     i = i - 1
@@ -155,6 +155,52 @@ function table.where(t,callback)
 	end 
 	return n
 end
+
+function table.random(t) 
+    local c = 0
+    local u = {}
+    for k,v in pairs(t) do
+        c = c + 1
+        u[c] = v
+    end
+    if c==0 then return nil end
+    
+    local id = math.random(c)
+    return u[id]
+end
+function table.randomkey(t) 
+    local c = 0
+    local u = {}
+    for k,v in pairs(t) do
+        c = c + 1
+        u[c] = k
+    end
+    if c==0 then return nil end
+
+    local id = math.random(c)
+    return u[id]
+end
+
+
+function table.randomkv(t) 
+    local c = 0
+    local u = {}
+    for k,v in pairs(t) do
+        c = c + 1
+        u[c] = {k,v}
+    end
+    if c==0 then return nil end
+    local id = math.random(c)
+    local r = u[id]
+    return r[1], r[2]
+end
+
+function table.count(t)
+    local c = 0
+    for k,v in pairs(t) do c = c+1 end
+    return c
+end
+
 
 local deepcopy
 

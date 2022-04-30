@@ -154,7 +154,7 @@ function send_map(target, origin_override,known_filter)
         local roomid2 = places[prevroom] --should have set already
 
 
-        if roomid>roomid2 then
+        if roomid2 and roomid>roomid2 then
             links[#links+1] = roomid..'-'..roomid2 
         end
 

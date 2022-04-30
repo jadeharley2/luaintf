@@ -33,20 +33,27 @@ AddTaskType('moveto', {
         self.fail_tolerance = fail_tolerance or 999999
     end,
     OnStart = function(self,npc,mind,memory) 
+        if npc.player then
+            printto(npc,"You want to go to "..tostring(self.target))
+            if not npc.ai_override then return false end
+        end
+
     end,
     OnUpdate = function(self,npc,mind,memory)
         local loc = npc.location
         local tloc = self.target 
         if loc~=tloc then
-            local path = astar(loc,tloc)
-            if path then
-                local d = path[1]
-                if d then
-                    npc:act('move',d)
-                else 
-                    self.fail_tolerance = self.fail_tolerance - 1
-                    if self.fail_tolerance<0 then
-                        self:Fail()
+            if npc.ai_override then 
+                local path = astar(loc,tloc)
+                if path then
+                    local d = path[1]
+                    if d then
+                        npc:act('move',d)
+                    else 
+                        self.fail_tolerance = self.fail_tolerance - 1
+                        if self.fail_tolerance<0 then
+                            self:Fail()
+                        end
                     end
                 end
             end

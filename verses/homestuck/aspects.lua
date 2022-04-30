@@ -77,6 +77,45 @@ heart_aspect:act_add(soul_adapt)
  
 space_aspect = Def("space_aspect","adjective") 
 
+--teleport room
+--teleport room something
+teleport_action = Def('teleport_action',{key='teleport',callback = function(self,arg1,arg2) 
+    local is_player = self == player  
+    if arg1 then
+        local v1 = Identify(arg1) -- room also should be in memory 
+        if v1 and v1:is(room) then
+            if arg2 then
+                local v2 = LocalIdentify(arg2)
+                if v2 then
+                    disappear_visual_procedure(v2)
+                    describe_action(self,L'you teleport [v2] to [v1]',L'[v2] vanishes in bright green flash')   
+                    v2.location = v1 
+                    appear_visual_procedure(v2) 
+                    describe_action(self,nil,L'[v2] appears in bright green flash')   
+                    describe_action(v2,L'you are blinded by bright green flash')  
+
+                    return true
+                else
+                    if is_player then printout('there is no '..arg2) end
+                end
+            else
+                disappear_visual_procedure(self)
+                describe_action(self,L'you teleport to [v1]',L'[self] vanishes in bright green flash')  
+                self.location = v1
+                appear_visual_procedure(self) 
+                describe_action(self,nil,L'[self] appears in bright green flash')  
+
+                return true
+            end 
+        else
+            if is_player then printout('there is no '..arg1) end
+        end 
+    else
+        if is_player then printout('specify destination') end
+    end 
+    return false
+end},'action') 
+
 shrink_action = Def('shrink_action',{key='shrink',callback = function(self,arg1,...) 
     local is_player = self == player  
     if arg1 then
@@ -123,5 +162,6 @@ enlarge_action = Def('enlarge_action',{key='enlarge',callback = function(self,ar
     end 
 end},'action') 
 
+space_aspect:act_add(teleport_action)
 space_aspect:act_add(shrink_action)
 space_aspect:act_add(enlarge_action)

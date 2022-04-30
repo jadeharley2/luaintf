@@ -103,19 +103,28 @@ transfer_soul_action = Def('transfer_soul_action',{key='soultransfer',callback =
                 sleep(1) 
                 if is_player then
                     printout('you are now',v) 
+                    
                 end 
+                srcperson:act('examine',trgperson) 
+                trgperson:act('examine',srcperson) 
  
+                --restore tasks after swap
+                srcperson.task = srctask 
+                trgperson.task = trgtask
+
                 ScenarioRun("mind_transformation",v.id..'_mtf',{
                     source = srcperson,
                     target = trgperson, 
                     duration = 60,
-                    task = trgtask,
+                    --task = trgtask,
+                    swap_memories = true,
                 },true) 
                 ScenarioRun("mind_transformation",self.id..'_mtf',{
                     source = trgperson,
                     target = srcperson, 
                     duration = 60,
-                    task = srctask,
+                    --task = srctask,
+                    --automatically swaps memories with source
                 },true)  
                 
             --end 
@@ -218,6 +227,9 @@ Scenario("mind_transformation",{
         local d = data.duration or 30
         local target = data.target
         local memory = target.memory
+        local target_mind = target.mind 
+        local source_mind = data.source.mind 
+
         local style_prev = memory.view_style or data.source.view_style
         local style_next = target.view_style
  
@@ -225,17 +237,40 @@ Scenario("mind_transformation",{
         local switched = target.identity~=target
 
 
+        local swapped_memories = false
+        if data.swap_memories then 
+            swapped_memories = {view_style=true}
+        end
+
         target.block_mind_transfer = true
 
-        local ph_c = {}
-        for k=0,d do
+        local said_phrases = {}
+        local total_memory_count = math.max(table.count(memory),table.count(source_mind.memory))
+
+        local swap_times_per_advance = math.ceil(total_memory_count/d)
+
+ 
+
+        local k = 0
+        local function AdvanceTransformation(vv) 
+            vv = vv or 1
+            local target = target 
+            local data = data
+
+            k = math.min(k+vv,d)
+
             local blend = blend_view_styles(style_prev,style_next,k/d) 
             send_style(target,css_view_style(blend)) 
             memory.view_style = blend 
-            cor.wait(1)
             if switched then
+                if swapped_memories then
+                    for _=1,swap_times_per_advance*vv do
+                        print('swapped',target_mind:swap_random_memory(source_mind,swapped_memories))
+                    end
+                end
+
                 if math.random()>0.9 then
-                    local phrase = only_once(ph_c,table.random({ 
+                    local phrase = only_once(said_phrases,table.random({ 
                         "something feels different",
                         "something is different",
                         "something is changing",
@@ -249,7 +284,7 @@ Scenario("mind_transformation",{
                 end
             else  
                 if math.random()>0.9 then
-                    local phrase = only_once(ph_c,table.random({ 
+                    local phrase = only_once(said_phrases,table.random({ 
                         "something feels different",
                         "something is different",
                         "something is changing",
@@ -265,11 +300,31 @@ Scenario("mind_transformation",{
            
             target:set_identity_strength( data.source,1-nid)
             target:set_identity_strength(target,nid)
+            return nid
         end
+
+
+        local event_id = "mind_tf_complete_schedule_"..target.id
+        EventAdd("task_end",event_id,function(task,npc,complete)
+            if npc==jade then
+                print('task',task.class,complete)
+                AdvanceTransformation(4) 
+            end
+        end)
+
+        for k2=0,d do
+            cor.wait(10)
+            if AdvanceTransformation()==1 then
+                break 
+            end
+        end
+        
+        EventRemove("task_end",event_id)
+
         send_style(target) 
         --if target.identity~=target then
             target.identity = target  
-            target.task = data.task  
+            --target.task = data.task  
             printto(target,'you feel different')
             target.block_mind_transfer = nil
         --end

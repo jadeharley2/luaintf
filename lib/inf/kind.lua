@@ -8,8 +8,11 @@ adjective_def = adjective_def or {}
 
 instidcount = instidcount or 0
 
+defidcount = defidcount or 0
+
 function Def(id,data,kind)
 
+    defidcount = defidcount + 1
     local old_data
     if id then
         old_data = defines[id] or {}
@@ -43,7 +46,7 @@ function Def(id,data,kind)
     if id then   
         data.id = id
     end 
-
+    data.numid = defidcount
 
     if kind then 
         adjectives =string.split(kind,' ')
@@ -419,7 +422,7 @@ thing = Def('thing',{
         rawset(t,k,v)
     end,
     __tostring = function(t)
-        return t.name
+        return tostring(t.name)
     end,
     rawget = function(t,k)
         return rawget(t,k)
@@ -600,6 +603,9 @@ function LocalIdentify(id,location)
 
             local c = location:collect('contains',function(k,v)
                 if k:is(id) then
+                    return k
+                end
+                if tostring(k.numid)==id then
                     return k
                 end
             end) 

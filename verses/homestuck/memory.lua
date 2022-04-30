@@ -1,14 +1,24 @@
 
- 
-jade.mind:knows({rose,dave,john,aradia,nepeta,terezi},{"name","location"})
-rose.mind:knows({jade,dave,john,aradia,nepeta,terezi},"name")
-dave.mind:knows({jade,rose,john,aradia,nepeta,terezi},"name")
-john.mind:knows({jade,rose,dave,aradia,nepeta,terezi},"name")
+jade.mind:make_fully_known(tower)
+jade.mind:knows({jade,rose,dave,john,aradia,nepeta,terezi,jadebot},{"name","age"})
 
-aradia.mind:knows({jade,rose,dave,john,nepeta,terezi},"name")
-nepeta.mind:knows({jade,rose,dave,aradia,john,terezi},"name")
-terezi.mind:knows({jade,rose,dave,aradia,nepeta,john},"name")
+rose.mind:make_fully_known(rose_house)
+rose.mind:knows({jade,rose,roxy,dave,john,aradia,nepeta,terezi},"name")
 
+
+roxy.mind:knows({jade,rose,dave,john},"name")
+roxy.mind:make_fully_known(rose_house)
+
+
+dave.mind:knows({jade,rose,dave,john,aradia,nepeta,terezi},"name")
+dave.mind:make_fully_known(dave_house)
+
+john.mind:knows({jade,rose,dave,john,aradia,nepeta,terezi},"name")
+john.mind:make_fully_known(john_house)
+
+aradia.mind:knows({jade,rose,dave,john,aradia,nepeta,terezi},"name")
+nepeta.mind:knows({jade,rose,dave,john,aradia,nepeta,terezi},"name")
+terezi.mind:knows({jade,rose,dave,john,aradia,nepeta,terezi},"name")
 
 
 nepeta.task = Task('doschedule', {

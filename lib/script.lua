@@ -9,13 +9,21 @@ function Include(path)
     if dir then
         print('Include: '..dir..path)
       --  local status, err = pcall(function() 
+        if IS_MOBILE then
+            df(dir..path)
+        else
             dofile(dir..path)
+        end
       --  end)
         if err then print(status,err) end
     else
         print('Include: '..path)
       --  local status, err = pcall(function() 
+        if IS_MOBILE then
+            df(path)
+        else
             dofile(path)
+        end 
       --  end)
         if err then print(status,err) end
     end
@@ -231,33 +239,4 @@ function sleep(s)
     repeat until os.clock() > ntime
 end
 
-function table.random(t) 
-    local c = 0
-    local u = {}
-    for k,v in pairs(t) do
-        c = c + 1
-        u[c] = v
-    end
-    
-    local id = math.random(c)
-    return u[id]
-end
-function table.randomkv(t) 
-    local c = 0
-    local u = {}
-    for k,v in pairs(t) do
-        c = c + 1
-        u[c] = {k,v}
-    end
-    if c==0 then return nil end
-    local id = math.random(c)
-    local r = u[id]
-    return r[1], r[2]
-end
-
-function table.count(t)
-    local c = 0
-    for k,v in pairs(t) do c = c+1 end
-    return c
-end
 

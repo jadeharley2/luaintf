@@ -10,8 +10,10 @@ Include("lib/io.lua")
 
 Include("lib/net.lua")
 
-winapi = require 'winapi'
-Include('lib/win.lua')
+if not IS_MOBILE then 
+    winapi = require 'winapi'
+    Include('lib/win.lua')
+end 
 
 --[[
     - kinds and objects of kind
@@ -251,7 +253,10 @@ function parse(full,com,arg1,arg2,arg3,...)
 end
 
 
-
+--local test0 = jade.mind:memory_tostring()
+--for k,v in ipairs(test0) do
+--    print(v)
+--end
 
 
 function main()
@@ -273,6 +278,7 @@ function main()
 end
 
 is_running = is_running or false
+timescale = timescale or 2
 function main_server()
     if is_running then return end 
     is_running = true 
@@ -301,6 +307,26 @@ function main_server()
             if (v.nextturn or 0)<=turn then
                 v:send(L'$unblock:\n')
             end
+        end
+    end)
+
+    
+    EventAdd('end turn','sleep timescale',function(turn)
+        local asleep = 0
+        local awake = 0
+        for k,v in pairs(players) do
+            if v.person and v.person~=no_one then
+                if v.person:is("asleep") then
+                    asleep=asleep+1
+                else
+                    awake=awake+1
+                end
+            end
+        end
+        if awake==0 and asleep>0 then
+            timescale = timescale + (0.1-timescale)*0.2
+        else
+            timescale = 2
         end
     end)
     
@@ -345,7 +371,7 @@ function main_server()
         local ctime = os.clock()
         if nextcheck<ctime then
             net.check()
-            nextcheck = ctime + 2
+            nextcheck = ctime + timescale
             EndTurn()
         end
 

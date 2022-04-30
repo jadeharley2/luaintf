@@ -1,4 +1,24 @@
 
+disappear_visual_procedure = function(self)
+    if self then
+        others_action(self,function(ply)
+            printout('$display:line;'..self.id..';')
+            printout('$display:target;'..self.id..';')
+        end) 
+    end
+end
+appear_visual_procedure = function(self) 
+    if self then
+        others_action(self,function(ply) 
+            printout('$display:line;'..self.id..';'..(self.image or ''))
+        end)
+    
+        printto(self,'$display:target;clear')
+        printto(self,'$display:line;clear')
+        examine(self.location,self) 
+    end
+end
+
 move_action = Def('move_action',{key='move',restrictions = {"!asleep"},callback = function(self,direction)  
     local is_player = self == player
     local loc = self.location
@@ -13,24 +33,15 @@ move_action = Def('move_action',{key='move',restrictions = {"!asleep"},callback 
             if not self:is('bound') then
 
                 describe_action(self,nil,tostring(self)..' leaves to '..tostring(next))  
-                others_action(self,function(ply)
-                    printout('$display:line;'..self.id..';')
-                    printout('$display:target;'..self.id..';')
-                end)
+               
+                disappear_visual_procedure(self)
 
                 self.location = next
 
                 describe_action(self,nil,tostring(self)..' arrives from '..tostring(loc))
 
-                others_action(self,function(ply) 
-                    printout('$display:line;'..self.id..';'..(self.image or ''))
-                end)
+                appear_visual_procedure(self)
 
-                if is_player then
-                    printout('$display:target;clear')
-                    printout('$display:line;clear')
-                    examine(next) 
-                end
 
 
                 return true
