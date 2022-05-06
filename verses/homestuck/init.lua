@@ -3,6 +3,8 @@ hs_verse = Def('hs_verse',{name="Homestuck Multiverse"},'universe')
 
 
 Include('defines.lua')
+Include('human.lua')
+Include('troll.lua')
 Include('aspects.lua')
 Include('soul.lua')
 Include('characters.lua')

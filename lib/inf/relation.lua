@@ -43,7 +43,7 @@ function MakeRelation(a,b,kind)
             print(kind..' is not a relation kind')
         end
     else
-        print('unknown relation kind '..kind)
+        print('unknown relation kind '..kind_id)
     end
 end
 function DestroyRelation(a,b,kind)

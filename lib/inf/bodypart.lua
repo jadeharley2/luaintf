@@ -28,6 +28,7 @@ ungulate = Def('ungulate','type_adjective')
 
 connected = Def('connected','relation')
 welded = Def('welded','connected')
+bolted = Def('bolted','connected')
 flesh_connected = Def('flesh_connected','connected')
 
 body_part = Def('body_part',{name="body part"},'thing')
@@ -69,6 +70,29 @@ body_part._get_is_moveable = function(self)
     return false
 end
 
+body_part._get_connected = function(self)
+    return GetRelationOther(self,connected)
+end
+body_part.connect = function(self,target,connection_kind)
+    connection_kind = connection_kind or connected
+    target.location = self.location
+    MakeRelation(self,target,connection_kind)
+    return self
+end
+
+thing.get_bodypart = function(self, key)
+    return self:first('contains',function(x)
+        if x:is(key) then return x end
+    end)
+end
+thing.attach_bodypart = function(self, key, bpart,connection_kind)
+    local t = self:first('contains',function(x)
+        if x:is(key) then return x end
+    end)
+    t:connect(bpart,connection_kind)
+    return self
+end
+
 limb = Def('limb',{name="limb"},'body_part')
 leg = Def('leg',{name="leg"},'limb')
 arm = Def('arm',{name="arm"},'limb')
@@ -82,3 +106,7 @@ hand = Def('hand',{name="hand"},'body_part')
 foot = Def('foot',{name="foot"},'body_part')
  
 hoof = Def('hoof',{name="hoof"},'foot')
+
+ear = Def('ear',{name="ear"},'body_part')
+
+hair = Def('hair',{name="hair"},'body_part')

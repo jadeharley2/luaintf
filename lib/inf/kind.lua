@@ -100,6 +100,7 @@ function Inst(kind,data)
     local kindparts = kind:split(' ')
     local nid = kindparts[#kindparts]..'_inst'..tostring(instidcount)
     data.id = nid
+    --data.name = kind
     instidcount = instidcount + 1
     return Def(nil,data,kind)
 end
@@ -531,6 +532,17 @@ thing = Def('thing',{
     end,
     setup = function(self,a)
         Setup(self,a)
+        return self
+    end,
+    setup_data = function(self,a)
+        for k,v in pairs(a) do self[k] = v end
+        return self
+    end,
+    setup_relations = function(self,a)
+        for k,v in pairs(a) do 
+            MakeRelation(self,k,v) 
+        end
+        return self
     end,
     is = function(self,k)
         if self == k then return true end

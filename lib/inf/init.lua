@@ -14,6 +14,7 @@ Include('person.lua')
 Include('size.lua')
 
 Include('bodypart.lua')
+Include('organ.lua')
 
 Include('ownership.lua')
 Include('wearable.lua')

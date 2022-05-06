@@ -47,7 +47,7 @@ keytar.location = jade_room
 
 
 
-jade_wardrobifier_key = Def('jade_wardrobifier_key','thing')
+jade_wardrobifier_key = Def('jade_wardrobifier_key',{name='wardrobifier key'},'thing')
 jade_wardrobifier_key.image = '/img/items/key.png'
 
 jade_cabinet = Def('jade_cabinet',{name='wardrobifier'},'enterable lockable locked cabinet')
