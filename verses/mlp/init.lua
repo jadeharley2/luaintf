@@ -6,6 +6,7 @@ crown = Def('crown','clothing')
 
 Include('world.lua')
 Include('pony.lua') 
+Include('humanoid_dragon.lua')
 Include('characters.lua')
 
 MakeRelation(luna_throne,luna,owner) 
@@ -18,21 +19,24 @@ MakeRelation(celestia_room,celestia,owner)
 celestia.location = celestia_room 
 luna.location = luna_room
 
-cadance.location = throne_room
-chrysalis.location = throne_room
+cadance.location = hall_corridorW
+chrysalis.location = hall_corridorW
 
 
  
-fluttershy.location = hall_corridor
-rainbow.location = hall_corridor
-pinkie.location = hall_corridor
-applejack.location = hall_corridor
-rarity.location = hall_corridor
-twilight.location = hall_corridor
+fluttershy.location = guest_room1
+rainbow.location = guest_room1
+pinkie.location = guest_room1
 
-trixie.location = throne_room  
-sunset.location = throne_room  
-starlight.location = throne_room
+applejack.location = guest_room2
+rarity.location = guest_room2
+
+spike.location = hall_corridorE
+twilight.location = castle_library
+
+trixie.location = guest_room3  
+sunset.location = guest_room3  
+starlight.location = guest_room3
 
 
 --[[
@@ -48,3 +52,4 @@ local legtest = luna:find('back left leg')
 legtest:setup('described scaly !furred') 
 ]]
  
+Include('memory.lua')

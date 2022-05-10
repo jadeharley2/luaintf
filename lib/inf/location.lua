@@ -306,11 +306,17 @@ end
 thing.foreach_contains = foreach_contains
 thing.foreach_parent = foreach_parent
 thing.parent_oftype = function(self,type,include_self)
-    return self:foreach_parent(function(s)
+    return foreach_parent(self,function(s)
         if s:is(type) then
             return s
         end
     end,include_self)
+end
+thing.first_parent_value = function(self,key,include_self) 
+    return foreach_parent(self,function(x) 
+        local d = x[key]
+        if d then return d end
+    end,include_self) 
 end
 
 thing.is_inside = function(self,target)
@@ -490,4 +496,18 @@ function send_character_images_inroom(room)
         end
     end
 
+end
+
+
+
+
+outside = Def("outside",{name="Outside",description="empty space"},'room')--can see sky directly above
+outside.image = '/img/background/outside.jpg'
+--description + sky description - current visible star and satelites positions - local time?
+outside._get_description = function(self)
+    local des = self:first_parent_value('sky_description',false)
+    if des then 
+        return des
+    end
+    return ''
 end

@@ -60,7 +60,7 @@ local p2 = Inst('portal') p2.location = engine_room
 MakeRelation(p1,p2,portal_link)
 
 local p1 = Inst('portal') p1.location = warp_mlp
-local p2 = Inst('portal') p2.location = hall_corridor
+local p2 = Inst('portal') p2.location = castle_library
 MakeRelation(p1,p2,portal_link)
 
 

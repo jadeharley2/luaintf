@@ -86,7 +86,6 @@ end
 
 
 
-
 local tc = table.concat
 function table.concat(t,sep)
     local ts ={}
@@ -262,3 +261,26 @@ each_meta.__index = each_meta
 function every(t)
     return setmetatable(t,each_meta)
 end
+
+
+
+list_meta = list_meta or {}
+
+list_meta.__add = function(a,b)
+	local c = {}
+	for k,v in ipairs(a) do c[k] = v end 
+	if getmetatable(b)==list_meta then
+		for k,v in ipairs(b) do c[#c+1] = v end 
+	else
+		c[#c+1] = b
+	end
+	return setmetatable(c,list_meta)
+end
+
+list_meta.__index = list_meta
+
+
+function List(tab)
+	return setmetatable(tab,list_meta)
+end
+
