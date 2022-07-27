@@ -15,8 +15,8 @@ take_action = Def('take_action',{key='take',restrictions = {"!asleep"},callback 
             return true
         else 
             local something = ReachableIdentify(item)
-            if something and something~=self and not something:is(person) then
-                if something.is_moveable~=false then
+            if something and something~=self  then
+                if something.is_moveable~=false and (not something:is(person) or something.size <= 0.25) then
                     something.location = self
                     describe_action(self,L'[something] taken',L'[self] takes [something]')  
  

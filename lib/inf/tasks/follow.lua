@@ -19,7 +19,7 @@ AddTaskType('follow', {
         local loc = npc.location
         local tloc = self.target.location
         if loc~=tloc then
-            if npc.ai_override then 
+           -- if npc.ai_override then 
                 local d = loc:direction_to(tloc)
                 if d then
                     npc:act('move',d)
@@ -35,7 +35,7 @@ AddTaskType('follow', {
                     
                     --idk where to go!
                 end
-            end
+           -- end
         end
     end, 
 })
