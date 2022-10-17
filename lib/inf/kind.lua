@@ -508,6 +508,17 @@ thing = Def('thing',{
     adj_getall = function(self)
         return self.adjectives:getall()
     end,
+    adj_get = function(self,adj_type)
+        local t = rawget(self,'adjectives')
+        for k,v in pairs(t) do
+            local t = adjective_def[k] 
+            if t then
+                if t:is(adj_type) then 
+                    return t
+                end
+            end
+        end 
+    end,
     adj_describe = function(self, adj_type)
         local x = {}
         for k,v in pairs(self.adjectives:getall()) do

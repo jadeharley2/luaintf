@@ -36,6 +36,10 @@ Include('lib/defines/misc.lua')
 Include('verses/homestuck/init.lua')
 Include('verses/kaltag/init.lua')
 Include('verses/mlp/init.lua')
+Include('verses/rpg/init.lua')
+
+
+
 --Include('parser.lua')
 warp_c = Def('warp_c',{name = "Subspace Central"},'room')
 warp_c.image = '/img/background/space_dark.png'
