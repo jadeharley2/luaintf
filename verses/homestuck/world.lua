@@ -1,6 +1,6 @@
 
 
-local_town = Def('town',{},'thing')
+local_town = Def('local_town',{},'thing')
 local_town.location = hs_verse
 
 tower = Def('tower',{},'building')

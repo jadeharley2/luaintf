@@ -166,8 +166,59 @@ function send_map(target, origin_override,known_filter)
 end 
 
 
+
+
+
+function send_map_grid(target, origin_override,known_filter)
+    if not target then return end
+    
+
+    local size = 19
+
+    local loc = origin_override or target.location
+    local grid = loc.location.grid
+    local gridsize = loc.location.gridsize
+    if not grid then return end
+    local pos = loc.pos
+    --width;pixeldata(color)
+
+    local pixeldata = {}
+    for y=1,size do
+        local py = y+pos.y-10
+        for x=1,size do
+            local px = x+pos.x-10
+            local idx = px+py*gridsize.x
+            local tile = grid[idx]
+            if tile then 
+                local color = tile.tilecolor:sub(2) or "FFFFFF"
+                local subdata = 1*IF(tile.has_road,1,0)--8 bits flags
+                pixeldata[#pixeldata+1] = color..string.format("%02X", subdata)
+            else
+                pixeldata[#pixeldata+1] = "00000000"
+            end
+        end
+    end
+
+ 
+    printto(target,'$mgrid:'..tostring(size)..';'..table.concat(pixeldata,','))
+
+end 
+
+function send_squad(ply)
+
+    characters = {}
+
+    local icon = ply.icon or ply.image or ""
+
+    characters[1] = ply.id..","..icon..","..ply.name
+ 
+    printout('$squad:',table.concat(characters, ';'))
+end
+
+
+
 showmap_action = Def('showmap_action',{key='map',restrictions = {"!asleep",'!blind'},callback = function(self)    
-    send_map(self,nil,true)
+    send_map_grid(self,nil,false)
     return false -- no enturn
 end,description='shorthand: l'},'action')
 person:act_add(showmap_action)

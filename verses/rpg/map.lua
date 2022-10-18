@@ -11,35 +11,64 @@ end
 
 function maptile:setup()
     local biome = self:adj_get('biome')
-    self.image = table.random(biome.images) 
+
+
+    local nearcoast =false
+    self:foreach_adjascent(function(dir,room,prevroom,visited) 
+        if room:is('sea_shallow') then
+            nearcoast = true
+        end 
+    end,1)
+    if nearcoast then
+        self.image = table.random(biome.nearcoast or biome.images) 
+    elseif self.has_road then
+        self.image = table.random(biome.withroad or biome.images) 
+    else
+        self.image = table.random(biome.images) 
+    end
 end
 
-function loadmap(path,w,h,biomelist,location) 
+function loadmap(path,roadlayer,w,h,biomelist,location) 
+
     local pfile = io.open(path, 'rb') 
     local data = pfile:read('*a')
     io.close(pfile)
+
+    print('loaded zone file')
+
+    local pfile = io.open(roadlayer, 'rb') 
+    local data2 = pfile:read('*a')
+    io.close(pfile)
  
+    print('loaded road file')
+
     local b = string.byte
-    local function getpixel(x,y)
+    local function getpixel(data,x,y)
         local p = (x+y*w)*3+1
         return {b(data,p),b(data,p+1),b(data,p+2)}
     end
-    local function getbinpixel(x,y)
+    local function getbinpixel(data,x,y)
         local p = (x+y*w)*3+1
         return data:sub(p,p+2)
     end
     
-    print('loaded map file')
     
     local grid = {}
+    location.grid = grid
+    location.gridsize = {x=w,y=h}
     for y=1,h do 
         for x=1,w do
-            local bincolor = getbinpixel(x,y)
+            local bincolor = getbinpixel(data,x,y)
             local biome = biomelist[bincolor]
             if biome then 
+                local roadcolor = getbinpixel(data2,x,y)
                 local zone = Inst('maptile')
                 zone.location = location
+                zone.pos = {x=x,y=y}
                 zone:adj_set(biome)
+                if roadcolor~='\0\0\0' then
+                    zone.has_road = true
+                end
                 grid[x+y*w] = zone
             end
         end

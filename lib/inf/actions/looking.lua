@@ -5,11 +5,22 @@
 function display_location(target) 
     local image = target.image 
     if image then
-        printout('$display:background;background;'..image..';'..target.image_style_css)
+        printout('$display:background;background;'..image..';mix-blend-mode: multiply;'..TestOutdoorStyle(hour) ) 
+        --..target.image_style_css..';'
     else
         printout('$display:background;clear')
     end
 end
+EveryHour('update_sunlight',function(h)
+    players_action(function(ply)
+        if not ply:is('asleep') then
+            local loc = ply.location
+            if loc then
+                display_location(loc)
+            end
+        end
+    end)
+end)
 
 EventAdd('examine','default',function(target)
     --printout(target.description)
@@ -44,6 +55,7 @@ thing.examine = function(self,usr)
     local image = self.image
     if image then 
         printout('$display:target;'..self.id..';'..image..';'..self.image_style_css) 
+        printout('$name:'..tostring(self))
     end 
 end
 

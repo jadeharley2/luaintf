@@ -404,8 +404,13 @@ room.examine = function(target, ex)
 
     printout('$display:target;clear')
     printout('$display:line;clear')
-    for k,v in pairs(images) do
-        printout('$display:line;'..k..';'..v.image..';'..v.image_style_css)
+    for k,v in pairs(images) do 
+        local icon = v.icon
+        if icon then 
+            printout('$display:line;'..k..';'..icon..';'..v.image_style_css) 
+        else 
+            printout('$display:line;'..k..';'..v.image..';'..v.image_style_css)
+        end
     end
 
     printout('$directions_clear')
@@ -427,6 +432,7 @@ room.examine = function(target, ex)
 
     display_location(target)
 
+    send_map_grid(ex,target,false)
 
 end
 

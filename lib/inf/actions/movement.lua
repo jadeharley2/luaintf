@@ -26,6 +26,13 @@ move_action = Def('move_action',{key='move',restrictions = {"!asleep"},callback 
         local next = loc:dir(direction)
         if next then  
 
+            local is_passable = next.is_passable 
+            if is_passable then
+                if is_passable(next,self)==false then
+                    return false
+                end
+            end
+
             if self:is('bound') then
                 self:act('standup') -- try to stand up
             end

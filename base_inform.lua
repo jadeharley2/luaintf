@@ -93,8 +93,10 @@ no_one.examine = function()
     for k,v in pairs(loc_u) do
         printout(L"  [k.name]")
         for kk,vv in ipairs(v) do
-            printout(L"    >'be [vv.id]' [vv.name] at [vv.location]")
-            chars[vv.id] = 'be '..vv.id
+            if not vv.npc then
+                printout(L"    >'be [vv.id]' [vv.name] at [vv.location]")
+                chars[vv.id] = 'be '..vv.id
+            end
         end
     end
     local c2 = {}
@@ -282,7 +284,7 @@ function main()
 end
 
 is_running = is_running or false
-timescale = timescale or 2
+timescale = timescale or 1
 function main_server()
     if is_running then return end 
     is_running = true 
@@ -330,7 +332,7 @@ function main_server()
         if awake==0 and asleep>0 then
             timescale = timescale + (0.1-timescale)*0.2
         else
-            timescale = 2
+            timescale = 1
         end
     end)
     

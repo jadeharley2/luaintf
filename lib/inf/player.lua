@@ -133,6 +133,19 @@ function location_action(location,callback)
     client = cc 
 end
 
+function players_action(callback)
+    local cp = player 
+    local cc = client
+
+    for k,v in pairs(players) do
+        SETPLAYER(v)
+        callback(k,v)
+    end 
+
+
+    player = cp 
+    client = cc 
+end
 
 
 

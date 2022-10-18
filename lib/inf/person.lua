@@ -33,7 +33,7 @@ person = Def('person',{
     end, 
     __tostring = function(self)
         if player then
-            return player.mind:get_known(self,'name') or "unkn:"..tostring(self.numid) --self.unknown_name or "unknown"
+            return player.mind:get_known(self,'name') or self.unknown_name or "unkn:"..tostring(self.numid) --self.unknown_name or "unknown"
         else
             return self.name
         end
@@ -144,8 +144,8 @@ person.should_wear_clothes = true
 
  
 person.examine = function(target, ex)
-    printout('$display:target;clear')
-    
+    printout('$display:target;clear') 
+    printout('$name:'..tostring(target))
 
     if target == player then
         
