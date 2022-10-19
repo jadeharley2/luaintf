@@ -281,9 +281,9 @@ thing._set_location = function(self,v)
         error('recursive location setup detected!')
     end
 
-    if v and v:call("on_enter",self)==false then
-        return 
-    end  
+    --if v and v:call("on_enter",self)==false then
+    --    return 
+    --end  
 
     local old = rawget(self,'_loc')
     if old then

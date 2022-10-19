@@ -1,27 +1,5 @@
 
 
-local function adj_choice_tree(self, tree)
-    for k,v in pairs(tree) do
-        if k~='_' and self:is(k) then
-            if type(v)=='table' then
-                return adj_choice_tree(self,v)
-            else
-                return v
-            end
-        end
-    end
-    local def = tree._ 
-    if def then
-        if type(def)=='table' then
-            return adj_choice_tree(self,def)
-        else
-            return def
-        end
-    end
-end
-
-thing.adj_choice_tree = adj_choice_tree
-
 
 species = Def('species','adjective')
 

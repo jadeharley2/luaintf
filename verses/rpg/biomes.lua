@@ -7,18 +7,149 @@
 biome = Def('biome',{},"adjective")
 
 
+
 biome_forest = Def('forest',{},'biome')
-biome_forest_deep = Def('deep_forest',{},'biome')
+biome_forest_deep = Def('forest_deep',{name='deep forest'},'biome')
+biome_forest_river = Def('forest_river',{name='forest river'},'biome')
 biome_grassland = Def('grassland',{},'biome')
-biome_desert = Def('desert',{},'biome')
-biome_highland = Def('highland',{},'biome')
-biome_mountains = Def('mountains',{},'biome')
 biome_lake = Def('river',{},'biome')
 biome_river = Def('river',{},'biome')
 biome_sea = Def('sea',{},'biome')
-biome_sea_shallow = Def('sea_shallow',{},'biome')
+biome_sea_shallow = Def('sea_shallow',{name='shallow sea'},'biome')
 biome_swamp = Def('swamp',{},'biome')
 biome_beach = Def('beach',{},'biome')
+
+biome_steppe = Def('steppe',{},'biome')
+biome_desert = Def('desert',{name='sand desert'},'biome')
+biome_desert_half = Def('desert_half',{name='half desert'},'biome')
+biome_desert_rocky = Def('desert_rocky',{name='rocky desert'},'biome')
+
+biome_highland = Def('highland',{},'biome')
+biome_highland_forest = Def('highland_forest',{name='highland forest'},'biome')
+biome_highland_river = Def('highland_river',{name='highland river'},'biome')
+
+biome_mountain = Def('mountain',{},'biome')
+biome_mountain_forest = Def('mountain_forest',{name='mountain forest'},'biome')
+biome_glacier = Def('glacier',{},'biome')
+
+biome_steppe.images = {
+    "/img/rpg/world/zones/steppe0.png",
+    "/img/rpg/world/zones/steppe1.png",
+    "/img/rpg/world/zones/steppe2.png",
+    "/img/rpg/world/zones/steppe3.png",
+    "/img/rpg/world/zones/steppe4.png",
+    "/img/rpg/world/zones/steppe5.png",
+    "/img/rpg/world/zones/steppe6.png",
+    "/img/rpg/world/zones/steppe7.png",
+    "/img/rpg/world/zones/steppe8.png",
+    "/img/rpg/world/zones/steppe9.png",
+    "/img/rpg/world/zones/steppe10.png",
+    "/img/rpg/world/zones/steppe11.png",
+    "/img/rpg/world/zones/steppe12.png",
+    "/img/rpg/world/zones/steppe13.png",
+    "/img/rpg/world/zones/steppe14.png",
+    "/img/rpg/world/zones/steppe15.png",
+    "/img/rpg/world/zones/steppe16.png",
+    "/img/rpg/world/zones/steppe17.png",
+    "/img/rpg/world/zones/steppe18.png",
+    "/img/rpg/world/zones/steppe19.png",
+}
+biome_steppe.withroad = {
+    "/img/rpg/world/zones/steppe_road0.png",
+    "/img/rpg/world/zones/steppe_road1.png",
+    "/img/rpg/world/zones/steppe_road2.png",
+    "/img/rpg/world/zones/steppe_road3.png",
+    "/img/rpg/world/zones/steppe_road4.png",
+}
+
+
+biome_desert.images = {
+    "/img/rpg/world/zones/desert_dunes0.png",
+    "/img/rpg/world/zones/desert_dunes1.png",
+    "/img/rpg/world/zones/desert_dunes2.png",
+    "/img/rpg/world/zones/desert_dunes3.png",
+    "/img/rpg/world/zones/desert_dunes4.png",
+    "/img/rpg/world/zones/desert_dunes5.png",
+    "/img/rpg/world/zones/desert_dunes6.png",
+    "/img/rpg/world/zones/desert_dunes7.png",
+    "/img/rpg/world/zones/desert_dunes8.png",
+    "/img/rpg/world/zones/desert_dunes9.png",
+    "/img/rpg/world/zones/desert_dunes10.png",
+    "/img/rpg/world/zones/desert_dunes11.png",
+    "/img/rpg/world/zones/desert_dunes12.png",
+    "/img/rpg/world/zones/desert_dunes13.png",
+    "/img/rpg/world/zones/desert_dunes14.png",
+    "/img/rpg/world/zones/desert_dunes15.png",
+    "/img/rpg/world/zones/desert_dunes16.png",
+    "/img/rpg/world/zones/desert_dunes17.png",
+    "/img/rpg/world/zones/desert_dunes18.png",
+    "/img/rpg/world/zones/desert_dunes19.png",
+    "/img/rpg/world/zones/desert_dunes20.png",
+    "/img/rpg/world/zones/desert_dunes21.png",
+    "/img/rpg/world/zones/desert_dunes22.png",
+    "/img/rpg/world/zones/desert_dunes23.png",
+    "/img/rpg/world/zones/desert_dunes24.png", 
+} 
+biome_desert.nearcoast = {
+    "/img/rpg/world/zones/desert_dunes_coast0.png",
+    "/img/rpg/world/zones/desert_dunes_coast1.png",
+    "/img/rpg/world/zones/desert_dunes_coast2.png",
+    "/img/rpg/world/zones/desert_dunes_coast3.png",
+    "/img/rpg/world/zones/desert_dunes_coast4.png",
+    "/img/rpg/world/zones/desert_dunes_coast5.png", 
+}
+biome_desert_half.images = {
+    "/img/rpg/world/zones/desert_plants0.png",
+    "/img/rpg/world/zones/desert_plants1.png",
+    "/img/rpg/world/zones/desert_plants2.png",
+    "/img/rpg/world/zones/desert_plants3.png",
+    "/img/rpg/world/zones/desert_plants4.png",
+    "/img/rpg/world/zones/desert_plants5.png", 
+    "/img/rpg/world/zones/desert_plants6.png", 
+    "/img/rpg/world/zones/desert_plants7.png", 
+}
+biome_desert_half.nearcoast = {
+    "/img/rpg/world/zones/desert_plants_coast0.png",
+    "/img/rpg/world/zones/desert_plants_coast1.png",
+    "/img/rpg/world/zones/desert_plants_coast2.png",
+    "/img/rpg/world/zones/desert_plants_coast3.png",
+    "/img/rpg/world/zones/desert_plants_coast4.png", 
+}
+biome_desert_rocky.images = {
+    "/img/rpg/world/zones/desert_rocks0.png",
+    "/img/rpg/world/zones/desert_rocks1.png",
+    "/img/rpg/world/zones/desert_rocks2.png",
+    "/img/rpg/world/zones/desert_rocks3.png",
+    "/img/rpg/world/zones/desert_rocks4.png", 
+    "/img/rpg/world/zones/desert_rocks5.png",
+    "/img/rpg/world/zones/desert_rocks6.png",
+    "/img/rpg/world/zones/desert_rocks7.png",
+    "/img/rpg/world/zones/desert_rocks8.png",
+    "/img/rpg/world/zones/desert_rocks9.png",
+    "/img/rpg/world/zones/desert_rocks10.png",
+    "/img/rpg/world/zones/desert_rocks11.png",
+    "/img/rpg/world/zones/desert_rocks12.png",
+    "/img/rpg/world/zones/desert_rocks13.png",
+    "/img/rpg/world/zones/desert_rocks14.png",
+    "/img/rpg/world/zones/desert_rocks15.png",
+    "/img/rpg/world/zones/desert_rocks16.png",
+    "/img/rpg/world/zones/desert_rocks17.png",
+    "/img/rpg/world/zones/desert_rocks18.png",
+    "/img/rpg/world/zones/desert_rocks19.png",
+    "/img/rpg/world/zones/desert_rocks20.png",
+    "/img/rpg/world/zones/desert_rocks21.png",
+    "/img/rpg/world/zones/desert_rocks22.png",
+    "/img/rpg/world/zones/desert_rocks23.png",
+    "/img/rpg/world/zones/desert_rocks24.png", 
+    "/img/rpg/world/zones/desert_rocks25.png",
+    "/img/rpg/world/zones/desert_rocks26.png",
+    "/img/rpg/world/zones/desert_rocks27.png",
+}
+biome_desert_rocky.nearcoast = {
+    "/img/rpg/world/zones/desert_rocks_coast0.png",
+    "/img/rpg/world/zones/desert_rocks_coast1.png",
+    "/img/rpg/world/zones/desert_rocks_coast2.png", 
+}
 
 biome_town = Def('town',{},'biome')
 biome_town.has_road = true
@@ -88,6 +219,28 @@ biome_forest_deep.images = {
 }
 biome_forest_deep.nearcoast = biome_forest.nearcoast
 biome_forest_deep.withroad = biome_forest.withroad
+biome_forest_river.images = {
+    "/img/rpg/world/zones/river_small_forest.png",  
+    "/img/rpg/world/zones/river_small_forest2.png", 
+    "/img/rpg/world/zones/river_small_forest3.png", 
+    "/img/rpg/world/zones/river_small_forest4.png", 
+    "/img/rpg/world/zones/river_small_forest5.png", 
+    "/img/rpg/world/zones/river_small_forest6.png", 
+    "/img/rpg/world/zones/river_small_forest7.png", 
+    "/img/rpg/world/zones/river_small_forest8.png", 
+    "/img/rpg/world/zones/river_small_forest9.png", 
+    "/img/rpg/world/zones/river_small_forest10.png", 
+    "/img/rpg/world/zones/river_small_deepforest.png",  
+    "/img/rpg/world/zones/river_small_deepforest2.png", 
+    "/img/rpg/world/zones/river_small_deepforest3.png", 
+    "/img/rpg/world/zones/river_small_deepforest4.png", 
+    "/img/rpg/world/zones/river_small_deepforest5.png", 
+    "/img/rpg/world/zones/river_small_deepforest6.png", 
+    "/img/rpg/world/zones/river_small_deepforest7.png", 
+    "/img/rpg/world/zones/river_small_deepforest8.png", 
+    "/img/rpg/world/zones/river_small_deepforest9.png",  
+}
+
 
 biome_grassland.images = {
     "/img/rpg/world/zones/grassland_plains.png",
@@ -158,6 +311,18 @@ biome_highland.images = {
     "/img/rpg/world/zones/highland6.png", 
 }
 biome_highland.nearcoast = biome_grassland.nearcoast
+biome_highland_forest.images = {
+    "/img/rpg/world/zones/highland_forest.png", 
+    "/img/rpg/world/zones/highland_forest2.png", 
+    "/img/rpg/world/zones/highland_forest3.png", 
+    "/img/rpg/world/zones/highland_forest4.png",  
+}
+biome_highland_forest.nearcoast = biome_highland_forest.nearcoast
+biome_highland_river.images = {
+    "/img/rpg/world/zones/highland_river.png", 
+    "/img/rpg/world/zones/highland_river2.png", 
+    "/img/rpg/world/zones/highland_river3.png", 
+}
 
 biome_river.images = {
     "/img/rpg/world/zones/river_med.png", 
@@ -197,17 +362,60 @@ biome_swamp.images = {
     "/img/rpg/world/zones/swamp10.png",  
     "/img/rpg/world/zones/swamp11.png",   
 }
+biome_mountain.images = {
+    "/img/rpg/world/zones/mountain.png", 
+    "/img/rpg/world/zones/mountain2.png", 
+    "/img/rpg/world/zones/mountain3.png", 
+    "/img/rpg/world/zones/mountain4.png", 
+    "/img/rpg/world/zones/mountain5.png",  
+    "/img/rpg/world/zones/mountain6.png",   
+}
+biome_mountain_forest.images = {
+    "/img/rpg/world/zones/mountain_forest.png", 
+    "/img/rpg/world/zones/mountain_forest2.png", 
+    "/img/rpg/world/zones/mountain_forest3.png", 
+    "/img/rpg/world/zones/mountain_forest4.png", 
+    "/img/rpg/world/zones/mountain_forest5.png",  
+    "/img/rpg/world/zones/mountain_forest6.png",   
+    "/img/rpg/world/zones/mountain_forest7.png",   
+}
+biome_glacier.images = {
+    "/img/rpg/world/zones/mountain_glacier.png", 
+    "/img/rpg/world/zones/mountain_glacier2.png", 
+    "/img/rpg/world/zones/mountain_glacier3.png", 
+    "/img/rpg/world/zones/mountain_glacier4.png", 
+    "/img/rpg/world/zones/mountain_glacier5.png",  
+    "/img/rpg/world/zones/mountain_glacier6.png",   
+}
+
 biome_grassland.tilecolor = "#98d91b"
 biome_forest.tilecolor = "#3d8114"
 biome_forest_deep.tilecolor = "#316a0f"
+biome_forest_river.tilecolor = "#34a98f"
+biome_swamp.tilecolor = "#2e675a" 
+
 biome_sea.tilecolor = "#1d5187"
 biome_sea_shallow.tilecolor = "#2980ad"
-biome_highland.tilecolor = "#b0aa90"
-biome_river.tilecolor = "#53a4ff"
-biome_swamp.tilecolor = "#2e675a" 
 biome_beach.tilecolor = "#e7dba0"
+
+biome_river.tilecolor = "#53a4ff"
+
 biome_town.tilecolor = "#f3a387"
 
+biome_steppe.tilecolor = "#bcd240"
+biome_desert_half.tilecolor = "#ced68b"
+biome_desert.tilecolor = "#e2c437"
+biome_desert_rocky.tilecolor = "#c58840"
+
+biome_highland.tilecolor = "#b0aa90"
+biome_highland_forest.tilecolor = "#9cb090"
+biome_highland_river.tilecolor = "#83b5c3"
+
+biome_mountain.tilecolor = "#e5e5e5"
+biome_mountain_forest.tilecolor = "#ddf3c7"
+biome_glacier.tilecolor = "#add8e4"
+
+ 
 
 function biome_sea:is_passable(target)
     local species = target:adj_get('species')
@@ -218,3 +426,42 @@ function biome_sea:is_passable(target)
         end
     end
 end
+
+
+
+biome_grassland.population = {
+    ["female deer"] = 0.0001,
+    ["male deer"] = 0.0001, 
+    ["female white sheep"] = 0.001,
+    ["male white sheep"] = 0.001, 
+    ["female black sheep"] = 0.0002,
+    ["male black sheep"] = 0.0002, 
+    ["female brown wolf"] = 0.0004,
+    ["male brown wolf"] = 0.0005,
+}
+biome_forest.population = {
+    ["female deer"] = 0.01,
+    ["male deer"] = 0.01,
+    ["female gray wolf"] = 0.004,
+    ["male gray wolf"] = 0.005,
+    ["female brown wolf"] = 0.0004,
+    ["male brown wolf"] = 0.0005,
+}
+biome_forest_deep.population = {
+    ["female deer"] = 0.01,
+    ["male deer"] = 0.01,
+    ["female gray wolf"] = 0.006,
+    ["male gray wolf"] = 0.007,
+    ["female brown wolf"] = 0.0007,
+    ["male brown wolf"] = 0.0007,
+}
+biome_town.population = {
+    ["female brown kobold person"] = 0.9,
+    ["female brown kobold person "] = 0.9,
+    ["male brown kobold person"] = 0.9,
+    ["male brown kobold person "] = 0.9,
+    ["female green kobold person"] = 0.9,
+    ["female green kobold person "] = 0.9,
+    ["male green kobold person"] = 0.9,
+    ["male green kobold person "] = 0.9,
+}

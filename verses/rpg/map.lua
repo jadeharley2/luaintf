@@ -8,6 +8,26 @@ end
 --    local biome = self:adj_get('biome')
 --    return biome.image
 --end
+function maptile:on_enter(doer)
+    local population = self.population 
+    if population then
+        for k,v in pairs(self.population) do
+            if v>math.random() then
+                local p = Inst(string.trim(k))
+                p.location = self
+                p.is_temporary = true
+                printout('spawned '..k)
+            end
+        end
+    end
+end
+function maptile:on_exit(doer)
+    self:foreach_contains(function(x)
+        if x.is_temporary then
+            x.location = nil
+        end
+    end)
+end
 
 function maptile:setup()
     local biome = self:adj_get('biome')

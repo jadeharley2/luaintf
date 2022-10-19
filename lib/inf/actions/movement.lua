@@ -42,8 +42,12 @@ move_action = Def('move_action',{key='move',restrictions = {"!asleep"},callback 
                 describe_action(self,nil,tostring(self)..' leaves to '..tostring(next))  
                
                 disappear_visual_procedure(self)
+ 
+                loc:call('on_exit',self) 
 
                 self.location = next
+
+                next:call('on_enter',self) 
 
                 describe_action(self,nil,tostring(self)..' arrives from '..tostring(loc))
 

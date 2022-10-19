@@ -1,8 +1,31 @@
 rpg_verse = Def('rpg_verse',{name="FRPG"},'universe')
 
 
+function adj_choice_tree(self, tree)
+    for k,v in pairs(tree) do
+        if k~='_' and self:is(k) then
+            if type(v)=='table' then
+                return adj_choice_tree(self,v)
+            else
+                return v
+            end
+        end
+    end
+    local def = tree._ 
+    if def then
+        if type(def)=='table' then
+            return adj_choice_tree(self,def)
+        else
+            return def
+        end
+    end
+end
+
+thing.adj_choice_tree = adj_choice_tree
+
 
 Include('species.lua')
+Include('animals.lua')
 Include('biomes.lua')
 Include('map.lua')
 
@@ -20,15 +43,32 @@ local function addbiome(biome)
 end
  
 addbiome(biome_grassland)
+
 addbiome(biome_forest)
 addbiome(biome_forest_deep)
+addbiome(biome_forest_river)
+addbiome(biome_swamp)
+
 addbiome(biome_sea)
 addbiome(biome_sea_shallow)
-addbiome(biome_highland)
-addbiome(biome_river)
-addbiome(biome_swamp)
 addbiome(biome_beach)
+
+addbiome(biome_river)
+
 addbiome(biome_town)
+
+addbiome(biome_highland)
+addbiome(biome_highland_forest)
+addbiome(biome_highland_river)
+
+addbiome(biome_steppe)
+addbiome(biome_desert_half)
+addbiome(biome_desert)
+addbiome(biome_desert_rocky)
+
+addbiome(biome_mountain)
+addbiome(biome_mountain_forest)
+addbiome(biome_glacier)
 
 local path = "C:/_root/projects/src/TileServer/WebRelay/bin/Debug/data/img/rpg/world/wmaptest.raw"
 local path2 = "C:/_root/projects/src/TileServer/WebRelay/bin/Debug/data/img/rpg/world/wmaptest_roads.raw"
