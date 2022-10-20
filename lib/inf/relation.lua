@@ -22,7 +22,7 @@ local relation_meta = {
 }
 relation_meta.__index = relation_meta
 
-function MakeRelation(a,b,kind)
+function MakeRelation(a,b,kind,one_sided)
     local kind_id = Identify(kind)
     if kind_id then
         if kind_id:is("relation") then
@@ -33,11 +33,14 @@ function MakeRelation(a,b,kind)
                     kind = kind_id
                 },relation_meta)
                 local ar = a:ensure('relations',{})
-                local br = b:ensure('relations',{})
                 ar[#ar+1] = rel
-                br[#br+1] = rel
                 a:call('on_new_'..kind_id.id,b)
-                b:call('on_new_'..kind_id.id,a)
+
+                if not one_sided then
+                    local br = b:ensure('relations',{})
+                    br[#br+1] = rel
+                    b:call('on_new_'..kind_id.id,a)
+                end
             end
         else
             print(kind..' is not a relation kind')

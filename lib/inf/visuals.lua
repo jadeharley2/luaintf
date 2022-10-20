@@ -184,12 +184,12 @@ function send_map_grid(target, origin_override,known_filter)
 
     local pixeldata = {}
     for y=1,size do
-        local py = y+pos.y-10
+        local py = y+pos.y-10 
         for x=1,size do
             local px = x+pos.x-10
-            local idx = px+py*gridsize.x
+            local idx = px+(py-1)*gridsize.x
             local tile = grid[idx]
-            if tile then 
+            if px>0 and px<=gridsize.x and tile then 
                 local color = tile.tilecolor:sub(2) or "FFFFFF"
                 local subdata = 1*IF(tile.has_road,1,0)--8 bits flags
                 pixeldata[#pixeldata+1] = color..string.format("%02X", subdata)

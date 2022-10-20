@@ -285,6 +285,8 @@ end
 
 is_running = is_running or false
 timescale = timescale or 1
+
+default_timescale = 0.5
 function main_server()
     if is_running then return end 
     is_running = true 
@@ -332,7 +334,7 @@ function main_server()
         if awake==0 and asleep>0 then
             timescale = timescale + (0.1-timescale)*0.2
         else
-            timescale = 1
+            timescale = default_timescale
         end
     end)
     

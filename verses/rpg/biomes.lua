@@ -8,29 +8,29 @@ biome = Def('biome',{},"adjective")
 
 
 
-biome_forest = Def('forest',{},'biome')
+biome_forest = Def('forest',{name='forest'},'biome')
 biome_forest_deep = Def('forest_deep',{name='deep forest'},'biome')
 biome_forest_river = Def('forest_river',{name='forest river'},'biome')
-biome_grassland = Def('grassland',{},'biome')
-biome_lake = Def('river',{},'biome')
-biome_river = Def('river',{},'biome')
-biome_sea = Def('sea',{},'biome')
+biome_grassland = Def('grassland',{name='grassland'},'biome')
+biome_lake = Def('lake',{name='lake'},'biome')
+biome_river = Def('river',{name='river'},'biome')
+biome_sea = Def('sea',{name='open sea'},'biome')
 biome_sea_shallow = Def('sea_shallow',{name='shallow sea'},'biome')
-biome_swamp = Def('swamp',{},'biome')
-biome_beach = Def('beach',{},'biome')
+biome_swamp = Def('swamp',{name='swamp'},'biome')
+biome_beach = Def('beach',{name='beach'},'biome')
 
-biome_steppe = Def('steppe',{},'biome')
+biome_steppe = Def('steppe',{name='steppe'},'biome')
 biome_desert = Def('desert',{name='sand desert'},'biome')
 biome_desert_half = Def('desert_half',{name='half desert'},'biome')
 biome_desert_rocky = Def('desert_rocky',{name='rocky desert'},'biome')
 
-biome_highland = Def('highland',{},'biome')
+biome_highland = Def('highland',{name='highlands'},'biome')
 biome_highland_forest = Def('highland_forest',{name='highland forest'},'biome')
 biome_highland_river = Def('highland_river',{name='highland river'},'biome')
 
-biome_mountain = Def('mountain',{},'biome')
+biome_mountain = Def('mountain',{name='mountains'},'biome')
 biome_mountain_forest = Def('mountain_forest',{name='mountain forest'},'biome')
-biome_glacier = Def('glacier',{},'biome')
+biome_glacier = Def('glacier',{name='glacier'},'biome')
 
 biome_steppe.images = {
     "/img/rpg/world/zones/steppe0.png",
@@ -151,7 +151,8 @@ biome_desert_rocky.nearcoast = {
     "/img/rpg/world/zones/desert_rocks_coast2.png", 
 }
 
-biome_town = Def('town',{},'biome')
+biome_town = Def('town',{name='town'},'biome')
+biome_town_tiles = Def('town_tiles',{name='town'},'biome')
 biome_town.has_road = true
 biome_town.images = {
     "/img/rpg/world/zones/town1.png",
@@ -165,11 +166,11 @@ biome_town.images = {
     "/img/rpg/world/zones/town9.png",
     "/img/rpg/world/zones/town10.png", 
 }
+biome_town_tiles.images = biome_town.images
 
 biome_forest.images = {
     "/img/rpg/world/zones/forest_light0.png",
-    "/img/rpg/world/zones/forest.png",
-    "/img/rpg/world/zones/forest1.png",
+    "/img/rpg/world/zones/forest.png", 
     "/img/rpg/world/zones/forest2.png",
     "/img/rpg/world/zones/forest3.png",
     "/img/rpg/world/zones/forest4.png",
