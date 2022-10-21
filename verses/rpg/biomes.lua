@@ -11,6 +11,7 @@ biome = Def('biome',{},"adjective")
 biome_forest = Def('forest',{name='forest'},'biome')
 biome_forest_deep = Def('forest_deep',{name='deep forest'},'biome')
 biome_forest_river = Def('forest_river',{name='forest river'},'biome')
+biome_forest_caveentrance = Def('forest_caveentrance',{name='forest cave entrance'},'biome')
 biome_grassland = Def('grassland',{name='grassland'},'biome')
 biome_lake = Def('lake',{name='lake'},'biome')
 biome_river = Def('river',{name='river'},'biome')
@@ -31,6 +32,42 @@ biome_highland_river = Def('highland_river',{name='highland river'},'biome')
 biome_mountain = Def('mountain',{name='mountains'},'biome')
 biome_mountain_forest = Def('mountain_forest',{name='mountain forest'},'biome')
 biome_glacier = Def('glacier',{name='glacier'},'biome')
+
+biome_cave = Def('cave',{name='cave'},'biome')
+
+
+
+biome_cave.images = {
+    "/img/rpg/world/zones/cave0.png",
+    "/img/rpg/world/zones/cave1.png",
+    "/img/rpg/world/zones/cave2.png",
+    "/img/rpg/world/zones/cave3.png",
+    "/img/rpg/world/zones/cave4.png",
+    "/img/rpg/world/zones/cave5.png",
+    "/img/rpg/world/zones/cave6.png",
+    "/img/rpg/world/zones/cave7.png",
+    "/img/rpg/world/zones/cave8.png",
+    "/img/rpg/world/zones/cave9.png",
+    "/img/rpg/world/zones/cave10.png",
+    "/img/rpg/world/zones/cave11.png",
+    "/img/rpg/world/zones/cave12.png",
+    "/img/rpg/world/zones/cave13.png",
+    "/img/rpg/world/zones/cave14.png",
+    "/img/rpg/world/zones/cave15.png",
+    "/img/rpg/world/zones/cave16.png",
+    "/img/rpg/world/zones/cave17.png",
+    "/img/rpg/world/zones/cave18.png",
+    "/img/rpg/world/zones/cave19.png",
+    "/img/rpg/world/zones/cave20.png",
+    "/img/rpg/world/zones/cave21.png",
+    "/img/rpg/world/zones/cave22.png",
+    "/img/rpg/world/zones/cave23.png",
+    "/img/rpg/world/zones/cave24.png",
+    "/img/rpg/world/zones/cave25.png",
+    "/img/rpg/world/zones/cave26.png",
+    "/img/rpg/world/zones/cave27.png",
+    "/img/rpg/world/zones/cave28.png", 
+}
 
 biome_steppe.images = {
     "/img/rpg/world/zones/steppe0.png",
@@ -168,6 +205,19 @@ biome_town.images = {
 }
 biome_town_tiles.images = biome_town.images
 
+
+biome_house_room = Def('house_room',{name='house_room'},'biome')
+biome_house_corridor = Def('house_corridor',{name='house_corridor'},'biome')
+biome_house_entrance = Def('house_entrance',{name='house_entrance'},'biome')
+
+biome_house_room.images = biome_town.images
+biome_house_corridor.images = biome_town.images
+biome_house_entrance.images = biome_town.images
+
+biome_house_room.tilecolor = "#963c00"
+biome_house_corridor.tilecolor = "#8b5a39"
+biome_house_entrance.tilecolor = "#c68355"
+
 biome_forest.images = {
     "/img/rpg/world/zones/forest_light0.png",
     "/img/rpg/world/zones/forest.png", 
@@ -241,6 +291,30 @@ biome_forest_river.images = {
     "/img/rpg/world/zones/river_small_deepforest8.png", 
     "/img/rpg/world/zones/river_small_deepforest9.png",  
 }
+biome_forest_caveentrance.images = { 
+    "/img/rpg/world/zones/cave_entrance0.png", 
+    "/img/rpg/world/zones/cave_entrance1.png", 
+    "/img/rpg/world/zones/cave_entrance2.png", 
+    "/img/rpg/world/zones/cave_entrance3.png", 
+    "/img/rpg/world/zones/cave_entrance4.png", 
+    "/img/rpg/world/zones/cave_entrance5.png", 
+    "/img/rpg/world/zones/cave_entrance6.png", 
+    "/img/rpg/world/zones/cave_entrance7.png", 
+    "/img/rpg/world/zones/cave_entrance8.png", 
+    "/img/rpg/world/zones/cave_entrance9.png", 
+    "/img/rpg/world/zones/cave_entrance10.png", 
+    "/img/rpg/world/zones/cave_entrance11.png", 
+    "/img/rpg/world/zones/cave_entrance12.png", 
+    "/img/rpg/world/zones/cave_entrance13.png", 
+    "/img/rpg/world/zones/cave_entrance14.png", 
+    "/img/rpg/world/zones/cave_entrance15.png", 
+    "/img/rpg/world/zones/cave_entrance16.png", 
+    "/img/rpg/world/zones/cave_entrance17.png", 
+    "/img/rpg/world/zones/cave_entrance18.png", 
+    "/img/rpg/world/zones/cave_entrance19.png", 
+    "/img/rpg/world/zones/cave_entrance20.png", 
+}
+
 
 
 biome_grassland.images = {
@@ -393,6 +467,7 @@ biome_grassland.tilecolor = "#98d91b"
 biome_forest.tilecolor = "#3d8114"
 biome_forest_deep.tilecolor = "#316a0f"
 biome_forest_river.tilecolor = "#34a98f"
+biome_forest_caveentrance.tilecolor = "#829361"
 biome_swamp.tilecolor = "#2e675a" 
 
 biome_sea.tilecolor = "#1d5187"
@@ -415,7 +490,7 @@ biome_highland_river.tilecolor = "#83b5c3"
 biome_mountain.tilecolor = "#e5e5e5"
 biome_mountain_forest.tilecolor = "#ddf3c7"
 biome_glacier.tilecolor = "#add8e4"
-
+biome_cave.tilecolor = "#9e9e9e"
  
 
 function biome_sea:is_passable(target)

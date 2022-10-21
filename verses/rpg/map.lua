@@ -145,7 +145,30 @@ end
 
 
 
-
+local function linktiles(grid,w,h)
+    
+    for y=1,h do
+        for x=1,w do
+            local pid = x+(y-1)*w
+            local zone = grid[pid]
+            if zone then
+                if x>1 then
+                    local left = grid[pid-1]
+                    if left then
+                        MakeRelation(zone,left,direction_west)
+                    end
+                end
+                if y>1 then 
+                    local top = grid[pid-w]
+                    if top then
+                        MakeRelation(zone,top,direction_north)
+                    end
+                end
+                zone:setup()
+            end
+        end
+    end 
+end
 
 
 local b = string.byte
@@ -246,26 +269,168 @@ function loadmap2(w,h,location,layers)
     if tilecount == 0 then
         error("no tiles found on map!")
     end
-    for y=1,h do
-        for x=1,w do
-            local pid = x+y*w
-            local zone = grid[pid]
-            if zone then
-                if x>1 and y>1 then
-                    local left = grid[pid-1]
-                    if left then
-                        MakeRelation(zone,left,direction_west)
-                    end
-                    local top = grid[pid-w]
-                    if top then
-                        MakeRelation(zone,top,direction_north)
-                    end
+
+    linktiles(grid,w,h) 
+    print('tiles linked')
+    return tilemap(grid,w,h)
+end
+
+function load_lmap(path,location,layers)
+    
+    local tempswap = temp
+    Include(path)
+    local tiledata = temp 
+    temp = tempswap
+
+    local w = tiledata.w
+    local h = tiledata.h 
+    local oneseed
+    local tilecount = 0
+    local grid = {}
+    for k,v in ipairs(layers) do
+        local data = tiledata.layers[k]
+
+        local indexmap = {} -- [hexcolor = id]
+        for k2,v2 in pairs(data.index) do
+            indexmap[string.lower(v2)] = k2
+        end
+        
+
+        local code = {}
+        local codecolor = {}
+        local seedoffset = {}
+        for k2,v2 in pairs(v.code) do
+            if #k2>3 then -- hex color key 
+                local prt = v2:split(':') 
+                if #prt>1 then
+                    v2 = prt[1]
+                    local cid = indexmap[k2]
+                    code[cid]=v2
+                    seedoffset[cid] = tonumber(prt[2])
+                else
+                    local cid = indexmap[k2]
+                    code[cid]= v2
+                    codecolor[cid] = k2
                 end
-                zone:setup()
+            else -- binary color key
+                local hex = string.lower(rgb2hex(b(k2,1),b(k2,2),b(k2,3)))
+                local cid = indexmap[hex]
+                code[cid]=v2
             end
         end
-    end 
+
+
+
+        local t = v.type
+        local is_adj = t.adjective
+        local is_bool = t.boolean
+        local is_tilecolor = t.tilecolor
+        local makeall = v.makeall
+        oneseed = v.oneseed or oneseed
+        for y=1,h do 
+            local row = data.data[y]
+            local singlevalue = type(row)=='number'
+            local value
+            local index
+            local skip = false
+            if singlevalue then
+                index = row+1
+                value = code[index]
+                if not value and not makeall then
+                    skip=true
+                end
+            end
+            if not skip then
+                for x=1,w do
+                    if not singlevalue then
+                        index = row[x]+1
+                        value = code[index]
+                    end
+
+                    if value or makeall then 
+                        local pid = x+(y-1)*w
+                        local zone = grid[pid]
+                        if not zone then
+                            zone = Inst('maptile')
+                            grid[pid] = zone
+                            zone.location = location
+                            zone.pos = {x=x,y=y}
+                            zone.seed = (oneseed or pid) + (seedoffset[index] or 0)
+                            tilecount = tilecount + 1
+                        end
+
+                        if value then 
+                            if is_adj then
+                                zone:adj_set(value)
+                            end
+                            if is_bool then
+                                zone[value] = true
+                            end
+                            if is_tilecolor then 
+                                zone.tilecolor = codecolor[index]
+                            end
+                        else
+                            local heh=0
+                        end
+    
+                    end
+                end
+            end
+        end 
+        print('loaded layer',k)
+ 
+
+    end
+
+    print(tilecount,'tiles placed')
+    if oneseed then
+        print('global seed:',oneseed)
+    else
+        print('using positional seed')
+    end
+    if tilecount == 0 then
+        error("no tiles found on map!")
+    end
+    linktiles(grid,w,h) 
+    location.grid = grid
+    location.gridsize = {x=w,y=h}
     print('tiles linked')
+    return tilemap(grid,w,h)
+end
+function load_tmap(map,location,layers)
+
+    local idx = layers.code 
+
+    local rows = string.replace(map,'\r',''):split('\n')
+    local h = #rows-1
+    local w = #(rows[1])
+    local grid = {} 
+
+
+    local oneseed = layers.oneseed
+    for y=1,h do
+        local row = rows[y]
+        for x=1,w do
+            local c = row:sub(x,x)
+            if c~=' ' then
+                local d = idx[c]
+                if d then
+                    local pid = x+(y-1)*w 
+                    
+                    zone = Inst('maptile')
+                    grid[pid] = zone
+                    zone.location = location
+                    zone.pos = {x=x,y=y}
+                    zone.seed = (oneseed or pid)
+                    
+                    zone:adj_set(d)
+                end
+            end
+        end
+    end
+    linktiles(grid,w,h) 
+    location.grid = grid
+    location.gridsize = {x=w,y=h}
     return tilemap(grid,w,h)
 end
 
@@ -318,6 +483,14 @@ function maplink(mode,from,fpos,to,tpos)
             end
         end
         local LOL =0
+    elseif mode=="down" then
+        local ftile = from:tile(fpos)
+        local ttile = to:tile(tpos)
+        MakeRelation(ftile,ttile,direction_down)
+    elseif mode=="in" then
+        local ftile = from:tile(fpos)
+        local ttile = to:tile(tpos)
+        MakeRelation(ftile,ttile,direction_in)
     end
 
 end
