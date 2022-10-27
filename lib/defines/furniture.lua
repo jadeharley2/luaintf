@@ -16,6 +16,7 @@ mirror.examine = function(s)
     if img then printout('$display:target;'..player.id..';'..img..';'..player.image_style_css) end
 
     printout('$display:target;mirror_over;/img/background/mirror_overlay.png;') 
+    printout('$display:target;mirror_frame;/img/background/mirror_frame.png;') 
     
 end
 

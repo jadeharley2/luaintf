@@ -2,6 +2,7 @@
 defines = defines or {}
 kind_def = kind_def or {}
 turn_kind_def = turn_kind_def or {}
+turn_kind_def_info = turn_kind_def_inf or {}
 
 adjective = adjective or false
 adjective_def = adjective_def or {}
@@ -571,8 +572,10 @@ thing = Def('thing',{
     set_updating = function(self,enabled)
         if enabled then
             turn_kind_def[self] = true
+            turn_kind_def_info[self.id] = true
         else
             turn_kind_def[self] = nil
+            turn_kind_def_info[self.id] = nil
         end
     end,
     

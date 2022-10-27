@@ -513,8 +513,16 @@ person.intent_tree = {
                 local target = LocalIdentify(I.target)
                 if I.target=='me' then target = F end 
                 if target and target:is(person) then
-                    self:intent_say('ok',true) 
-                    self.task = Task('follow',target)
+                    if self.task and self.task:is('follow') and self.task.target == target then
+                        if target==F then
+                            self:say('i am already following you')
+                        else
+                            self:say('i am already following '..tostring(target))
+                        end
+                    else
+                        self:intent_say('ok',true) 
+                        self.task = Task('follow',target)
+                    end
                 else
                     self:intent_say('follow who?',true) 
                 end
