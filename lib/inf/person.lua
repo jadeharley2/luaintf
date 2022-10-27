@@ -319,3 +319,10 @@ person.get_reachables = function(self, user, output)
     end 
 end
  
+function person:_get_icon()
+    local img = self.image
+    if img then 
+        local ext = img:sub(-4)
+        return img:sub(1,-5)..'_av'..ext
+    end
+end 

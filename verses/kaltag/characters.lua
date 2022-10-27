@@ -47,43 +47,43 @@ end
 
 
 ara = Def('ara',{name='ARA', code = '0-1-1'},'female feline anthroid person') 
-ara.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943211101754118245/ara.png'
+ara.image = '/img/fk/characters/ara.png'
 --'https://cdn.discordapp.com/attachments/531891665993203722/943137499256074260/furry-f-furry-art-furry--6411268.png'
 --'https://cdn.discordapp.com/attachments/531891665993203722/943211236538089622/ara.png'
 ara:set_clothes('owned female anthroid_uniform','owned female anthroid_long_gloves','owned female anthroid_stocking','owned anthroid_collar','owned anthroid_visor')
-ara:find('anthroid_uniform').image = '/img/items/ara_uniform.png'
-ara:find('anthroid_long_gloves').image = '/img/items/ara_arms.png'
-ara:find('anthroid_stocking').image = '/img/items/ara_legs.png'
-ara:find('anthroid_collar').image = '/img/items/ara_collar.png'
-ara:find('anthroid_visor').image = '/img/items/ara_visor.png'
+ara:find('anthroid_uniform').image = '/img/fk/items/ara_uniform.png'
+ara:find('anthroid_long_gloves').image = '/img/fk/items/ara_arms.png'
+ara:find('anthroid_stocking').image = '/img/fk/items/ara_legs.png'
+ara:find('anthroid_collar').image = '/img/fk/items/ara_collar.png'
+ara:find('anthroid_visor').image = '/img/fk/items/ara_visor.png'
 
 srk = Def('srk',{name='Warning', code ='07-4-31'},'female feline anthroid person') 
-srk.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943209342293905478/srk.png'
+srk.image = '/img/fk/characters/srk.png'
 srk:set_clothes('owned female anthroid_uniform','owned female anthroid_gloves','owned female anthroid_stocking','owned anthroid_collar')
-srk:find('anthroid_uniform').image = '/img/items/srk_uniform.png'
-srk:find('anthroid_gloves').image = '/img/items/srk_gloves.png'
-srk:find('anthroid_stocking').image = '/img/items/srk_legs.png'
-srk:find('anthroid_collar').image = '/img/items/srk_collar.png'
+srk:find('anthroid_uniform').image = '/img/fk/items/srk_uniform.png'
+srk:find('anthroid_gloves').image = '/img/fk/items/srk_gloves.png'
+srk:find('anthroid_stocking').image = '/img/fk/items/srk_legs.png'
+srk:find('anthroid_collar').image = '/img/fk/items/srk_collar.png'
 
 zta = Def('zta',{name='Zeta', code='37-8-12'},'female kleika anthroid person') 
-zta.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943209772088426506/zta.png'
+zta.image = '/img/fk/characters/zta.png'
 zta:set_clothes('owned female anthroid_uniform','owned female anthroid_gloves','owned female anthroid_stocking','owned anthroid_collar')
-zta:find('anthroid_uniform').image = '/img/items/zta_uniform2.png'
-zta:find('anthroid_gloves').image = '/img/items/zta_gloves2.png'
-zta:find('anthroid_stocking').image = '/img/items/zta_legs2.png'
-zta:find('anthroid_collar').image = '/img/items/zta_collar2.png'
+zta:find('anthroid_uniform').image = '/img/fk/items/zta_uniform2.png'
+zta:find('anthroid_gloves').image = '/img/fk/items/zta_gloves2.png'
+zta:find('anthroid_stocking').image = '/img/fk/items/zta_legs2.png'
+zta:find('anthroid_collar').image = '/img/fk/items/zta_collar2.png'
 zta.intent_defaults = {formal=true,misspelling=false}
 zta.memory.hates_misspelling = true
 
 tvk = Def('tvk',{name='Vale', code='86-44-21'},'male anthroid person') 
-tvk.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943207738991857793/vc.png'
+tvk.image = '/img/fk/characters/tvk.png'
 --'https://cdn.discordapp.com/attachments/531891665993203722/943216181962244118/vale.png'
 tvk:set_clothes('owned male anthroid_uniform','owned anthroid_collar')
-tvk:find('anthroid_uniform').image = '/img/items/tvk_uniform.png'
-tvk:find('anthroid_collar').image = '/img/items/tvk_collar.png'
+tvk:find('anthroid_uniform').image = '/img/fk/items/tvk_uniform.png'
+tvk:find('anthroid_collar').image = '/img/fk/items/tvk_collar.png'
 
 vst = Def('vst',{name='VST'},'male anthroid person') 
-vst.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943220091355545600/vst.png'
+vst.image = '/img/fk/characters/vst.png'
 vst.process_speech = function(self,text) 
     text = string.upper(text)
     --text = text:replace("I AM",'THIS UNIT IS'
@@ -101,66 +101,66 @@ vst.intent_defaults = {robotic=true}
 
 
 zofie = Def('zofie',{name='Zofie'},'female canine anthro person') 
-zofie.image = '/img/characters/zofie2.png'
+zofie.image = '/img/fk/characters/zofie2.png'
 zofie:set_clothes('owned female uniform','owned female stocking')
-zofie:find('uniform').image = '/img/items/zofie_wear.png'
-zofie:find('stocking').image = '/img/items/zofie_legs.png' 
+zofie:find('uniform').image = '/img/fk/items/zofie_wear.png'
+zofie:find('stocking').image = '/img/fk/items/zofie_legs.png' 
 
 
 vikna = Def('vikna',{name='Vikna', surname='Ramenskaya'},'female feline anthro person')  
-vikna.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943210593094078474/vikna.png'
+vikna.image = '/img/fk/characters/vikna.png'
 vikna:set_clothes('owned female uniform','owned female boots','owned female hat')
-vikna:find('hat').image = '/img/items/cold_hat.png'
-vikna:find('uniform').image = '/img/items/cold_form.png'
-vikna:find('boots').image = '/img/items/cold_boots.png'
+vikna:find('hat').image = '/img/fk/items/cold_hat.png'
+vikna:find('uniform').image = '/img/fk/items/cold_form.png'
+vikna:find('boots').image = '/img/fk/items/cold_boots.png'
 
 
 nytro = Def('nytro',{name='Nytro', surname='Sykran'},'male canine anthro person') 
-nytro.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943212074878783548/nytro.png'
+nytro.image = '/img/fk/characters/nytro.png'
 nytro:set_clothes('owned male uniform','owned visor','owned male boots')
-nytro:find('visor').image = '/img/items/nytro_visor.png'
-nytro:find('uniform').image = '/img/items/nytro_work.png'
-nytro:find('boots').image = '/img/items/nytro_boots.png'
+nytro:find('visor').image = '/img/fk/items/nytro_visor.png'
+nytro:find('uniform').image = '/img/fk/items/nytro_work.png'
+nytro:find('boots').image = '/img/fk/items/nytro_boots.png'
 nytro_sword = Def('nytro_sword',{name='sword'},'owned thing')
 nytro_sword.location = nytro
 nytro_sword.owner = nytro
-nytro_sword.image = '/img/items/nytro_sword.png'
+nytro_sword.image = '/img/fk/items/nytro_sword.png'
 MakeRelation(nytro_sword,nytro,owner)
 
 
 ayn = Def('ayn',{name='Ayn'},'female jackal anthro person') 
-ayn.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943214682087518238/ayn.png'
+ayn.image = '/img/fk/characters/ayn.png'
 ayn:set_clothes('owned female uniform','owned female gloves','owned female boots','owned female tiara')
-ayn:find('uniform').image = '/img/items/ayn_form.png'
-ayn:find('gloves').image = '/img/items/ayn_gloves.png' 
-ayn:find('boots').image = '/img/items/ayn_boots.png' 
-ayn:find('tiara').image = '/img/items/ayn_tiara.png' 
+ayn:find('uniform').image = '/img/fk/items/ayn_form.png'
+ayn:find('gloves').image = '/img/fk/items/ayn_gloves.png' 
+ayn:find('boots').image = '/img/fk/items/ayn_boots.png' 
+ayn:find('tiara').image = '/img/fk/items/ayn_tiara.png' 
 ayn.mood = 'angry'
 ayn_staff = Def('ayn_staff',{name='staff'},'owned thing')
 ayn_staff.location = ayn
 ayn_staff.owner = ayn
-ayn_staff.image = '/img/items/ayn_staff.png' 
+ayn_staff.image = '/img/fk/items/ayn_staff.png' 
 
 
 
 
 twix = Def('twix',{name='Twix'},'female canine anthro person') 
-twix.image = '/img/characters/twix.png'
+twix.image = '/img/fk/characters/twix.png'
 twix:set_clothes('owned female uniform','owned female stocking')
 
 lia = Def('lia',{name='Lia'},'female canine anthro person') 
-lia.image = '/img/characters/lia.png'
+lia.image = '/img/fk/characters/lia.png'
 lia:set_clothes('owned female uniform','owned female stocking')
---lia:find('uniform').image = '/img/items/zofie_wear.png'
---lia:find('stocking').image = '/img/items/zofie_legs.png' 
+--lia:find('uniform').image = '/img/fk/items/zofie_wear.png'
+--lia:find('stocking').image = '/img/fk/items/zofie_legs.png' 
 
 
 kesis = Def('kesis',{name='Kesis'},'female canine anthro person') 
-kesis.image = '/img/characters/kesis.png'
+kesis.image = '/img/fk/characters/kesis.png'
 kesis:set_clothes('owned female uniform','owned female stocking')
 
 radoslav = Def('radoslav',{name='Radoslav'},'male kleika anthro person') 
-radoslav.image = '/img/characters/radoslav.png'
+radoslav.image = '/img/fk/characters/radoslav.png'
 radoslav:set_clothes('owned male uniform' )
 
 

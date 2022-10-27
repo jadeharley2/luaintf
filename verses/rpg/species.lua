@@ -45,9 +45,6 @@ naga.species_images = {
 function naga:_get_image()
     return adj_choice_tree(self,self.species_images)
 end
-function naga:_get_icon()
-    return self.image:sub(1,-5)..'_av.png'
-end
 function naga:_get_unknown_name()
     if self:is('black') then return 'Black naga'
     elseif self:is('green') then return 'Green naga'
@@ -74,9 +71,6 @@ kobold.species_images = {
 }
 function kobold:_get_image()
     return adj_choice_tree(self,self.species_images)
-end
-function kobold:_get_icon()
-    return self.image:sub(1,-5)..'_av.png'
 end 
 function kobold:_get_unknown_name()
     if self:is('brown') then return 'Brown kobold' 
