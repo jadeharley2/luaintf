@@ -16,14 +16,17 @@ function craft.DefCombineRecipe(id,a,b,result)
 end
 
 function craft.DoCombine(user,a,b)
-    local rec = shortcuts[a.id..'_'..b.id]
+    local rec = shortcuts[a.base.id..'_'..b.base.id]
     if rec then
-        local x = Inst(rec.result[1])
-        if x then
-            x.location = user 
-            a.location = nil
-            b.location = nil
-            return x
+        local R = combine_recipes[rec]
+        if R then 
+            local x = Inst(R.result[1].id)
+            if x then
+                x.location = user 
+                a.location = nil
+                b.location = nil
+                return x
+            end
         end
     end
     return false

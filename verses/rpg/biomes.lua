@@ -561,3 +561,10 @@ biome_town.population = {
     ["male green kobold person"] = 0.9,
     ["male green kobold person "] = 0.9,
 }
+biome_cave.population = { 
+    ["ruby"] = 0.01,
+    ["emerald"] = 0.01,
+    ["sapphire"] = 0.01,
+    ["topaz"] = 0.005,
+    ["diamond"] = 0.002,
+}
