@@ -513,7 +513,13 @@ biome_grassland.population = {
     ["female black sheep"] = 0.0002,
     ["male black sheep"] = 0.0002, 
     ["female brown wolf"] = 0.0004,
-    ["male brown wolf"] = 0.0005,
+    ["male brown wolf"] = 0.05,
+
+    ["ruby"] = 0.001,
+    ["emerald"] = 0.001,
+    ["sapphire"] = 0.001,
+    ["topaz"] = 0.0005,
+    ["diamond"] = 0.0002,
 }
 biome_forest.population = {
     ["female deer"] = 0.01,
@@ -522,6 +528,13 @@ biome_forest.population = {
     ["male gray wolf"] = 0.005,
     ["female brown wolf"] = 0.0004,
     ["male brown wolf"] = 0.0005,
+
+    
+    ["ruby"] = 0.001,
+    ["emerald"] = 0.001,
+    ["sapphire"] = 0.001,
+    ["topaz"] = 0.0005,
+    ["diamond"] = 0.0002,
 }
 biome_forest_deep.population = {
     ["female deer"] = 0.01,
@@ -530,6 +543,14 @@ biome_forest_deep.population = {
     ["male gray wolf"] = 0.007,
     ["female brown wolf"] = 0.0007,
     ["male brown wolf"] = 0.0007,
+
+    
+    ["ruby"] = 0.003,
+    ["emerald"] = 0.003,
+    ["sapphire"] = 0.003,
+    ["topaz"] = 0.003,
+    ["diamond"] = 0.001,
+    ["ec_flask_woods"] = 0.1,
 }
 biome_town.population = {
     ["female brown kobold person"] = 0.9,

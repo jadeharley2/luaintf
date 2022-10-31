@@ -11,9 +11,18 @@ function display_location(target)
         printout('$display:background;clear')
     end
 end
+function show_location(loc)
+    players_action(function(ply)
+        if ply:is('can_look') then 
+            if ply.location == loc then
+                loc:examine(ply)
+            end
+        end
+    end)
+end
 EveryHour('update_sunlight',function(h)
     players_action(function(ply)
-        if not ply:is('asleep') then
+        if ply:is('can_look') then
             local loc = ply.location
             if loc then
                 display_location(loc)
@@ -56,11 +65,15 @@ thing.examine = function(self,usr)
     if image then 
         printout('$display:target;'..self.id..';'..image..';'..self.image_style_css) 
         printout('$name:'..tostring(self))
+        local desc = self.description
+        if desc then
+            printout(desc)
+        end
     end 
 end
 
 
-look_action = Def('look_action',{key='look',restrictions = {"!asleep",'!blind'},callback = function(self,direction)   
+look_action = Def('look_action',{key='look',restrictions = {"can_look"},callback = function(self,direction)   
     local is_player = self == player
     self.look_target = self.location
     if is_player then examine(self.location) end
@@ -95,7 +108,7 @@ function person:GetVisibleThings()
     return things
 end
 
-examine_action = Def('examine_action',{key='examine',restrictions = {"!asleep",'!blind'},callback = function(self,...)  
+examine_action = Def('examine_action',{key='examine',restrictions = {"can_look"},callback = function(self,...)  
     local is_player = self == player
     if is_player then
         local tl = {...}

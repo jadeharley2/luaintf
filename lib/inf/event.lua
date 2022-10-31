@@ -58,7 +58,7 @@ function InvokeDelayed()
     for k,v in pairs(delayed_events) do
         if k<=turn then
             for kk,vv in pairs(v) do
-                vv()
+                xpcall(vv,error_handler)
             end
             delayed_events[k] = nil
         end

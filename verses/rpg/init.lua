@@ -26,8 +26,10 @@ thing.adj_choice_tree = adj_choice_tree
 
 Include('species.lua')
 Include('animals.lua')
+Include('items.lua')
 Include('biomes.lua')
 Include('map.lua')
+Include('combat.lua')
 
   
  

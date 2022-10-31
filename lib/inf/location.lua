@@ -376,6 +376,7 @@ room.examine = function(target, ex)
     local things = {}
     local characters = {}
     local images = {}
+    local images2 = {}
     local things_2 = {}
 
     target:foreach('contains',function(k,v)
@@ -390,6 +391,7 @@ room.examine = function(target, ex)
             else
                 things[#things+1] = tostring(k)
                 things_2[k.id] = tostring(k)
+                images2[k.id] = k--.image 
             end 
         end
     end)
@@ -412,10 +414,18 @@ room.examine = function(target, ex)
             printout('$display:line;'..k..';'..v.image..';'..v.image_style_css)
         end
     end
+    for k,v in pairs(images2) do 
+        local icon = v.icon
+        if icon then 
+            printout('$display:line;'..k..';'..icon..';'..v.image_style_css) 
+        else 
+            printout('$display:line;'..k..';'..v.image..';'..v.image_style_css)
+        end
+    end
 
     printout('$directions_clear')
     for k,v in pairs(target:adjascent(true)) do
-        printout(' '..k.." -> "..tostring(v))
+        --printout(' '..k.." -> "..tostring(v))
         printout('$direction:'..k..";"..tostring(v))
     end 
 
@@ -433,6 +443,7 @@ room.examine = function(target, ex)
     display_location(target)
 
     send_map_grid(ex,target,false)
+    send_squad(player)
 
 end
 

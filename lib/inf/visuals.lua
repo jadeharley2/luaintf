@@ -215,6 +215,45 @@ function send_squad(ply)
     printout('$squad:',table.concat(characters, ';'))
 end
 
+function send_health(to, target)
+    target = target or to 
+    local hp = target.health or 0 
+    local maxhp = target.maxhealth or 0 
+    if to==target then 
+        printto(to,L'$hp:[hp];[maxhp]')
+    else
+        printto(to,L'$hp:[target.id];[hp];[maxhp]')
+    end
+end
+
+function send_inventory(to,target)
+    
+    local worn = {}
+    local things = {} 
+
+    target = target or to
+
+    --flag # key # img # style
+
+    target:foreach('contains',function(k,v)
+        if k~=player then
+            if k:is('person') then 
+           --     things[#things+1] = k
+            elseif k.is_worn then 
+                worn[#worn+1] = L"e#[k.id]#[k.image]#[k.image_style_css]"
+            elseif k:is('body_part') then  
+            else
+                things[#things+1] = L"i#[k.id]#[k.image]#[k.image_style_css]"
+            end 
+        end
+    end,true)
+    for k,v in pairs(things) do
+        worn[#worn+1] = v
+    end
+    local com = L'$inventory:[target.id];'..table.concat( worn, ';')
+    printto(to,com)
+end
+
 
 
 showmap_action = Def('showmap_action',{key='map',restrictions = {"!asleep",'!blind'},callback = function(self)    

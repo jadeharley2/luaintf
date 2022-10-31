@@ -22,6 +22,7 @@ be_action = Def('be_action',{key='be',callback = function(self,target)
                 if player then 
                     examine(player.location) 
                     send_squad(player)
+                    send_health(player)
                 end
                 
                 return true

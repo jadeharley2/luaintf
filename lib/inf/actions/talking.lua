@@ -3,7 +3,7 @@
 --talk to
 
 
-talkto_action = Def('talkto_action',{key='talk',restrictions = {"!asleep"},callback = function(self,target)  
+talkto_action = Def('talkto_action',{key='talk',restrictions = {"can_move"},callback = function(self,target)  
     local is_player = self == player 
     
     local something = LocalIdentify(target)
@@ -19,7 +19,7 @@ end},'action')
 
 --say
 
-say_action = Def('say_action',{key='say',restrictions = {"!asleep",'!mute'},callback = function(self,text)  
+say_action = Def('say_action',{key='say',restrictions = {"can_talk" },callback = function(self,text)  
     local is_player = self == player 
   
     --local tlk = self.talk_target

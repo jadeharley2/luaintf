@@ -222,6 +222,10 @@ end
 
 function send_actions(target) 
     local actions = {"x self"}
-    target:foreach('actions',function(k,v) if v then actions[#actions+1]=k end end)
+    target:foreach('actions',function(k,v) if v then 
+        if v and not v:is_restricted(target) then
+            actions[#actions+1]=k 
+        end 
+    end end)
     printto(target,'$actions:',table.concat(actions, ';'))
 end

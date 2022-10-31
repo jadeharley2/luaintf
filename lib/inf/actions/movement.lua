@@ -19,7 +19,7 @@ appear_visual_procedure = function(self)
     end
 end
 
-move_action = Def('move_action',{key='move',restrictions = {"!asleep"},callback = function(self,direction)  
+move_action = Def('move_action',{key='move',restrictions = {"can_move"},callback = function(self,direction)  
     local is_player = self == player
     local loc = self.location
     if loc:is(room) then

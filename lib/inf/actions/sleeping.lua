@@ -1,5 +1,8 @@
 
-sleep_action = Def('sleep_action',{key='sleep',restrictions = {"!asleep"},callback = function(self)  
+DefConditional('can_sleep','!dead !in_combat !asleep')
+DefConditional('can_wakeup','!dead !in_combat asleep')
+
+sleep_action = Def('sleep_action',{key='sleep',restrictions = {"can_sleep"},callback = function(self)  
     local is_player = self == player 
     
     describe_action(self,'you fall asleep',L'[self] falls asleep')  
@@ -8,12 +11,14 @@ sleep_action = Def('sleep_action',{key='sleep',restrictions = {"!asleep"},callba
     printout('$display:line;clear')
     printout('$display:target;clear')
     printout('$display:clothes;clear')
+    send_actions(self)
 end},'action')
-wakeup_action = Def('wakeup_action',{key='wakeup',restrictions = {"asleep"},callback = function(self)  
+wakeup_action = Def('wakeup_action',{key='wakeup',restrictions = {"can_wakeup"},callback = function(self)  
     local is_player = self == player 
    
     self:adj_unset('asleep')
     describe_action(self,'you wake up',L'[self] wakes up')  
+    send_actions(self)
     
     if is_player then examine(player.location) end
 end},'action')

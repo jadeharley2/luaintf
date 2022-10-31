@@ -3,7 +3,7 @@
 person.pose = 'standing'
 
 sits_on = Def('sits_on',{},"relation")
-sit_interaction = Def('sit_interaction',{key='sit',user_restrictions = {"!asleep"},callback = function(self,user)  
+sit_interaction = Def('sit_interaction',{key='sit',user_restrictions = {"can_move"},callback = function(self,user)  
     local is_player = user == player 
    
     local capacity = self.capacity or 1
@@ -30,7 +30,7 @@ sit_interaction = Def('sit_interaction',{key='sit',user_restrictions = {"!asleep
 end},'interaction')
 
 
-lay_interaction = Def('lay_interaction',{key='lay',user_restrictions = {"!asleep"},callback = function(self,user)  
+lay_interaction = Def('lay_interaction',{key='lay',user_restrictions = {"can_move"},callback = function(self,user)  
     local is_player = user == player 
    
     local capacity = self.capacity or 1
@@ -57,7 +57,7 @@ lay_interaction = Def('lay_interaction',{key='lay',user_restrictions = {"!asleep
 end},'interaction')
 
 
-standup_action = Def('standup_action',{key='standup',restrictions = {"!asleep"},callback = function(self)  
+standup_action = Def('standup_action',{key='standup',restrictions = {"can_move"},callback = function(self)  
     local is_player = self == player 
     local chair = GetRelationOther(self,sits_on) 
     DestroyRelations(self,sits_on)

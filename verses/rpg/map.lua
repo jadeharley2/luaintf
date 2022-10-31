@@ -19,6 +19,7 @@ function maptile:on_enter(doer)
                 p.location = self
                 p.is_temporary = true
                 printout('spawned '..k)
+                p:event_call('found',doer)
             end
         end
     end

@@ -31,6 +31,7 @@ function SETPERSON(P)
 end
 
 function printout(a,...)
+    if a==nil then return end 
     if client then
         local t = {'   ',a,...}
         for k,v in pairs(t) do

@@ -6,6 +6,7 @@ turn_kind_def_info = turn_kind_def_inf or {}
 
 adjective = adjective or false
 adjective_def = adjective_def or {}
+adjective_conditional = {}
 
 instidcount = instidcount or 0
 
@@ -80,8 +81,6 @@ function Def(id,data,kind)
     if id then 
         defines[id] = data
     end
-    data:call('on_init')
-    data:event_call('on_init')
     
 
     if id and data:is(adjective) then 
@@ -93,9 +92,71 @@ function Def(id,data,kind)
             data:adj_set(v)
         end
     end
+    
+    data:call('on_init')
+    data:event_call('on_init')
 
-    return data;
+    return data
 end
+--func(self,adjectives)
+function DefConditional(id,func)
+    if type(func)=='string' then
+        func = string.replace(func,' ',' and ')
+        func = string.replace(func,'!','not ')
+        func = 'return '..func
+        local cfun = load(func)
+        adjective_conditional[id] = function(s,a) 
+            local localvars = table.copy(a)
+            localvars.self = s 
+            debug.setupvalue(cfun,1,localvars)
+            return cfun()
+        end
+    else
+        adjective_conditional[id] = func 
+    end
+end
+
+
+
+function Rebase(target,kind)
+    if kind then 
+        local adjectives =string.split(kind,' ')
+         
+        kind = adjectives[#adjectives]
+        adjectives[#adjectives] = nil
+
+
+        local parent = defines[kind]
+        --for k,v in pairs(parent) do
+        --    if data[k]==nil then
+        --        data[k] = v
+        --    end
+        --end
+        target.base = parent 
+        local this_meta = {
+            __index = target,
+            __newindex = function(tt,kk,vv)
+                rawset(target,kk,vv)
+            end,
+        }
+        target._this = setmetatable({ },this_meta)--get and set raw values 
+        
+        rawset(target,'__index',rawget(parent,'__index'))
+        rawset(target,'__newindex',rawget(parent,'__newindex'))
+        rawset(target,'__tostring',rawget(target,'__tostring') or rawget(parent,'__tostring'))
+        
+        setmetatable(target,parent)
+
+        if adjectives then
+            target:adj_clear()
+            for k,v in pairs(adjectives) do
+                target:adj_set(v)
+            end
+        end
+    end
+    return target
+end
+
 function Inst(kind,data) 
     data = data or {}
     local kindparts = kind:split(' ')
@@ -235,7 +296,7 @@ end
 thing = Def('thing',{
     --name = "A thing",
     --_get_name = function(s) return s.id end,
-    _get_description = LF"You see nothing special about [self].", 
+    _get_description = nil,--LF"You see nothing special about [self].", 
     foreach = function(self,key,callback,thisonly)
         local s = self
         while s do
@@ -496,12 +557,17 @@ thing = Def('thing',{
         end
     end,
     adj_isset = function(self,k)
-        return foreach_type(self,function(b) 
-            local a = rawget(b,'adjectives')
-            if a then 
-                return a[k]  
-            end
-        end,true)
+        local cond = adjective_conditional[k]
+        if cond then
+            return cond(self,rawget(self,'adjectives'))
+        else 
+            return foreach_type(self,function(b) 
+                local a = rawget(b,'adjectives')
+                if a then 
+                    return a[k]  
+                end
+            end,true)
+        end
 
         --local a = self.adjectives
         --return a and a[k] 
@@ -524,7 +590,7 @@ thing = Def('thing',{
     end,
     adj_describe = function(self, adj_type)
         local x = {}
-        for k,v in pairs(self.adjectives:getall()) do
+        for k,v in pairs(self.adjectives or {}) do
             local t = adjective_def[k] 
             if t then
                 if not adj_type or t:is(adj_type) then 
@@ -536,13 +602,23 @@ thing = Def('thing',{
     end,
     adj_describe2 = function(self, s)
         s = s or self.name
-        for k,v in pairs(self.adjectives:getall()) do
+        for k,v in pairs(self.adjectives or {}) do
             local t = adjective_def[k] 
             if t then
                 s = t:describe2(self,s) or s
             end
         end
         return s
+    end,
+    adj_concat = function(self, adj_type)
+        local x = {}
+        for k,v in pairs(self.adjectives or {}) do
+            x[#x+1] = k
+        end
+        return table.concat(x,' ')
+    end,
+    adj_clear = function(self, adj_type)
+        self.adjectives = {}
     end,
     setup = function(self,a)
         Setup(self,a)
@@ -674,6 +750,9 @@ function ListIdentify(id,list)
         if type(id) == 'string' then
             for k,v in pairs(list) do
                 if v:is(id) then
+                    return v
+                end 
+                if tostring(v.numid)==id then
                     return v
                 end
             end

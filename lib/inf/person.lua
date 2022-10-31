@@ -146,6 +146,7 @@ person.should_wear_clothes = true
 person.examine = function(target, ex)
     printout('$display:target;clear') 
     printout('$name:'..tostring(target))
+    send_health(player,target)
 
     if target == player then
         
@@ -260,6 +261,10 @@ person.examine = function(target, ex)
                 printout(L"[target.they] [target.are] asleep.")
             end
         end
+        if target:is('dead') then
+            printout(L'[target.they] [target.are] dead')
+        end
+
         local size =player:relative_textsize(target)
         if size~='normal' then
             printout(L"[target.they] [target.are] [size].")

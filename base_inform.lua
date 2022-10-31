@@ -367,9 +367,11 @@ function main_server()
                 local aliased = {ComAlias(unpack(args))}
                 if parse(input,unpack(aliased)) then
     
-                -- EndTurn()
-                c.nextturn = turn+1
-                printout("$block:")
+                    -- EndTurn()
+                    c.nextturn = turn+1
+                    printout("$block:")
+                    
+                    send_inventory(player)
                 end
                 c.person = player
                 SETPLAYER() 
