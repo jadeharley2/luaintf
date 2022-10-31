@@ -382,11 +382,13 @@ room.examine = function(target, ex)
     target:foreach('contains',function(k,v)
         if k~=player then
             if k:is(person) or k:is(soul) then
-                characters[#characters+1] = tostring(k)
-                if player and player.mind(k,'name') then
-                    images[k.id] = k--.image 
-                else
-                    images[k.numid] = k--.image 
+                if not squad.InPlayerSquad(k) then
+                    characters[#characters+1] = tostring(k)
+                    if player and player.mind(k,'name') then
+                        images[k.id] = k--.image 
+                    else
+                        images[k.numid] = k--.image 
+                    end
                 end
             else
                 things[#things+1] = tostring(k)

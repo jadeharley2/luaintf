@@ -39,10 +39,26 @@ person:interact_add(attack_interaction)
 combat_meta = combat_meta or {}
 
 function combat_meta:Begin(sides)
-    self.sides = sides 
+    --expand sides squads
+    local nsides = {}
+    for k,v in pairs(sides) do
+        local side = {}
+        for k2,v2 in pairs(v) do
+            local s = v2.squad 
+            if s then
+                for k3,v3 in pairs(s.list) do
+                    side[v3.id] = v3
+                end
+            else
+                side[v2.id] = v2
+            end
+        end
+        nsides[k] = side
+    end
+    self.sides = nsides 
 
     local targets = {} 
-    for k,v in pairs(sides) do
+    for k,v in pairs(nsides) do
         for kk,vv in pairs(v) do
             targets[#targets+1] = vv
         end
@@ -57,7 +73,7 @@ function combat_meta:Begin(sides)
     for k,v in pairs(targets) do
         v:adj_set('in_combat')
         v.combat = self
-        printto(v,"entering combat")
+        printto(v,"<ORANGE>entering combat<ORANGE>")
         send_actions(v) 
     end 
 
@@ -67,7 +83,7 @@ function combat_meta:End()
     for k,v in pairs(self.targets) do
         v:adj_unset('in_combat')
         v.combat = nil
-        printto(v,"exiting combat")
+        printto(v,"<ORANGE>exiting combat<ORANGE>")
         send_actions(v) 
     end 
 end
@@ -88,7 +104,31 @@ function combat_meta:OnDeath(target)
 
 end
 
+local function CheckSides(self)
+    --if only one side remains alive - end combat
+    local alive_sides = 0
+    for k,v in pairs(self.sides) do
+        local alive = 0 
+        for k2,v2 in pairs(v) do
+            if not v2:is('dead') then
+                alive = alive + 1
+            end 
+        end
+        if alive>0 then
+            alive_sides = alive_sides + 1
+        end
+    end
+    if alive_sides<2 then
+        self:End()
+        return false
+    end
+end
 function combat_meta:EndTurn()
+
+    if CheckSides(self)==false then
+        return
+    end
+
     local targetcount = #self.targets
     self.turnid = self.turnid + 1
     if self.turnid > targetcount then
@@ -102,7 +142,10 @@ function combat_meta:EndTurn()
         turntarget = self.targets[self.turnid]
         turntarget.is_defending = nil
         if turntarget:is('dead') then
-
+            self.turnid = self.turnid + 1
+            if self.turnid > targetcount then
+                self.turnid = 1
+            end
         else
             self.turntarget = turntarget
             break
@@ -138,6 +181,7 @@ function combat_meta:Flee(by)
                 show_location(self.location)
             end
             self:End()
+            return
         else
             describe_action(by,L"You fail to flee!",L"[by] tried fleeing but failed!")   
         end
@@ -152,10 +196,18 @@ function combat_meta:Attack(by, target)
         if math.random()>(att_accuracy*trg_hitchance) then -- aaaaaaaaaaaaaaaaaaaaaaaa (accuracy evasion weapon etc) check
             if target.is_defending then
                 --fail
-                describe_action(by,"Your attack has been deflected!",L"[by] attack on [target] has failed!") 
+                describe_action(by,"<yellow>Your attack has been deflected!</yellow>",
+                                L"<yellow>[target] has blocked [by] attack!</yellow>",
+                                target,L"<yellow>you have blocked [by] attack!</yellow>") 
             else
-                describe_action(by,L"You attack [target]!",L"[by] attacks [target]!")  
+                describe_action(by,L"<yellow>You attack [target]!</yellow>",
+                                    L"<yellow>[by] attacks [target]!</yellow>",
+                                target,L"<yellow>[by] attacks you!</yellow>")  
                 target:Damage(by.damage or 30)
+                if target:is('dead') then
+                    describe_action(by,L"<red>You killed [target]!</red>",
+                                        L"<red>[by] kills [target]!</red>")  
+                end
                 for k,v in pairs(self.targets) do
                     if v~=target then 
                         send_health(v,target)
@@ -163,7 +215,9 @@ function combat_meta:Attack(by, target)
                 end
             end
         else
-            describe_action(by,"You missed!",L"[by] tried to attack [target] but missed!") 
+            describe_action(by,"<yellow>You missed!</yellow>",
+                L"<yellow>[by] tried to attack [target] but missed!</yellow>",
+                target,L"<yellow>[by] wanted to attack you but missed!</yellow>")
         end
         self:EndTurn()
     end
@@ -194,24 +248,29 @@ person:event_add("on_init","health",function(self)
     self.health = self.maxhealth
 end)
 function person:Damage(amount)
-    local hp = self.health - amount
-    if hp<=0 then
-        hp = 0 
-        self:Kill()
+    if not self:is('dead') then
+        local hp = self.health - amount
+        if hp<=0 then
+            hp = 0 
+            self:Kill()
+        end
+        self.health = hp 
+        send_health(self)
     end
-    self.health = hp 
-    send_health(self)
 end
 function person:Heal(amount)
-    local hp = self.health + amount
-    if hp>self.maxhealth then
-        hp = self.maxhealth
+    if not self:is('dead') then
+        local hp = self.health + amount
+        if hp>self.maxhealth then
+            hp = self.maxhealth
+        end
+        self.health = hp 
+        send_health(self)
     end
-    self.health = hp 
-    send_health(self)
 end
 function person:Kill()
-    describe_action(self,"You are dead!",L"[self] dies!")  
+    describe_action(self,"<RED>You are dead!</RED>",
+                        L"<RED>[self] dies!</RED>")  
     self:adj_set('dead')
     printto(self,'$display:background;clear')
     printto(self,'$display:line;clear')
@@ -229,8 +288,3 @@ function person:Revive()
     send_health(self)
 end
 
-
-DefConditional('can_combat','!dead in_combat !asleep !blind')
-DefConditional('can_move','!dead !in_combat !asleep !blind')
-DefConditional('can_look','!dead !asleep !blind')
-DefConditional('can_talk','!dead !asleep !mute')

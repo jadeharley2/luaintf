@@ -513,7 +513,7 @@ biome_grassland.population = {
     ["female black sheep"] = 0.0002,
     ["male black sheep"] = 0.0002, 
     ["female brown wolf"] = 0.0004,
-    ["male brown wolf"] = 0.05,
+    ["male brown wolf"] = 0.0005,
 
     ["ruby"] = 0.001,
     ["emerald"] = 0.001,
@@ -550,7 +550,6 @@ biome_forest_deep.population = {
     ["sapphire"] = 0.003,
     ["topaz"] = 0.003,
     ["diamond"] = 0.001,
-    ["ec_flask_woods"] = 0.1,
 }
 biome_town.population = {
     ["female brown kobold person"] = 0.9,

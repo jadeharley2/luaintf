@@ -221,11 +221,15 @@ end
 
 
 function send_actions(target) 
-    local actions = {"x self"}
+    local actions = {["x self"]=true}
     target:foreach('actions',function(k,v) if v then 
         if v and not v:is_restricted(target) then
-            actions[#actions+1]=k 
+            actions[k]=true 
         end 
     end end)
-    printto(target,'$actions:',table.concat(actions, ';'))
+    local n = {}
+    for k,v in SortedPairs(actions) do
+        n[#n+1] = k
+    end
+    printto(target,'$actions:',table.concat(n, ';'))
 end

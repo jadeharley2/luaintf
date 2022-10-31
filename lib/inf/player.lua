@@ -68,7 +68,7 @@ function printto(target,a,a1,a2,a3,a4,a5,a6)
     end
 end
 
-function describe_action(doer,desc_doer,desc_other,everywhere)
+function describe_action(doer,desc_doer,desc_other,target,desc_received,everywhere)
 
     if doer==player then
         if desc_doer then printout(desc_doer) end
@@ -80,10 +80,18 @@ function describe_action(doer,desc_doer,desc_other,everywhere)
             local loc = doer.location
             for k,v in pairs(players) do
                 if k~=doer and k.location == loc then
-                    if v then
-                        v:send(desc_other..'\n')
-                    else--single
-                        printout(desc_other..'\n')
+                    if k==target then
+                        if v then
+                            v:send(desc_received..'\n')
+                        else--single
+                            printout(desc_received..'\n')
+                        end
+                    else
+                        if v then
+                            v:send(desc_other..'\n')
+                        else--single
+                            printout(desc_other..'\n')
+                        end
                     end
                 end
             end 

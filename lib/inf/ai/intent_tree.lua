@@ -585,6 +585,26 @@ person.intent_tree = {
         take = {
 
         },
+        _ = DefineIntents("join me",{"request","joinsquad"}),
+        _ = DefineIntents("join my squad",{"request","joinsquad"}),
+        joinsquad = function(self,F,I,D,T)
+            if self.squad == nil then
+                self:intent_say('ok',true) 
+                squad.Join(F,self) 
+            else
+                self:intent_say('no',true) 
+            end
+        end,
+        _ = DefineIntents("leave me",{"request","leavesquad"}),
+        _ = DefineIntents("leave my squad",{"request","leavesquad"}),
+        leavesquad = function(self,F,I,D,T)
+            if self.squad == F.squad then 
+                self:intent_say('ok',true) 
+                squad.Leave(self) 
+            else
+                self:intent_say('no',true) 
+            end
+        end,
         exchange = {
             _ = DefineIntents("let's exchange|swap clothes",{"request","exchange","clothes"}),
             _ = DefineIntents("let's exchange|swap clothes",{"request","exchange","clothes"}),
@@ -634,6 +654,7 @@ person.intent_tree = {
                 self:intent_say("i can't")
             end
         end,
+
     },
     
     topic_bodyswap = {

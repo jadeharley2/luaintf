@@ -1,2 +1,2 @@
-bin\lua.exe test_inform.lua
+bin\lua.exe server.lua
 pause

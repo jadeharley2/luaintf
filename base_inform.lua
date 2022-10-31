@@ -372,6 +372,7 @@ function main_server()
                     printout("$block:")
                     
                     send_inventory(player)
+                    send_actions(player)
                 end
                 c.person = player
                 SETPLAYER() 

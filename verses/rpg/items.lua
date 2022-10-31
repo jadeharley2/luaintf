@@ -95,3 +95,6 @@ ec_flask.examine= nil
 
 item_ec_flask_woods = Def('ec_flask_woods',{name='woodland flask'},'ec_flask')
 item_ec_flask_woods.image = '/img/rpg/items/potion_g.png'
+
+
+craft.DefCombineRecipe('flask_woods',item_emerald,item_ruby,item_ec_flask_woods)

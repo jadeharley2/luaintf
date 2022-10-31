@@ -107,7 +107,10 @@ function DefConditional(id,func)
         local cfun = load(func)
         adjective_conditional[id] = function(s,a) 
             local localvars = table.copy(a)
-            localvars.self = s 
+            s:foreach_type(function(t)
+                localvars[t.id] = true
+            end,true)
+            --localvars.self = s 
             debug.setupvalue(cfun,1,localvars)
             return cfun()
         end
@@ -543,7 +546,7 @@ thing = Def('thing',{
             end
             t[k] = true
         end
-    end,
+    end, 
     adj_unset = function(self,k) 
         if type(k)=='table' then
             for _,v in pairs(k) do self:adj_unset(v) end
@@ -613,7 +616,9 @@ thing = Def('thing',{
     adj_concat = function(self, adj_type)
         local x = {}
         for k,v in pairs(self.adjectives or {}) do
-            x[#x+1] = k
+            if v then
+                x[#x+1] = k
+            end
         end
         return table.concat(x,' ')
     end,

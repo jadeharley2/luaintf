@@ -1,0 +1,6 @@
+place 
+addon 
+folder
+names
+here
+example
