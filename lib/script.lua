@@ -2,8 +2,8 @@
 package.path = 'modules/?.lua;' .. package.path 
 package.cpath = 'modules/?.dll;' .. package.cpath 
 
-function Include(path)
-    local info = debug.getinfo(2,'S');  
+function Include(path,up)
+    local info = debug.getinfo(2+(up or 0),'S');  
     local str = info.source:sub(2)
     local dir = str:match("(.*/)") or str:match("(.*\\)") 
     if dir then

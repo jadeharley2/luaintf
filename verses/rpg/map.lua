@@ -276,10 +276,9 @@ function loadmap2(w,h,location,layers)
     return tilemap(grid,w,h)
 end
 
-function load_lmap(path,location,layers)
-    
+function load_lmap(path,location,layers) 
     local tempswap = temp
-    Include(path)
+    Include(path,1)
     local tiledata = temp 
     temp = tempswap
 
