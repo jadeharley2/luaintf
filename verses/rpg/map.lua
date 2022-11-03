@@ -305,16 +305,25 @@ function load_lmap(path,location,layers)
                 if #prt>1 then
                     v2 = prt[1]
                     local cid = indexmap[k2]
+                    if not cid then 
+                        error(L'unknown zone index color [v2]')
+                    end
                     code[cid]=v2
                     seedoffset[cid] = tonumber(prt[2])
                 else
                     local cid = indexmap[k2]
+                    if not cid then 
+                        error(L'unknown zone index color [v2]')
+                    end
                     code[cid]= v2
                     codecolor[cid] = k2
                 end
             else -- binary color key
                 local hex = string.lower(rgb2hex(b(k2,1),b(k2,2),b(k2,3)))
                 local cid = indexmap[hex]
+                if not cid then 
+                    error(L'unknown zone index color [v2]')
+                end
                 code[cid]=v2
             end
         end
