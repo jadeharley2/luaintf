@@ -39,14 +39,20 @@ addbiome(biome_mountain)
 addbiome(biome_mountain_forest)
 addbiome(biome_glacier)
 
-local maps_dir = "C:/_root/projects/src/TileServer/WebRelay/bin/Debug/data/img/rpg/world/"
-local path = maps_dir.."wmaptest.raw"
-local path2 = maps_dir.."wmaptest_roads.raw"
+--local maps_dir = "C:/_root/projects/src/TileServer/WebRelay/bin/Debug/data/img/rpg/world/"
+--local path = maps_dir.."wmaptest.raw"
+--local path2 = maps_dir.."wmaptest_roads.raw"
 --local map0 = loadmap(path,path2,256,512,biomelist,rpg_verse) 
 
 --
+rpg_planet = Def('rpg_planet','thing')
+rpg_planet.location = rpg_verse
 
-local map0 = load_lmap('maps/wmaptest.lua',rpg_verse,{
+rpg_planet.needs_food_mul = 1
+rpg_planet.needs_water_mul = 1
+
+
+local map0 = load_lmap('maps/wmaptest2.lua',rpg_planet,{
     {
         type = {adjective=true}, 
         code = biomelist,
@@ -77,8 +83,8 @@ local map0 = load_lmap('maps/wmaptest.lua',rpg_verse,{
 ]]
 
 
-
-
+maptest_offset = {0,0}
+maptest2_offset = {61,91}
 
 tile_fence = Def('tile_fence','adjective') 
 tile_house = Def('tile_house','adjective') 
@@ -91,7 +97,7 @@ tile_fence.is_passable = nopasss
 
 
 rpg_town_a = Def('rpg_town_a','thing')
-rpg_town_a.location = rpg_verse
+rpg_town_a.location = rpg_planet
 
 --[[
     local map1_town_a = loadmap2(32,32,rpg_town_a,{
@@ -166,7 +172,7 @@ local map1_town_a = load_lmap('maps/town_a.lua',rpg_town_a,{
     },
 }) 
 
-maplink("inset", map0,{84+1,124+1},map1_town_a)
+maplink("inset", map0,{84+1+maptest2_offset[1],124+1+maptest2_offset[2]},map1_town_a)
 
 local roomcodes = {
     code = {
@@ -393,7 +399,7 @@ maplink("in", map1_town_a,{15,25},house_map,{2,4})
 ---
 
 rpg_cave0 = Def('rpg_cave0','thing')
-rpg_cave0.location = rpg_verse
+rpg_cave0.location = rpg_planet
 
 local cave0_g = load_lmap('maps/cave0.lua',rpg_cave0,{
     {
@@ -418,8 +424,8 @@ local cave0_g = load_lmap('maps/cave0.lua',rpg_cave0,{
     --    },
     --},
 }) 
-maplink("down", map0,{83,116},cave0_g,{12,28})
-maplink("down", map0,{88,112},cave0_g,{29,14})
+maplink("down", map0,{83+maptest2_offset[1],116+maptest2_offset[2]},cave0_g,{12,28})
+maplink("down", map0,{88+maptest2_offset[1],112+maptest2_offset[2]},cave0_g,{29,14})
 
 
 rpg_maps = {

@@ -206,6 +206,7 @@ EventAdd('end turn','kind update',function(turn)
     for k,v in pairs(turn_kind_def) do
         k:call('on_turn_end')
         k:event_call('on_turn_end')
+        EventCall('on_turn_end',k)
     end
 end)
 function InheritableSet(kind,key)

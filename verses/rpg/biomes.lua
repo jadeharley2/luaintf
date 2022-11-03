@@ -6,34 +6,75 @@
 
 biome = Def('biome',{},"adjective")
 
-
+room.needs_costs_food = 10
+room.needs_costs_water = 10 
+room.needs_gains_food = 2
+room.needs_gains_water = 2
 
 biome_forest = Def('forest',{name='forest'},'biome')
 biome_forest_deep = Def('forest_deep',{name='deep forest'},'biome')
+biome_forest_deep.needs_costs_food = 20
 biome_forest_river = Def('forest_river',{name='forest river'},'biome')
+biome_forest_river.needs_costs_water = 0 
+biome_forest_river.needs_gains_water = 20
 biome_forest_caveentrance = Def('forest_caveentrance',{name='forest cave entrance'},'biome')
 biome_grassland = Def('grassland',{name='grassland'},'biome')
 biome_lake = Def('lake',{name='lake'},'biome')
+biome_lake.needs_costs_water = 0 
+biome_lake.needs_gains_water = 20
 biome_river = Def('river',{name='river'},'biome')
+biome_river.needs_costs_water = 0 
+biome_river.needs_gains_water = 20
 biome_sea = Def('sea',{name='open sea'},'biome')
+biome_sea.needs_costs_food = 40
+biome_sea.needs_costs_water = 20 
+biome_sea.needs_gains_water = 0
+
 biome_sea_shallow = Def('sea_shallow',{name='shallow sea'},'biome')
+biome_sea_shallow.needs_costs_food = 40
+biome_sea_shallow.needs_costs_water = 20 
+biome_sea_shallow.needs_gains_water = 0
 biome_swamp = Def('swamp',{name='swamp'},'biome')
+biome_swamp.needs_costs_food = 40
+biome_swamp.needs_gains_water = 5
 biome_beach = Def('beach',{name='beach'},'biome')
 
 biome_steppe = Def('steppe',{name='steppe'},'biome')
 biome_desert = Def('desert',{name='sand desert'},'biome')
+biome_desert.needs_costs_water = 50
+biome_desert.needs_costs_food = 24
+biome_desert.needs_gains_water = 0
 biome_desert_half = Def('desert_half',{name='half desert'},'biome')
+biome_desert_half.needs_costs_water = 40
+biome_desert_half.needs_costs_food = 24
 biome_desert_rocky = Def('desert_rocky',{name='rocky desert'},'biome')
+biome_desert_rocky.needs_costs_water = 50
+biome_desert_rocky.needs_costs_food = 30
+biome_desert_rocky.needs_gains_water = 0
 
 biome_highland = Def('highland',{name='highlands'},'biome')
+biome_highland.needs_costs_water = 25 
+biome_highland.needs_costs_food = 20
 biome_highland_forest = Def('highland_forest',{name='highland forest'},'biome')
+biome_highland_forest.needs_costs_food = 20
 biome_highland_river = Def('highland_river',{name='highland river'},'biome')
+biome_highland_river.needs_costs_water = 0 
+biome_highland_river.needs_costs_food = 20
+biome_highland_river.needs_gains_water = 20
 
 biome_mountain = Def('mountain',{name='mountains'},'biome')
+biome_mountain.needs_costs_water = 40
+biome_mountain.needs_costs_food = 40
 biome_mountain_forest = Def('mountain_forest',{name='mountain forest'},'biome')
+biome_mountain_forest.needs_costs_water = 30
+biome_mountain_forest.needs_costs_food = 30
 biome_glacier = Def('glacier',{name='glacier'},'biome')
+biome_glacier.needs_costs_water = 0 
+biome_glacier.needs_costs_food = 30
+biome_glacier.needs_gains_water = 20
 
 biome_cave = Def('cave',{name='cave'},'biome')
+biome_cave.needs_costs_food = 20
 
 
 
@@ -191,6 +232,10 @@ biome_desert_rocky.nearcoast = {
 biome_town = Def('town',{name='town'},'biome')
 biome_town_tiles = Def('town_tiles',{name='town'},'biome')
 biome_town.has_road = true
+biome_town.needs_costs_water = 0 
+biome_town.needs_costs_food = 0
+biome_town.needs_gains_food = 50
+biome_town.needs_gains_water = 50
 biome_town.images = {
     "/img/rpg/world/zones/town1.png",
     "/img/rpg/world/zones/town2.png",

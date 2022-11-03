@@ -4,7 +4,9 @@ maptile = Def('maptile',{
 },'room')
 function maptile:_get_name()
     local biome = self:adj_get('biome')
-    return (biome.name or biome.id) .. ' ('..tostring(self.pos.x)..','..tostring(self.pos.y)..')'
+    if biome then 
+        return (biome.name or biome.id) .. ' ('..tostring(self.pos.x)..','..tostring(self.pos.y)..')'
+    end
 end 
 --function maptile:_get_image()
 --    local biome = self:adj_get('biome')
@@ -22,7 +24,7 @@ function maptile:on_enter(doer)
                 p:event_call('found',doer)
             end
         end
-    end
+    end 
 end
 function maptile:on_exit(doer)
     self:foreach_contains(function(x)
@@ -49,12 +51,14 @@ function maptile:setup()
         self.seed = seed
     end
     
-    if nearcoast then
-        self.image = table.random(biome.nearcoast or biome.images) 
-    elseif self.has_road then
-        self.image = table.random(biome.withroad or biome.images) 
-    else
-        self.image = table.random(biome.images) 
+    if biome then 
+        if nearcoast then
+            self.image = table.random(biome.nearcoast or biome.images) 
+        elseif self.has_road then
+            self.image = table.random(biome.withroad or biome.images) 
+        else
+            self.image = table.random(biome.images) 
+        end
     end
 end
 

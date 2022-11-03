@@ -190,7 +190,7 @@ function send_map_grid(target, origin_override,known_filter)
             local idx = px+(py-1)*gridsize.x
             local tile = grid[idx]
             if px>0 and px<=gridsize.x and tile then 
-                local color = tile.tilecolor:sub(2) or "FFFFFF"
+                local color = (tile.tilecolor or "#FFFFFF"):sub(2)
                 local subdata = 1*IF(tile.has_road,1,0)--8 bits flags
                 pixeldata[#pixeldata+1] = color..string.format("%02X", subdata)
             else
@@ -230,11 +230,19 @@ end
 function send_health(to, target)
     target = target or to 
     local hp = target.health or 0 
+    local food = target.food or 0 
+    local water = target.water or 0 
     local maxhp = target.maxhealth or 0 
+    local maxfood = target.maxfood or 0 
+    local maxwater = target.maxwater or 0 
     if to==target then 
         printto(to,L'$hp:[hp];[maxhp]')
+        printto(to,L'$food:[food];[maxfood]')
+        printto(to,L'$water:[water];[maxwater]')
     else
         printto(to,L'$hp:[target.id];[hp];[maxhp]')
+        --printto(to,L'$food:[target.id];[food];[maxfood]')
+        --printto(to,L'$water:[target.id];[water];[maxwater]')
     end
 end
 

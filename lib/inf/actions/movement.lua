@@ -47,6 +47,7 @@ move_action = Def('move_action',{key='move',restrictions = {"can_move"},callback
 
                 self.location = next
                 self:event_call('on_move',loc,next) 
+                EventCall('on_move',self,loc,next)
 
                 next:call('on_enter',self) 
 

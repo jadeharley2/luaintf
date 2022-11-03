@@ -32,6 +32,7 @@ DefConditional('can_talk','!dead !asleep !mute !animal')
 Include('squad.lua')
 Include('combat.lua')
 Include('craft.lua')
+Include('needs.lua')
 
 Include('species.lua')
 Include('animals.lua')
@@ -44,7 +45,7 @@ Include('world.lua')
 Include('addons.lua')
   
 
-local somerandomtile = rpg_maps.map0:tile(80,120)
+local somerandomtile = rpg_maps.map0:tile(80+maptest2_offset[1],120+maptest2_offset[2])
 
 testnaga = Def('testnaga',{name='Lieya'},"female green naga person")
 testnaga.location = somerandomtile

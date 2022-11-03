@@ -371,7 +371,7 @@ end
 
 room.examine = function(target, ex) 
     
-    printout(target.name..', '..target.description)
+    printout((target.name or '')..', '..(target.description or ''))
 
     local things = {}
     local characters = {}
