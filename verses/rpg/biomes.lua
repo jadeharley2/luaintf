@@ -11,6 +11,8 @@ room.needs_costs_water = 10
 room.needs_gains_food = 2
 room.needs_gains_water = 2
 
+biome_grassland = Def('grassland',{name='grassland'},'biome')
+
 biome_forest = Def('forest',{name='forest'},'biome')
 biome_forest_deep = Def('forest_deep',{name='deep forest'},'biome')
 biome_forest_deep.needs_costs_food = 20
@@ -18,7 +20,15 @@ biome_forest_river = Def('forest_river',{name='forest river'},'biome')
 biome_forest_river.needs_costs_water = 0 
 biome_forest_river.needs_gains_water = 20
 biome_forest_caveentrance = Def('forest_caveentrance',{name='forest cave entrance'},'biome')
-biome_grassland = Def('grassland',{name='grassland'},'biome')
+biome_rainforest = Def('rainforest',{name='jungle'},'biome')
+biome_rainforest.needs_costs_food = 30
+biome_rainforest.needs_costs_water = 20 
+biome_rainforest.needs_gains_water = 5
+biome_rainforest_stream = Def('rainforest_stream',{name='jungle stream'},'biome')
+biome_rainforest_stream.needs_costs_food = 30
+biome_rainforest_stream.needs_costs_water = 15 
+biome_rainforest_stream.needs_gains_water = 20
+
 biome_lake = Def('lake',{name='lake'},'biome')
 biome_lake.needs_costs_water = 0 
 biome_lake.needs_gains_water = 20
@@ -52,6 +62,9 @@ biome_desert_rocky.needs_costs_water = 50
 biome_desert_rocky.needs_costs_food = 30
 biome_desert_rocky.needs_gains_water = 0
 
+biome_subhighland = Def('subhighland',{name='lower highlands'},'biome')
+biome_subhighland.needs_costs_water = 18 
+biome_subhighland.needs_costs_food = 15
 biome_highland = Def('highland',{name='highlands'},'biome')
 biome_highland.needs_costs_water = 25 
 biome_highland.needs_costs_food = 20
@@ -360,7 +373,32 @@ biome_forest_caveentrance.images = {
     "/img/rpg/world/zones/cave_entrance20.png", 
 }
 
-
+biome_rainforest.images = {
+    "/img/rpg/world/zones/rainforest1.png", 
+    "/img/rpg/world/zones/rainforest2.png", 
+    "/img/rpg/world/zones/rainforest3.png", 
+    "/img/rpg/world/zones/rainforest4.png", 
+    "/img/rpg/world/zones/rainforest5.png", 
+    "/img/rpg/world/zones/rainforest6.png", 
+    "/img/rpg/world/zones/rainforest7.png", 
+    "/img/rpg/world/zones/rainforest8.png", 
+    "/img/rpg/world/zones/rainforest9.png", 
+    "/img/rpg/world/zones/rainforest10.png", 
+    "/img/rpg/world/zones/rainforest11.png", 
+    "/img/rpg/world/zones/rainforest12.png", 
+    "/img/rpg/world/zones/rainforest13.png",  
+}
+biome_rainforest_stream.images = {
+    "/img/rpg/world/zones/rainforest_stream1.png", 
+    "/img/rpg/world/zones/rainforest_stream2.png", 
+    "/img/rpg/world/zones/rainforest_stream3.png", 
+    "/img/rpg/world/zones/rainforest_stream4.png", 
+    "/img/rpg/world/zones/rainforest_stream5.png", 
+    "/img/rpg/world/zones/rainforest_stream6.png", 
+    "/img/rpg/world/zones/rainforest_stream7.png", 
+    "/img/rpg/world/zones/rainforest_stream8.png", 
+    "/img/rpg/world/zones/rainforest_stream9.png",  
+}
 
 biome_grassland.images = {
     "/img/rpg/world/zones/grassland_plains.png",
@@ -421,7 +459,28 @@ biome_grassland.withroad = {
     "/img/rpg/world/zones/grassland_road9.png", 
     "/img/rpg/world/zones/grassland_road10.png", 
 }
-
+biome_subhighland.images = {
+    "/img/rpg/world/zones/subhighlands1.png", 
+    "/img/rpg/world/zones/subhighlands2.png", 
+    "/img/rpg/world/zones/subhighlands3.png", 
+    "/img/rpg/world/zones/subhighlands4.png", 
+    "/img/rpg/world/zones/subhighlands5.png", 
+    "/img/rpg/world/zones/subhighlands6.png", 
+    "/img/rpg/world/zones/subhighlands7.png", 
+    "/img/rpg/world/zones/subhighlands8.png", 
+    "/img/rpg/world/zones/subhighlands9.png", 
+    "/img/rpg/world/zones/subhighlands10.png", 
+    "/img/rpg/world/zones/subhighlands11.png", 
+    "/img/rpg/world/zones/subhighlands12.png",  
+}
+biome_subhighland.withroad = {
+    "/img/rpg/world/zones/subhighlands_road1.png", 
+    "/img/rpg/world/zones/subhighlands_road2.png", 
+    "/img/rpg/world/zones/subhighlands_road3.png", 
+    "/img/rpg/world/zones/subhighlands_road4.png", 
+    "/img/rpg/world/zones/subhighlands_road5.png", 
+    "/img/rpg/world/zones/subhighlands_road6.png", 
+}
 biome_highland.images = {
     "/img/rpg/world/zones/highland1.png", 
     "/img/rpg/world/zones/highland2.png", 
@@ -514,6 +573,8 @@ biome_forest_deep.tilecolor = "#316a0f"
 biome_forest_river.tilecolor = "#34a98f"
 biome_forest_caveentrance.tilecolor = "#829361"
 biome_swamp.tilecolor = "#2e675a" 
+biome_rainforest.tilecolor = "#0c5833" 
+--biome_rainforest_stream.tilecolor = "#000000"
 
 biome_sea.tilecolor = "#1d5187"
 biome_sea_shallow.tilecolor = "#2980ad"
@@ -528,6 +589,7 @@ biome_desert_half.tilecolor = "#ced68b"
 biome_desert.tilecolor = "#e2c437"
 biome_desert_rocky.tilecolor = "#c58840"
 
+biome_subhighland.tilecolor = "#c7ab69"
 biome_highland.tilecolor = "#b0aa90"
 biome_highland_forest.tilecolor = "#9cb090"
 biome_highland_river.tilecolor = "#83b5c3"

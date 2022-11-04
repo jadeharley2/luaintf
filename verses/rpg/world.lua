@@ -17,6 +17,8 @@ addbiome(biome_forest_deep)
 addbiome(biome_forest_river)
 addbiome(biome_forest_caveentrance)
 addbiome(biome_swamp)
+addbiome(biome_rainforest)
+addbiome(biome_rainforest_stream)
 
 addbiome(biome_sea)
 addbiome(biome_sea_shallow)
@@ -26,6 +28,7 @@ addbiome(biome_river)
 
 addbiome(biome_town)
 
+addbiome(biome_subhighland)
 addbiome(biome_highland)
 addbiome(biome_highland_forest)
 addbiome(biome_highland_river)
