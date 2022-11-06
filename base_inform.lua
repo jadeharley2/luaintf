@@ -6,6 +6,8 @@ Include("lib/string.lua")
 Include("lib/table.lua")
 Include("lib/io.lua")
 
+json = require 'json'
+
 --Include("mclr/dsearch.lua")
 
 Include("lib/net.lua")

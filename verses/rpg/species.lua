@@ -80,3 +80,54 @@ end
 
 
 
+foxmorph = Def('foxmorph','anthro species') 
+foxmorph.species_images = {
+    female = "/img/rpg/species/anthros/fox_f.png",
+    _ = "/img/rpg/species/anthros/fox_m.png",
+}
+function foxmorph:_get_image()
+    return adj_choice_tree(self,self.species_images)
+end 
+function foxmorph:_get_unknown_name()
+    if self:is('female') then return 'Vixen' end 
+    return 'Renard'
+end
+ 
+fennecmorph = Def('foxmorph','anthro species') 
+fennecmorph.unknown_name = 'fennec'
+fennecmorph.species_images = {
+    female = "/img/rpg/species/anthros/fennec_f.png",
+    _ = "/img/rpg/species/anthros/fennec_m.png",
+}
+function fennecmorph:_get_image()
+    return adj_choice_tree(self,self.species_images)
+end 
+ 
+deermorph = Def('deermorph','anthro species') 
+deermorph.unknown_name = 'deer'
+deermorph.species_images = {
+    female = "/img/rpg/species/anthros/deer_f.png",
+    _ = "/img/rpg/species/anthros/deer_m.png",
+}
+function deermorph:_get_image()
+    return adj_choice_tree(self,self.species_images)
+end 
+function deermorph:_get_unknown_name()
+    if self:is('female') then return 'Doe' end 
+    return 'Buck'
+end
+ 
+
+
+skunkmorph = Def('skunkmorph','anthro species') 
+skunkmorph.unknown_name = 'skunk'
+skunkmorph.species_images = {
+    female = "/img/rpg/species/anthros/skunk_f.png",
+    _ = "/img/rpg/species/anthros/skunk_m.png",
+}
+function skunkmorph:_get_image()
+    return adj_choice_tree(self,self.species_images)
+end 
+ 
+
+

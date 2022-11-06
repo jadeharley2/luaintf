@@ -281,6 +281,8 @@ function loadmap2(w,h,location,layers)
 end
 
 function load_lmap(path,location,layers) 
+    local mem_pre = collectgarbage("count")*1024 
+
     local tempswap = temp
     Include(path,1)
     local tiledata = temp 
@@ -408,7 +410,17 @@ function load_lmap(path,location,layers)
     location.grid = grid
     location.gridsize = {x=w,y=h}
     print('tiles linked')
-    return tilemap(grid,w,h)
+
+    local tm = tilemap(grid,w,h)
+    
+    local mem_aft = collectgarbage("count")*1024 
+    local mem_alloc = mem_aft - mem_pre
+    print("map alloc:",mem_alloc)
+    print("per tile:",mem_alloc/tilecount)
+
+
+
+    return tm
 end
 function load_tmap(map,location,layers)
 

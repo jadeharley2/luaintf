@@ -268,6 +268,17 @@ function person:Heal(amount)
         send_health(self)
     end
 end
+function person:HealPercent(amount)
+    if not self:is('dead') then
+        local mhp = self.maxhealth
+        local hp = self.health + amount*mhp
+        if hp>mhp then
+            hp = mhp
+        end
+        self.health = hp 
+        send_health(self)
+    end
+end
 function person:Kill()
     describe_action(self,"<RED>You are dead!</RED>",
                         L"<RED>[self] dies!</RED>")  

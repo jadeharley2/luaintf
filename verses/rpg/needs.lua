@@ -37,23 +37,32 @@ EventAdd('on_move','needs',function(self,from,to)
 end)
 
 EventAdd('on_turn_end','needs',function(self)  
-    local loc = self.location
+    if not self:is('dead') then
+        local loc = self.location
 
-    local food = self.food 
-    if food then
-        local up = loc.needs_gains_food or 2 
-        local maxfood = self.maxfood
-        if food<maxfood then
-            self.food = math.min(maxfood,food+up)
-        end  
-    end
-    local water = self.water 
-    if water then
-        local up = loc.needs_gains_water or 2 
-        local maxwater = self.maxwater 
-        if water<maxwater then
-            self.water = math.min(maxwater,water+up)
-        end 
+        local food = self.food 
+        local maxfood
+        if food then
+            local up = loc.needs_gains_food or 2 
+            maxfood = self.maxfood
+            if food<maxfood then
+                self.food = math.min(maxfood,food+up)
+            end  
+        end
+        local water = self.water 
+        local maxwater
+        if water then
+            local up = loc.needs_gains_water or 2 
+            maxwater = self.maxwater 
+            if water<maxwater then
+                self.water = math.min(maxwater,water+up)
+            end 
+        end
+        if self:is("asleep") then
+            if food and water and food>maxfood*0.5 and water>maxwater*0.5 then
+                self:HealPercent(0.002)
+            end
+        end
     end
     send_health(self,self)
 end)

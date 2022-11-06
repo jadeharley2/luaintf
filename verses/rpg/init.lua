@@ -58,7 +58,22 @@ testkob = Def('testkob',{name='Xezi'},"female green kobold person")
 testkob.location = somerandomtile
 testkob.npc = true
 
+testdeer = Def('testdeer',{name='Deeer'},"female deermorph person")
+testdeer.location = somerandomtile
+testdeer.npc = true
+
+testskunk = Def('testskunk',{name='Skunk'},"female skunkmorph person")
+testskunk.location = somerandomtile
+testskunk.npc = true
  
+testfox = Def('testfox',{name='Fox'},"female foxmorph person")
+testfox.location = somerandomtile
+testfox.npc = true
+
+testfennec = Def('testfennec',{name='Fenne'},"female fennecmorph person")
+testfennec.location = somerandomtile
+testfennec.npc = true
+
 testnaga.mind:knows({testkob,testnaga2},"name")
 testnaga2.mind:knows({testkob,testnaga},"name")
 testkob.mind:knows({testnaga,testnaga2},"name")

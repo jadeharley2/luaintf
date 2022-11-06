@@ -223,8 +223,49 @@ function send_squad(ply)
         local icon = ply.icon or ply.image or "" 
         characters[1] = ply.id..","..icon..","..ply.name 
     end
+    print('$squad:'..table.concat(characters, ';'))
     printout('$squad:',table.concat(characters, ';')) 
+    --test_send_squad(ply)
+end
+function test_send_squad(ply)
 
+    characters = {}
+    local s = ply.squad
+    if s then
+        for k,v in pairs(s.list) do
+            local icon = v.icon or v.image or "" 
+            if s.leader==v and #characters>0 then
+                local temp = characters[1]
+                characters[1] = { 
+                    id = v.id,
+                    icon = icon, 
+                    name = v.name
+                } 
+                characters[#characters+1] = temp 
+            else
+                characters[#characters+1] ={ 
+                    id = v.id,
+                    icon = icon, 
+                    name = v.name
+                } 
+            end
+        end 
+    else
+        local icon = ply.icon or ply.image or "" 
+        characters[1] ={ 
+            id = v.id,
+            icon = icon, 
+            name = v.name
+        } 
+    end 
+    local msg = json.encode({
+        type = 'squad',
+        data = {
+            characters = characters
+        }
+    })
+    print('$J:'..msg)
+    printout('$J:',msg) 
 end
 
 function send_health(to, target)

@@ -18,7 +18,7 @@ addbiome(biome_forest_river)
 addbiome(biome_forest_caveentrance)
 addbiome(biome_swamp)
 addbiome(biome_rainforest)
-addbiome(biome_rainforest_stream)
+--addbiome(biome_rainforest_stream) --add tilecolor
 
 addbiome(biome_sea)
 addbiome(biome_sea_shallow)
@@ -41,6 +41,17 @@ addbiome(biome_desert_rocky)
 addbiome(biome_mountain)
 addbiome(biome_mountain_forest)
 addbiome(biome_glacier)
+
+addbiome(biome_tectonic_desert)
+addbiome(biome_tectonic_desert_active)
+
+addbiome(biome_dark_wastes)
+addbiome(biome_dark_forest)
+addbiome(biome_dark_forest_river)
+
+addbiome(biome_infused_hills)
+addbiome(biome_infused_forest)
+addbiome(biome_infused_forest_light)
 
 --local maps_dir = "C:/_root/projects/src/TileServer/WebRelay/bin/Debug/data/img/rpg/world/"
 --local path = maps_dir.."wmaptest.raw"
