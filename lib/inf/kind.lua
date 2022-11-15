@@ -121,7 +121,7 @@ end
 
 
 
-function Rebase(target,kind)
+function Rebase(target,kind,do_not_clear_adjectives)
     if kind then 
         local adjectives =string.split(kind,' ')
          
@@ -151,7 +151,9 @@ function Rebase(target,kind)
         setmetatable(target,parent)
 
         if adjectives then
-            target:adj_clear()
+            if not do_not_clear_adjectives then 
+                target:adj_clear()
+            end
             for k,v in pairs(adjectives) do
                 target:adj_set(v)
             end

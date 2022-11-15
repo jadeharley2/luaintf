@@ -110,14 +110,17 @@ squad_leave_action = Def('squad_leave_action',{key='sq_leave',restrictions = {"!
     squad.Leave(self)
     return true
 end},'action')
-squad_create_action = Def('squad_create_action',{key='sq_create',restrictions = {"!in_combat","!in_squad","!squad_leader"},callback = function(self,item)  
+squad_create_action = Def('squad_create_action',{key='sq_create',
+    restrictions = {"!in_combat","!in_squad","!squad_leader"},callback = function(self,item)  
     squad.Create(self)
     return true
 end},'action')
 squad_leader:act_add(squad_leave_action) 
 in_squad:act_add(squad_leave_action)  
 
-squad_join_interaction = Def('squad_join_interaction',{key='sq_join',restrictions = {} ,user_restrictions = {"!in_combat"},callback = function(self,user)  
+squad_join_interaction = Def('squad_join_interaction',{key='sq_join',
+    restrictions = {"!in_combat"} ,
+    user_restrictions = {"!in_combat","!in_squad","!squad_leader"},callback = function(self,user)  
     squad.Join(user,self)
     return true
 end},'interaction')

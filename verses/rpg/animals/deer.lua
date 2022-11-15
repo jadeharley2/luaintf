@@ -13,3 +13,4 @@ species_deer.damage = 20
 species_deer.evasion = 70
 species_deer.accuracy = 60
 species_deer.tactic = "flee"
+species_deer.sentient_form = "deermorph"

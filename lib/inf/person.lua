@@ -118,7 +118,8 @@ person = Def('person',{
             end
         end
     end,
-    on_init = function(self)
+    on_spawn = function(self)
+        print('spawned!',self,'at', self.location)
         self:set_updating(true)
     end,
     on_turn_end = function(self)

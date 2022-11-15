@@ -1,4 +1,80 @@
 
+
+
+drink_interaction = Def('drink_interaction',{key='drink',user_restrictions = {"!asleep"},callback = function(self,user,arg1,...) 
+    
+    
+    describe_action(self,L'you drink from [self]',L'[user] drinks from [self]')  
+    self:call("on_consume",user)
+
+    return true;
+end},'interaction') 
+
+
+
+
+item_mushroom = Def('mushroom',{name='mushroom'},'thing')
+
+item_mushroom_red = Def('mushroom_red',{name='red mushroom'},'mushroom')
+item_mushroom_red.image = '/img/rpg/items/mushroom_red.png'
+
+item_mushroom_white = Def('mushroom_white',{name='white mushroom'},'mushroom')
+item_mushroom_white.image = '/img/rpg/items/mushroom_white.png'
+
+item_mushroom_brown = Def('mushroom_brown',{name='brown mushroom'},'mushroom')
+item_mushroom_brown.image = '/img/rpg/items/mushroom.png'
+
+
+item_potion = Def('potion',{name='potion'},'thing')
+item_potion.image = '/img/rpg/items/potion_y.png'
+item_potion:interact_add("drink_interaction")
+
+item_feral_potion = Def('feral_potion',{name='red potion'},'potion')
+item_feral_potion.image = '/img/rpg/items/potion_r.png'
+function item_feral_potion:on_consume(by)
+    local animal_form = by.animal_form
+    if animal_form then
+        Rebase(by,animal_form,true)
+    end
+end
+
+item_antiferal_potion = Def('antiferal_potion',{name='brown potion'},'potion')
+item_antiferal_potion.image = '/img/rpg/items/potion_br.png'
+function item_antiferal_potion:on_consume(by)
+    local sentient_form = by.sentient_form
+    if sentient_form then
+        Rebase(by,sentient_form,true)
+    end
+end
+
+
+item_masc_potion = Def('masc_potion',{name='blue potion'},'potion')
+item_masc_potion.image = '/img/rpg/items/potion_b.png'
+function item_masc_potion:on_consume(by)
+    by:adj_unset('female')
+    by:adj_set('male')
+end
+
+item_fem_potion = Def('fem_potion',{name='pink potion'},'potion')
+item_fem_potion.image = '/img/rpg/items/potion_p.png'
+function item_fem_potion:on_consume(by)
+    by:adj_unset('male')
+    by:adj_set('female')
+end
+
+
+item_debug_bag = Def('debug_bag',{name='debug bag'},'cabinet')
+item_debug_bag.image = '/img/rpg/items/bag.png'
+item_debug_bag.items = {"fem_potion",'masc_potion',"feral_potion","antiferal_potion"}
+item_debug_bag:interact_add("open_interaction")
+item_debug_bag:interact_add("close_interaction")
+function item_debug_bag:on_init()
+    for k,v in pairs(self.items) do
+        Inst(v).location = self  
+    end
+end
+
+
 item_gemstone = Def('gemstone',{name='emerald'},'thing')
 
 item_emerald = Def('emerald',{name='emerald'},'gemstone')
@@ -37,16 +113,6 @@ throw_at_interaction = Def('throw_at_interaction',{key='throw_at',user_restricti
     else
         printout(L"there is no [arg1]")
     end
-
-    return true;
-end},'interaction') 
-
-
-drink_interaction = Def('drink_interaction',{key='drink',user_restrictions = {"!asleep"},callback = function(self,user,arg1,...) 
-    
-    
-    describe_action(self,L'you drink from [self]',L'[user] drinks from [self]')  
-    self:call("on_consume",user)
 
     return true;
 end},'interaction') 

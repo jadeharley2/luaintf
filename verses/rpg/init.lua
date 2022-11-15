@@ -74,6 +74,9 @@ testfennec = Def('testfennec',{name='Fenne'},"female fennecmorph person")
 testfennec.location = somerandomtile
 testfennec.npc = true
 
+testdevbag = Inst('debug_bag')
+testdevbag.location = somerandomtile
+
 testnaga.mind:knows({testkob,testnaga2},"name")
 testnaga2.mind:knows({testkob,testnaga},"name")
 testkob.mind:knows({testnaga,testnaga2},"name")

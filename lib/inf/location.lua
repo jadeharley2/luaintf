@@ -302,6 +302,12 @@ thing._set_location = function(self,v)
         end
         t[self] = true
     end
+
+    if not self.is_spawned then 
+        self.is_spawned = true 
+        self:call('on_spawn',v)
+        self:event_call('on_spawn',v)
+    end
 end
 thing.foreach_contains = foreach_contains
 thing.foreach_parent = foreach_parent

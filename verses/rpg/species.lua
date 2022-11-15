@@ -109,6 +109,7 @@ deermorph.species_images = {
     female = "/img/rpg/species/anthros/deer_f.png",
     _ = "/img/rpg/species/anthros/deer_m.png",
 }
+deermorph.feral_form = 'deer'
 function deermorph:_get_image()
     return adj_choice_tree(self,self.species_images)
 end 
