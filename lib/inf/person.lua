@@ -148,7 +148,8 @@ person.examine = function(target, ex)
     printout('$display:target;clear') 
     printout('$name:'..tostring(target))
     send_health(player,target)
-
+    send_character_visuals(player,target)
+    
     if target == player then
         
         if target.identity~= player then

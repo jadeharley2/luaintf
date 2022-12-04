@@ -315,6 +315,70 @@ function send_inventory(to,target)
     printto(to,com)
 end
 
+function send_character_visuals(to,target)
+    target = target or to 
+    
+    local data = {}
+    if target:is("naga") then
+        data.part_STRUCT = 'STRCT_NAGA'
+        data.part_HEAD = 'HEAD_NAGA'
+        data.part_HAIR_FRONT = 'HAIR_NAGA_FRONT'
+        data.part_HAIR_BACK = 'HAIR_NAGA_BACK'
+        data.part_PATTERN_BODY = 'PATTERN_BODY_SNAKE'
+    elseif target:is("deermorph") then 
+        data.part_HEAD = 'HEAD_DEER'
+        data.part_EAR_R = "EAR_R_DEER"
+        data.part_EAR_L = "EAR_L_DEER"
+        data.part_LEG_R = "LEG_R_DEER"
+        data.part_LEG_L = "LEG_L_DEER"
+        data.part_TAIL = "TAIL_DEER"
+    elseif target:is("kobold") then 
+        data.part_HEAD = 'HEAD_HUMAN'
+        data.part_PATTERN_BODY = 'PATTERN_BODY_SNAKE'
+        data.part_EAR_R = "NULL"
+        data.part_EAR_L = "NULL"
+        data.part_LEG_R = "LEG_R_LIZARD"
+        data.part_LEG_L = "LEG_L_LIZARD"
+        data.part_TAIL = "TAIL_LIZARD"
+        data.part_HAIR_FRONT = 'NULL'
+        data.part_HAIR_BACK = 'NULL'
+    elseif target:is("foxmorph") then 
+        data.part_HEAD = 'HEAD_CIVET' 
+        data.part_EAR_R = "EAR_R_FELINE"
+        data.part_EAR_L = "EAR_L_FELINE"
+        data.part_LEG_R = "LEG_R_FELID"
+        data.part_LEG_L = "LEG_L_FELID"
+        data.part_TAIL = "TAIL_FELID"
+        data.part_HAIR_FRONT = 'NULL'
+        data.part_HAIR_BACK = 'NULL'
+    end
+    if target:is('black') then
+        data.i_body_color = "#202020"
+        data.i_body_color2 = "#404040"
+    elseif target:is('red') then
+        data.i_body_color = "#802020"
+        data.i_body_color2 = "#AA4040"
+    elseif target:is('blue') then
+        data.i_body_color = "#202080"
+        data.i_body_color2 = "#4040AA"
+    elseif target:is('green') then
+        data.i_body_color = "#208020"
+        data.i_body_color2 = "#40AA40"
+    elseif target:is('silver') then
+        data.i_body_color = "#808080"
+        data.i_body_color2 = "#AAAAAA"
+    elseif target:is('purple') then
+        data.i_body_color = "#4c06a6"
+        data.i_body_color2 = "#8e2fe9"
+    elseif target:is('gold') then
+        data.i_body_color = "#673515"
+        data.i_body_color2 = "#eeb961"
+    end
+
+    local msg = json.encode(data)
+    printto(to,'$charvisuals:'..msg)
+end
+
 
 
 showmap_action = Def('showmap_action',{key='map',restrictions = {"!asleep",'!blind'},callback = function(self)    

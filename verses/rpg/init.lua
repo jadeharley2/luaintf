@@ -52,7 +52,7 @@ testnaga.location = somerandomtile
 
 testnaga2 = Def('testnaga2',{name="Areya"},"female gold naga person")
 testnaga2.location = somerandomtile
-testnaga2.npc = true
+--testnaga2.npc = true
 
 testkob = Def('testkob',{name='Xezi'},"female green kobold person")
 testkob.location = somerandomtile
@@ -82,7 +82,7 @@ testnaga2.mind:knows({testkob,testnaga},"name")
 testkob.mind:knows({testnaga,testnaga2},"name")
 
 local S = squad.Create(testnaga)
-S:Join(testnaga2)
+--S:Join(testnaga2)
 S:Join(testkob)
 
 
