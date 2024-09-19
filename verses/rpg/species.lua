@@ -93,7 +93,7 @@ function foxmorph:_get_unknown_name()
     return 'Renard'
 end
  
-fennecmorph = Def('foxmorph','anthro species') 
+fennecmorph = Def('fennecmorph','anthro species') 
 fennecmorph.unknown_name = 'fennec'
 fennecmorph.species_images = {
     female = "/img/rpg/species/anthros/fennec_f.png",
