@@ -39,13 +39,13 @@ MakeRelation(corridor2,hangar,direction_west)
 
 katric_capital_ship.airlock = airlock
 
-quarters.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943235940376260699/47f96e29c73362c3fd51a1960743f63e.jpg'
-airlock.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943234359006224384/1626138798.jpg'
-bridge.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943223639933849660/1626138837.jpg'
-engine_room.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943234360600035358/079ee8528e17c3733f9f77ca00a9006f.jpg'
-hangar.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943234359610191933/1626138900.jpg'
-corridor.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943237475780935751/deaa4115061289.5628c78a3069b.jpg'
-corridor2.image = 'https://cdn.discordapp.com/attachments/760334294681124908/943234360029638749/64a227e1-5e74-4490-b31f-4c19b9659be9.png'
+quarters.image =    '/img/background/bridge.jpg'
+airlock.image =     '/img/background/1626138798.jpg'
+bridge.image =      '/img/background/1626138837.jpg'
+engine_room.image = '/img/background/079ee8528e17c3733f9f77ca00a9006f.jpg'
+hangar.image =      '/img/background/1626138900.jpg'
+corridor.image =    '/img/background/deaa4115061289.5628c78a3069b.jpg'
+corridor2.image =   '/img/background/64a227e1-5e74-4490-b31f-4c19b9659be9.png'
 
 
 

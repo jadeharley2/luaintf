@@ -47,9 +47,7 @@ end
 
 
 ara = Def('ara',{name='ARA', code = '0-1-1'},'female feline anthroid person') 
-ara.image = '/img/fk/characters/ara.png'
---'https://cdn.discordapp.com/attachments/531891665993203722/943137499256074260/furry-f-furry-art-furry--6411268.png'
---'https://cdn.discordapp.com/attachments/531891665993203722/943211236538089622/ara.png'
+ara.image = '/img/fk/characters/ara.png' 
 ara:set_clothes('owned female anthroid_uniform','owned female anthroid_long_gloves','owned female anthroid_stocking','owned anthroid_collar','owned anthroid_visor')
 ara:find('anthroid_uniform').image = '/img/fk/items/ara_uniform.png'
 ara:find('anthroid_long_gloves').image = '/img/fk/items/ara_arms.png'
@@ -76,8 +74,7 @@ zta.intent_defaults = {formal=true,misspelling=false}
 zta.memory.hates_misspelling = true
 
 tvk = Def('tvk',{name='Vale', code='86-44-21'},'male anthroid person') 
-tvk.image = '/img/fk/characters/tvk.png'
---'https://cdn.discordapp.com/attachments/531891665993203722/943216181962244118/vale.png'
+tvk.image = '/img/fk/characters/tvk.png' 
 tvk:set_clothes('owned male anthroid_uniform','owned anthroid_collar')
 tvk:find('anthroid_uniform').image = '/img/fk/items/tvk_uniform.png'
 tvk:find('anthroid_collar').image = '/img/fk/items/tvk_collar.png'
